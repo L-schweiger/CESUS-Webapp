@@ -1,0 +1,8 @@
+<mat-toolbar color="accent">
+  <mat-toolbar-row>
+    <span class="toolbarusername">{{fullname}}</span>
+    <span class="toolbarlogo"><a href=""><img src="/assets/CesusLogo_Light.png" height="55px" width="auto" alt="Logo"></a></span>
+    <fa-icon class="toolbarsettings" [icon]="iconSettings" matTooltip="Einstellungen" [matTooltipShowDelay]="1000" (click)="openSettings()"></fa-icon>
+    <fa-icon class="toolbarlogout" [icon]="iconLogout" matTooltip="Abmelden" [matTooltipShowDelay]="1000" (click)="logout()"></fa-icon>
+  </mat-toolbar-row>
+</mat-toolbar>

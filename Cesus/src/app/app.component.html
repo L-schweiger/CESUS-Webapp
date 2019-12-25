@@ -1,0 +1,4 @@
+<app-toolbar *ngIf="showtoolbar" [fullname]="fullname"></app-toolbar>
+<div @slidein @fadein id="divrouting">
+  <router-outlet (activate)="updateToolbar()"></router-outlet>
+</div>

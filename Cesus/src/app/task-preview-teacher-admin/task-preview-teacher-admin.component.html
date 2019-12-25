@@ -1,0 +1,60 @@
+<div class="divcentered">
+  <fa-icon class="navBackButton" [icon]="iconBack" matTooltip="Zurück" [matTooltipShowDelay]="1000" (click)="this.passdataservice.navBw()"></fa-icon>
+  <div>
+    <h1 id="heading-with-button">{{taskname}}</h1>
+    <button mat-raised-button class="heading-alignedbutton" (click)="openEditTask()">Bearbeiten</button>
+  </div>
+
+
+  <mat-grid-list cols="3" rowHeight="2:2.63">
+    <mat-grid-tile>
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Beschreibung</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="cardcontentscrollable">
+
+          <p class="description">
+            {{taskdescription}}
+          </p>
+
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Abgaben</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="cardcontentscrollable">
+
+          <span *ngIf="deadline !== null">Abgabefrist: {{deadline.getDate()}}.{{deadline.getMonth() + 1}}.{{deadline.getFullYear()}} {{deadline.getHours() | number : '2.0-0'}}:{{deadline.getMinutes() | number : '2.0-0'}}</span>
+          <mat-list role="list">
+            <mat-list-item class="clickable" *ngFor="let u of taskusers" role="listitem" (click)="navigateToSubmission(u.array[0])">{{u.array[2][2]}} {{u.array[2][1]}}<fa-icon *ngIf="u.array[3] === true" class="taskdone" [icon]="iconCheck"></fa-icon><fa-icon *ngIf="u.array[3] !== true" class="taskdonewait" [icon]="iconWait"></fa-icon></mat-list-item>
+            <mat-list-item *ngFor="let allu of taskusersNotsubmitted" role="listitem">{{allu.array[2]}} {{allu.array[1]}}</mat-list-item>
+          </mat-list>
+
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Anhänge</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="cardcontentscrollable">
+
+          <mat-list role="list">
+            <mat-list-item *ngIf="statementfile[0] !== null && statementfile[0] !== ''" role="listitem">Angabe<button mat-raised-button class="buttoninlist" (click)="this.passdataservice.downloadFile(statementfile[0])">Download</button></mat-list-item>
+            <mat-list-item *ngIf="samplesolutionfile[0] !== null && samplesolutionfile[0] !== ''" role="listitem">Musterlösung<button mat-raised-button class="buttoninlist" (click)="this.passdataservice.downloadFile(samplesolutionfile[0])">Download</button></mat-list-item>
+            <mat-list-item *ngFor="let att of attachments" role="listitem">{{att.attachmentname}}<button mat-raised-button class="buttoninlist" (click)="this.passdataservice.downloadFile(att.attachmentid)">Download</button></mat-list-item>
+          </mat-list>
+
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+</div>

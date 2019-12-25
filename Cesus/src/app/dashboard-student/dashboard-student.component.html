@@ -1,0 +1,37 @@
+<div class="divcentered">
+
+  <h1>Mein Dashboard</h1>
+
+  <mat-grid-list cols="2" rowHeight="2:1.75">
+    <mat-grid-tile>
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Meine Kurse</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="cardcontentscrollable">
+
+          <mat-list role="list">
+            <mat-list-item class="clickable" *ngFor="let c of courselist" role="listitem"><span (click)="navigateToCourse(c.array[0])">{{c.array[1]}}</span></mat-list-item>
+          </mat-list>
+
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Offene Aufgaben</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="cardcontentscrollable">
+
+          <mat-list role="list">
+            <mat-list-item class="clickable" *ngFor="let t of opentasklist" role="listitem"><span (click)="navigateToTask(t.array[0])">{{t.array[1]}}</span></mat-list-item>
+          </mat-list>
+
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+</div>

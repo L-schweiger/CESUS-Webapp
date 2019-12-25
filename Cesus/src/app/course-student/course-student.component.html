@@ -1,0 +1,54 @@
+<div class="divcentered">
+  <fa-icon class="navBackButton" [icon]="iconBack" matTooltip="Zurück" [matTooltipShowDelay]="1000" (click)="this.passdataservice.navBw()"></fa-icon>
+  <h1>{{coursename}}</h1>
+
+  <mat-grid-list cols="3" rowHeight="2:2.63">
+    <mat-grid-tile>
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Beschreibung</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="cardcontentscrollable">
+
+          <p class="description">
+            {{coursedescription}}
+          </p>
+
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Aufgaben</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="cardcontentscrollable">
+
+          <mat-list role="list">
+            <mat-list-item class="clickable" *ngFor="let t of coursetasks" role="listitem" (click)="navigateToTask(t.array[0])">{{t.array[1]}}</mat-list-item>
+          </mat-list>
+
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Teilnehmer</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="cardcontentscrollable">
+
+          <mat-list role="list">
+            <mat-list-item class="li-admin" *ngFor="let u of courseadmins" role="listitem">{{u.array[2]}} {{u.array[1]}}</mat-list-item>
+            <mat-list-item class="li-teacher" *ngFor="let u of courseteachers" role="listitem">{{u.array[2]}} {{u.array[1]}}</mat-list-item>
+            <mat-list-item class="li-student" *ngFor="let u of coursestudents" role="listitem">{{u.array[2]}} {{u.array[1]}}</mat-list-item>
+          </mat-list>
+
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+</div>

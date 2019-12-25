@@ -1,0 +1,45 @@
+.add{
+  margin-right: 20px;
+  color: #67de61;
+  font-size: 150%;
+  transition: 0.5s;
+  position: absolute;
+  right: 0;
+  top: 2%;
+}
+
+.add:hover{
+  color: #3d9c3d;
+  cursor: pointer;
+}
+
+.remove{
+  margin-right: 20px;
+  color: #ff5959;
+  font-size: 150%;
+  transition: 0.5s;
+  position: absolute;
+  right: 0;
+  top: 10%;
+}
+
+.remove:hover{
+  color: #cf001c;
+  cursor: pointer;
+}
+
+.mat-raised-button{
+  position: absolute;
+  top:20%;
+  left: 45%;
+  z-index: 1;
+}
+
+.courseinfoInlist{
+  margin-right: 70px;
+  position: absolute;
+  right: 0;
+  top: 20%;
+  cursor: pointer;
+  font-weight: normal;
+}

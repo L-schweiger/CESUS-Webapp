@@ -1,0 +1,448 @@
+﻿syntax = "proto3";
+
+package API;
+
+enum Role {
+	STUDENT = 0;
+	TEACHER = 1;
+	ADMIN = 2;
+}
+
+message User {
+	string id = 1;
+	string username = 2;
+	string firstName = 3;
+	string lastName = 4;
+	Role role = 5;
+	string imgFile = 6;
+	bool isAD = 7;
+	repeated GroupPreview groups = 8;
+	repeated CoursePreview courses = 9;
+	repeated SubmissionPreview submissions = 10;
+	string hash = 11;
+}
+
+message UserPreview {
+	string id = 1;
+	string firstName = 2;
+	string lastName = 3;
+	Role role = 4;
+	string imgFile = 5;
+}
+
+message UserEdit {
+	string username = 1;
+	string firstName = 2;
+	string lastName = 3;
+	bool passwordSet = 4;
+	string password = 5;
+	Role role = 6;
+	string imgFile = 7;
+	repeated string groupsAdd = 8;
+	repeated string groupsRemove = 9;
+	repeated string coursesAdd = 10;
+	repeated string coursesRemove = 11;
+}
+
+message PasswordChange {
+	string passwordOld = 1;
+	string passwordNew = 2;
+}
+
+message Group {
+	string id = 1;
+	string name = 2;
+	repeated UserPreview users = 3;
+	string hash = 4;
+}
+
+message GroupPreview {
+	string id = 1;
+	string name = 2;
+	uint32 memberCount = 3;
+}
+
+message GroupEdit {
+	string name = 1;
+	repeated string usersAdd = 2;
+	repeated string usersRemove = 3;
+}
+
+message Course {
+	string id = 1;
+	string name = 2;
+	string description = 3;
+	repeated UserPreview users = 4;
+	repeated TaskPreview tasks = 5;
+	string hash = 6;
+}
+
+message CoursePreview {
+	string id = 1;
+	string name = 2;
+}
+
+message CourseEdit {
+	string name = 1;
+	string description = 2;
+	repeated string usersAdd = 3;
+	repeated string usersRemove = 4;
+	repeated string groupsAdd = 5;
+}
+
+enum CheckMode {
+	OUTPUT = 0;
+	SAMPLE_SOLUTION = 1;
+	TEST_PROGRAM = 2;
+}
+
+enum SampleSolutionDownloadable {
+	NO = 0;
+	YES = 1;
+	AFTERDEADLINE = 2;
+}
+
+message Task {
+	string id = 1;
+	string name = 2;
+	string description = 3;
+	string statementFile = 4;
+	string sampleSolutionFile = 5;
+	SampleSolutionDownloadable sampleSolutionDownloadable = 6;
+	int64 deadline = 7; // negative for disabled
+	int32 maxPoints = 8;
+	EvalInfo evalInfo = 9;
+	bool showRatingAfterDeadline = 10;
+	CoursePreview course = 11;
+	repeated string attatchments = 12;
+	repeated SubmissionPreview submissions = 13;
+	string hash = 14;
+}
+
+message TaskPreview {
+	string id = 1;
+	string name = 2;
+}
+
+message TaskEdit {
+	string name = 1;
+	string description = 2;
+	string statementFile = 3;
+	string sampleSolutionFile = 4;
+	SampleSolutionDownloadable sampleSolutionDownloadable = 5;
+	int64 deadline = 6; // negative for disabled
+	bool showRatingAfterDeadline = 7;
+	int32 maxPoints = 8;
+	EvalInfo evalInfo = 9;
+	string courseId = 10;
+	repeated string attachmentsAdd = 11;
+	repeated string attachmentsRemove = 12;
+}
+
+message Submission {
+	string id = 1;
+	string comment = 2;
+	string file = 3;
+	int64 submissionDate = 4;
+	UserPreview user = 5;
+	TaskPreview task = 6;
+	Rating rating = 7;
+	string hash = 8;
+}
+
+message SubmissionPreview {
+	string id = 1;
+	int64 submissionDate = 2;
+	UserPreview user = 3;
+	bool ratingAvailable = 4;
+}
+
+message SubmissionEdit {
+	string comment = 1;
+	string file = 2;
+	string taskId = 3;
+}
+
+message Rating {
+	string id = 1;
+	float points = 2;
+	int32 grade = 3; // 0 for no grade
+	string comment = 4;
+	UserPreview user = 5; // null = system
+	SubmissionPreview submission = 6;
+	string hash = 7;
+}
+
+message RatingEdit {
+	float points = 1;
+	int32 grade = 2;
+	string comment = 3;
+	string submissionId = 4;
+}
+
+message Empty {}
+
+message StringMessage {
+	string str = 1;
+}
+
+message UsersMessage {
+	repeated UserPreview users = 1;
+}
+
+message UserEditMessage {
+	string id = 1;
+	string hash = 2;
+	UserEdit edit = 3;
+}
+
+message GroupsMessage {
+	repeated GroupPreview groups = 1;
+}
+
+message GroupEditMessage {
+	string id = 1;
+	string hash = 2;
+	GroupEdit edit = 3;
+}
+
+message CoursesMessage {
+	repeated CoursePreview courses = 1;
+}
+
+message CourseEditMessage {
+	string id = 1;
+	string hash = 2;
+	CourseEdit edit = 3;
+}
+
+message TasksMessage {
+	repeated TaskPreview tasks = 1;
+}
+
+message TaskEditMessage {
+	string id = 1;
+	string hash = 2;
+	TaskEdit edit = 3;
+}
+
+message SubmissionEditMessage {
+	string id = 1;
+	string hash = 2;
+	SubmissionEdit edit = 3;
+}
+
+message AuthRequest {
+	string username = 1;
+	string password = 2;
+	bool extendedTime = 3;
+}
+
+message SessionToken {
+	string userId = 1;
+	int64 creationDate = 2;
+	int64 expirationDate = 3;
+	string token = 4;
+}
+
+message RatingEditMessage {
+	string id = 1;
+	string hash = 2;
+	RatingEdit edit = 3;
+}
+
+message DatabaseConnectionSettings {
+	string address = 1;
+	string username = 2;
+	string password = 3;
+	string database = 4;
+}
+
+message ADImportSettings {
+	string studentsGroup = 1;
+	string teachersGroup = 2;
+	string adminsGroup = 3;
+	string groupPrefix = 4;
+}
+
+service UserService {
+	rpc GetUsers (Empty) returns (UsersMessage);
+	rpc GetUser (StringMessage) returns (User);
+	rpc CreateUser (UserEdit) returns (User);
+	rpc EditUser (UserEditMessage) returns (Empty);
+	rpc DeleteUser (StringMessage) returns (Empty);
+	rpc ChangePassword (PasswordChange) returns (Empty);
+
+	rpc GetUserByUsername (StringMessage) returns (User);
+}
+
+service GroupService {
+	rpc GetGroups (Empty) returns (GroupsMessage);
+	rpc GetGroup (StringMessage) returns (Group);
+	rpc CreateGroup (GroupEdit) returns (Group);
+	rpc EditGroup (GroupEditMessage) returns (Empty);
+	rpc DeleteGroup (StringMessage) returns (Empty);
+}
+
+message CourseExPreview {
+	string id = 1;
+	string name = 2;
+	int64 nextDeadline = 3;
+	int32 studentMembers = 4;
+	int32 submissions = 5;
+}
+
+message CoursesExMessage {
+	repeated CourseExPreview courses = 1;
+}
+
+service CourseService {
+	rpc GetCourses (Empty) returns (CoursesMessage);
+	rpc GetCourse (StringMessage) returns (Course);
+	rpc CreateCourse (CourseEdit) returns (Course);
+	rpc EditCourse (CourseEditMessage) returns (Empty);
+	rpc DeleteCourse (StringMessage) returns (Empty);
+
+	rpc GetCoursesForDashboard (Empty) returns (CoursesExMessage);
+}
+
+service TaskService {
+	rpc GetTask (StringMessage) returns (Task); // only own submissions visible 
+	rpc CreateTask (TaskEdit) returns (Task);
+	rpc EditTask (TaskEditMessage) returns (Empty);
+	rpc DeleteTask (StringMessage) returns (Empty);
+
+	rpc GetOpenTasksSorted (Empty) returns (TasksMessage);
+	rpc CreateSolutionFile (StringMessage) returns (StringMessage);
+}
+
+service SubmissionService {
+	rpc GetSubmission (StringMessage) returns (Submission);
+	rpc CreateSubmission (SubmissionEdit) returns (Submission);
+	rpc EditSubmission (SubmissionEditMessage) returns (Empty);
+	rpc DeleteSubmission (StringMessage) returns (Empty);
+}
+
+service RatingService {
+	rpc CreateRating (RatingEdit) returns (Rating);
+	rpc EditRating (RatingEditMessage) returns (Empty);
+	rpc DeleteRating (StringMessage) returns (Empty);
+}
+
+service AuthService {
+	rpc Auth (AuthRequest) returns (SessionToken);
+}
+
+service SettingsService {
+	rpc GetDatabaseConnectionSettings (Empty) returns (DatabaseConnectionSettings);
+	rpc GetADImportSettings (Empty) returns (ADImportSettings);
+	rpc SetADImportSettings (ADImportSettings) returns (Empty);
+	rpc SyncADNow (Empty) returns (Empty);
+	rpc GetSslInfo (Empty) returns (SslCredentialsInfo);
+	rpc SetSslCredentials (SslCredentialsMessage) returns (Empty);
+	rpc SetLdapInfo (LdapInfo) returns (Empty);
+	rpc GetLdapInfo (Empty) returns (LdapInfo);
+	rpc SetGeneralSettings (GeneralSettingsMessage) returns (Empty);
+	rpc GetGeneralSettings (Empty) returns (GeneralSettingsMessage);
+}
+
+message LdapInfo {
+	string server = 1;
+	string username = 2;
+	string password = 3;
+}
+
+message SslCredentialsInfo{
+	string commonName = 1;
+	string thumbprint = 2;
+}
+
+message SslCredentialsMessage{
+	string file = 1;
+	string password = 2;
+}
+
+enum SetupState {
+	UNCONFIGURED = 0;
+	DATABASE_CONFIGURED = 1;
+	ADMIN_CONFIGURED = 2;
+	SSL_CONFIGURED = 3;
+	LDAP_CONFIGURED = 4;
+	ADSYNC_CONFIGURED = 5;
+	GENERAL_CONFIGURED = 6;
+	COMPLETE = 7;
+}
+
+message SetupStateMessage {
+	SetupState state = 1;
+}
+
+service SetupService {
+	rpc GetState (Empty) returns (SetupStateMessage);
+	rpc ConfigureDatabase (DatabaseConnectionSettings) returns (Empty);
+	rpc ConfigureAdminAccount (StringMessage) returns (Empty);
+	rpc ImportFromAD (ADImportSettings) returns (Empty);
+	rpc CompleteSetup (Empty) returns (Empty);
+	rpc SetSslCredentials (SslCredentialsMessage) returns (Empty);
+	rpc SetLdapInfo (LdapInfo) returns (Empty);
+	rpc SetGeneralSettings (GeneralSettingsMessage) returns (Empty);
+	rpc GetSetupSummary (Empty) returns (SetupSummary);
+}
+
+message SetupSummary {
+	DatabaseConnectionSettings databaseSettings = 1;
+	SslCredentialsInfo sslInfo = 2;
+	LdapInfo ldapInfo = 3;
+	ADImportSettings adImportSettings = 4;
+	GeneralSettingsMessage generalSettings = 5;
+}
+
+message GeneralSettingsMessage{
+	bool useHsts = 1;
+	int32 concurrentExecutionCount = 2; // greater than 0
+	int32 jobExecutionTime = 3; // in seconds after midnight
+	bool executeEvalAsJob = 4;
+}
+
+message Int64Message {
+	int64 int = 1;
+}
+
+message CheckerInfo {
+	string programmingLanguage = 1;
+	repeated CheckMode supportedCheckModes = 2;
+}
+
+message Checker {
+	string programmingLanguage = 1;
+	CheckMode checkMode = 2;
+}
+
+message EvalInfo {
+	message SampleSolution {
+		bool checkConsoleOutput = 1;
+		repeated string inputs = 2;
+		repeated string outputFilesToCheck = 3;
+	}
+	message Output {
+		repeated string inputs = 1;
+		repeated string outputs = 2;
+	}
+
+	Checker checker = 1;
+	oneof mode {
+		Output output = 2;
+		SampleSolution sampleSolution = 3;
+		string testProgramFile = 4;
+	}
+}
+
+message CheckersMessage {
+	repeated CheckerInfo checkers = 1;
+}
+
+service MiscService {
+	rpc GetServerTime (Empty) returns (Int64Message);
+	rpc GetAvailableCheckers (Empty) returns (CheckersMessage);
+	rpc GetFilename (StringMessage) returns (StringMessage);
+}

@@ -1,0 +1,77 @@
+<div class="divcentered">
+  <fa-icon class="navBackButton" [icon]="iconBack" matTooltip="Zurück" [matTooltipShowDelay]="1000" (click)="this.passdataservice.navBw()"></fa-icon>
+
+  <h1>{{taskname}}</h1>
+
+
+  <mat-grid-list cols="3" rowHeight="2:2.63">
+    <mat-grid-tile>
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Beschreibung</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="cardcontentscrollable">
+
+          <p class="description">
+            {{description}}
+          </p>
+
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Aufgabenstatus</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="cardcontentscrollable">
+
+          <div #pieChart></div>
+
+          <div class="rating">
+            <p *ngIf="grade !== 0">
+              Note: {{grade}}
+            </p>
+
+            <p>
+              Punkte: {{points}} / {{maxpoints}}
+            </p>
+          </div>
+
+          <mat-card *ngIf="comment !== null && comment !== ''" class="showcomment">
+            <mat-card-header>
+              <mat-card-title>Lehrerkommentar</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="cardcontentscrollable">
+
+              <p>
+                {{comment}}
+              </p>
+
+            </mat-card-content>
+          </mat-card>
+
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Anhänge</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="cardcontentscrollable">
+
+          <mat-list role="list">
+            <mat-list-item *ngIf="statementfile[0] !== null && statementfile[0] !== ''" role="listitem">Angabe<button mat-raised-button class="buttoninlist" (click)="this.passdataservice.downloadFile(statementfile[0])">Download</button></mat-list-item>
+            <mat-list-item *ngIf="samplesolutiondownloadable" role="listitem">Musterlösung<button mat-raised-button class="buttoninlist" (click)="this.passdataservice.downloadFile(samplesolutionfile[0])">Download</button></mat-list-item>
+            <mat-list-item role="listitem">Abgabe<button mat-raised-button class="buttoninlist" (click)="this.passdataservice.downloadFile(submissionfile[0])">Download</button></mat-list-item>
+          </mat-list>
+
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+</div>

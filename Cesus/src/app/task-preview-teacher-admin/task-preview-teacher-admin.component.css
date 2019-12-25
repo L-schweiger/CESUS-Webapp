@@ -1,0 +1,51 @@
+.heading-alignedbutton{
+  display:inline-block;
+  margin-left:15px;
+  bottom:5px;
+}
+
+#heading-with-button{
+  display:inline-block;
+}
+
+.buttoninlist{
+  position: absolute;
+  right: 0;
+  top: 10%;
+  height: 70%;
+}
+
+.description{
+  padding-top: 4%;
+  margin: 5%;
+  text-align: left;
+  font-size: 115%;
+  line-height: 150%;
+}
+
+.taskdone{
+  position: absolute;
+  right: 0;
+  top: 20%;
+  font-size: 150%;
+  margin-right: 20px;
+  color: #67de61;
+}
+
+.taskdonewait{
+  position: absolute;
+  right: 0;
+  top: 20%;
+  font-size: 150%;
+  margin-right: 20px;
+  color: #f4f449;
+}
+
+.tasknotdone{
+  position: absolute;
+  right: 0;
+  top: 20%;
+  font-size: 150%;
+  margin-right: 20px;
+  color: #ff5959;
+}

@@ -1,0 +1,31 @@
+.buttoninlist{
+  position: absolute;
+  right: 0;
+  top: 10%;
+  height: 70%;
+}
+
+.description{
+  padding-top: 4%;
+  margin: 5%;
+  text-align: left;
+  font-size: 115%;
+  line-height: 150%;
+}
+
+.rating{
+  font-size: 130%;
+}
+
+#savecorrectionbtn{
+  width: 100%;
+  margin-top: 10px;
+}
+
+.mat-form-field{
+  width:100%;
+}
+
+.showcomment{
+  width:90%;
+}

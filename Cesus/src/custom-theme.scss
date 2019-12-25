@@ -1,0 +1,8 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+$Cesus-primary: mat-palette($mat-green, A700, 300, 800);
+$Cesus-accent:  mat-palette($mat-grey, A700, A700, A700);
+$Cesus-warn:    mat-palette($mat-red, A200, 300, A700);
+$Cesus-theme: mat-light-theme($Cesus-primary, $Cesus-accent, $Cesus-warn);
+@include angular-material-theme($Cesus-theme);

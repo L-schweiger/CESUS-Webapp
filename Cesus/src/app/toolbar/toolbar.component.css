@@ -1,0 +1,39 @@
+.toolbarlogo{
+  flex:1 1 auto;
+  text-align:center;
+  margin-top: 5px;
+  position: absolute;
+  left: 48%;
+}
+
+.toolbarusername{
+  color: #67de61;
+  font-size: 90%;
+}
+
+.toolbarlogout{
+  color: #ff5959;
+  font-size: 150%;
+  transition: 0.5s;
+  position: absolute;
+  right: 10px;
+}
+
+.toolbarlogout:hover{
+  color: #cf001c;
+  cursor: pointer;
+}
+
+.toolbarsettings{
+  margin-right: 20px;
+  color: #67de61;
+  font-size: 120%;
+  transition: 0.5s;
+  position: absolute;
+  right: 40px;
+}
+
+.toolbarsettings:hover{
+  color: #3d9c3d;
+  cursor: pointer;
+}

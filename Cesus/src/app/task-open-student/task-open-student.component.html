@@ -1,0 +1,70 @@
+<div class="divcentered">
+  <fa-icon class="navBackButton" [icon]="iconBack" matTooltip="Zurück" [matTooltipShowDelay]="1000" (click)="this.passdataservice.navBw()"></fa-icon>
+
+  <h1>{{taskname}}</h1>
+
+
+  <mat-grid-list cols="3" rowHeight="2:2.63">
+    <mat-grid-tile>
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Beschreibung</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="cardcontentscrollable">
+
+          <p class="description">
+            {{taskdescription}}
+          </p>
+
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Aufgabenstatus</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="cardcontentscrollable">
+
+          <div *ngIf="!deadlinePassed" class="taskstate">
+            <p *ngIf="deadline !== null">
+              Offen bis {{deadline.getDate()}}.{{deadline.getMonth() + 1}}.{{deadline.getFullYear()}}
+            </p>
+
+            <mat-form-field class="changecomment" type="text">
+              <textarea matInput name="changecomment" [(ngModel)]="usercomment" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5" cdkAutosizeMaxRows="8" placeholder="Optionaler Kommentar"></textarea>
+            </mat-form-field>
+            <br>
+            <input type="file" style="display:none;" id="fileupload" #fileupload />
+            <button class="submitTaskBtn" mat-raised-button (click)="submit()">Abgeben</button>
+          </div>
+
+          <div *ngIf="deadlinePassed" class="taskstate">
+            <p>
+              Deadline wurde nicht eingehalten!
+            </p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Anhänge</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="cardcontentscrollable">
+
+          <mat-list role="list">
+            <mat-list-item *ngIf="statementfile[0] !== null && statementfile[0] !== ''" role="listitem">Angabe<button mat-raised-button class="buttoninlist" (click)="this.passdataservice.downloadFile(statementfile[0])">Download</button></mat-list-item>
+            <mat-list-item *ngIf="samplesolutiondownloadable" role="listitem">Musterlösung<button mat-raised-button class="buttoninlist" (click)="this.passdataservice.downloadFile(samplesolutionfile[0])">Download</button></mat-list-item>
+            <mat-list-item *ngFor="let att of attachments" role="listitem">{{att.attachmentname}}<button mat-raised-button class="buttoninlist" (click)="this.passdataservice.downloadFile(att.attachmentid)">Download</button></mat-list-item>
+          </mat-list>
+
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+</div>

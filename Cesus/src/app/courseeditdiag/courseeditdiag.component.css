@@ -1,0 +1,28 @@
+.coursecreatebtn{
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.submitchangesbtn{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.coursefields{
+  width:90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.description{
+  padding-top: 4%;
+  margin: 5%;
+  text-align: left;
+  font-size: 115%;
+  line-height: 150%;
+  overflow: auto;
+  height: 90%;
+}

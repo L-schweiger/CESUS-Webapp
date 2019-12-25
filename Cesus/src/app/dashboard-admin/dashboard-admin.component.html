@@ -1,0 +1,38 @@
+<div class="divcentered">
+  <h1>Mein Dashboard</h1>
+
+  <mat-grid-list cols="2" rowHeight="2:1.75">
+    <mat-grid-tile>
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Kurse<fa-icon class="add" [icon]="iconAdd" matTooltip="Hinzufügen" [matTooltipShowDelay]="1000" (click)="openEditCourse()"></fa-icon></mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="cardcontentscrollable">
+
+          <mat-list role="list">
+            <mat-list-item class="clickable" *ngFor="let c of courselist" role="listitem"><span (click)="navigateToCourse(c.array[0])">{{c.array[1]}} <span class="courseinfoInlist"><span *ngIf="c.array[4] === -1 || c.array[4] === undefined">0</span><span *ngIf="c.array[4] !== -1">{{c.array[4]}}</span>/<span *ngIf="c.array[3] === undefined">0</span><span *ngIf="c.array[3] !== undefined">{{c.array[3]}}</span> Abgaben</span></span><fa-icon class="remove" [icon]="iconRemove" matTooltip="Entfernen" [matTooltipShowDelay]="1000" (click)="deleteCourse(c.array[0])"></fa-icon></mat-list-item>
+          </mat-list>
+
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <button mat-raised-button (click)="openEditUser()">Benutzerverwaltung</button>
+
+    <mat-grid-tile>
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Gruppen<fa-icon class="add" [icon]="iconAdd" matTooltip="Hinzufügen" [matTooltipShowDelay]="1000" (click)="openEditGroup()"></fa-icon></mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="cardcontentscrollable">
+          <div>
+          <mat-list role="list">
+            <mat-list-item *ngFor="let g of grouplist" role="listitem">{{g.array[1]}}<fa-icon class="remove" [icon]="iconRemove" matTooltip="Entfernen" [matTooltipShowDelay]="1000" (click)="deleteGroup(g.array[0])"></fa-icon></mat-list-item>
+          </mat-list>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+</div>

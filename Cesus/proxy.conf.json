@@ -1,0 +1,7 @@
+{
+  "/api/*": {
+    "target": "https://cesus.ehif.xyz",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

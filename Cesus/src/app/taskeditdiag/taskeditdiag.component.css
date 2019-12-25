@@ -1,0 +1,45 @@
+.taskcreatebtn{
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+
+.uploadbtn{
+  width: 80%;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.taskfields{
+  width:90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.description{
+  padding-top: 4%;
+  margin: 10px 5% 5%;
+  text-align: left;
+  font-size: 115%;
+  line-height: 150%;
+  overflow: auto;
+  height: 90%;
+}
+
+.buttononbot{
+  margin-bottom: 20px;
+}
+
+.headerfield {
+  margin-top: 20px;
+}
+
+.noscroll{
+  overflow-y: hidden;
+}
+
+.mat-card{
+  height: 80%;
+}

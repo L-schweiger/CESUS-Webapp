@@ -1,0 +1,17 @@
+.description{
+  padding-top: 4%;
+  margin: 5%;
+  text-align: left;
+  font-size: 115%;
+  line-height: 150%;
+}
+
+.li-admin{
+  font-weight: bold;
+}
+
+.li-teacher{
+  font-weight: bold;
+}
+
+.li-student{ }

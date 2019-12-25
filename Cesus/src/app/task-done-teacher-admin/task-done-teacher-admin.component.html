@@ -1,0 +1,99 @@
+<div class="divcentered">
+  <fa-icon class="navBackButton" [icon]="iconBack" matTooltip="Zurück" [matTooltipShowDelay]="1000" (click)="this.passdataservice.navBw()"></fa-icon>
+
+  <h1>{{taskname}} von {{userfullname}}</h1>
+
+
+  <mat-grid-list cols="3" rowHeight="2:2.63">
+    <mat-grid-tile>
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Bewertung korrigieren</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="description">
+
+          <form (submit)="editRating()">
+            <mat-form-field>
+              <mat-label>Note</mat-label>
+              <mat-select name="changegrade" [(ngModel)]="editedGrade">
+                <mat-option *ngFor="let g of grades" [value]="g.value">
+                  {{g.showtxt}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <br>
+
+            <mat-form-field>
+              <input matInput name="changepoints" placeholder="Erreichte Punkte (Max: {{this.maxpoints}})" [(ngModel)]="editedPoints" type="number" min="0" max="{{this.maxpoints}}">
+            </mat-form-field>
+
+            <br>
+
+            <mat-form-field type="text">
+              <textarea matInput name="changecomment" [(ngModel)]="editedComment" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3" cdkAutosizeMaxRows="7" placeholder="Kommentar">{{comment}}</textarea>
+            </mat-form-field>
+
+            <br>
+
+            <button mat-raised-button type="submit" id="savecorrectionbtn">Korrektur speichern</button>
+          </form>
+
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Aufgabenstatus</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="cardcontentscrollable">
+
+          <div #pieChart></div>
+
+          <div class="rating">
+            <p *ngIf="grade !== 0">
+              Note: {{grade}}
+            </p>
+
+            <p>
+              Punkte: {{points}} / {{maxpoints}}
+            </p>
+          </div>
+
+          <mat-card *ngIf="usercomment !== null && usercomment !== ''" class="showcomment">
+            <mat-card-header>
+              <mat-card-title>Schülerkommentar</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="cardcontentscrollable">
+
+              <p>
+                {{usercomment}}
+              </p>
+
+            </mat-card-content>
+          </mat-card>
+
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Abgabe</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="cardcontentscrollable">
+          <mat-list role="list">
+            <mat-list-item *ngIf="statementfile[0] !== null && statementfile[0] !== ''" role="listitem">Angabe<button mat-raised-button class="buttoninlist" (click)="this.passdataservice.downloadFile(statementfile[0])">Download</button></mat-list-item>
+            <mat-list-item *ngIf="samplesolutionfile[0] !== null && samplesolutionfile[0] !== ''" role="listitem">Musterlösung<button mat-raised-button class="buttoninlist" (click)="this.passdataservice.downloadFile(samplesolutionfile[0])">Download</button></mat-list-item>
+            <mat-list-item role="listitem">Abgabe<button mat-raised-button class="buttoninlist" (click)="this.passdataservice.downloadFile(submissionfile[0])">Download</button></mat-list-item>
+          </mat-list>
+
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+</div>

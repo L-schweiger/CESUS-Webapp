@@ -1,0 +1,80 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: "Segoe UI", regular, serif;
+  color: #565252;
+  overflow: hidden;
+  background-color: #f5f6f8;
+}
+
+html.cdk-global-scrollblock{/*fix for scrollbar appearing when dialogs open*/
+  overflow: hidden;
+}
+
+h1{/*position page heading*/
+  margin-top: 5%;
+}
+
+.divcentered{
+  text-align: center;
+}
+
+.card2 {/*styling for 2 cards in 1 row*/
+  width: 70%;
+  height: 70%;
+
+}
+
+.mat-grid-tile .mat-figure{/*set inner space of gridtile*/
+  justify-content: center!important;
+  align-items: baseline!important;
+  margin-top: 50px!important;
+}
+
+.mat-card-header{/*card header*/
+  color: #67de61;
+  justify-content: center;
+}
+
+.cardcontentscrollable{/*cardcontent*/
+  overflow: auto;
+  height: 90%;
+}
+
+.mat-list{/*better margins for list*/
+  margin-left: 5%;
+}
+
+.mat-list-item.clickable:hover{/*listhover effects*/
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.mat-select-panel{/*no scrollbar on dropdowns*/
+  max-height: none!important;
+}
+
+.navBackButton{/*style back button*/
+  font-size: 200%;
+  color: grey;
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  z-index: 1;
+  transition: 0.5s;
+}
+
+.navBackButton:hover{/*back button hover*/
+  color: #313131;
+}
+
+.errorMessage{/*style errormessage background*/
+  background-color: #ff979c;
+  color: #a9001a;
+}
+
+.dialogstyle .mat-dialog-container{
+  padding: 0px;
+}

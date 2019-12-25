@@ -1,0 +1,133 @@
+<div class="divcentered">
+  <input type="file" style="display:none;" id="fileupload" />
+
+  <mat-tab-group mat-stretch-tabs>
+    <mat-tab label="Aufgabe hinzufügen">
+
+      <mat-grid-list cols="3" rowHeight="2:3">
+        <mat-grid-tile>
+
+          <mat-card class="card2">
+            <mat-card-header>
+              <mat-card-title>Details</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="description noscroll">
+
+              <form class="taskfields">
+                <mat-form-field>
+                  <input matInput class="taskfields" name="taskname" placeholder="Aufgabenname" [(ngModel)]="addtaskName" type="text">
+                </mat-form-field>
+
+                <mat-form-field class="taskfields" type="text">
+                  <textarea matInput class="taskfields" name="taskDescription" [(ngModel)]="addtaskDescription" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2" cdkAutosizeMaxRows="2" placeholder="Beschreibung"></textarea>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>Musterlösung anzeigen</mat-label>
+                  <mat-select name="samplesolDownloadable" [(ngModel)]="addtaskSamplesolutiondownloadable">
+                    <mat-option *ngFor="let s of samplesolDownloadablevalues" [value]="s.value">
+                      {{s.showtxt}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>Bewertung anzeigen</mat-label>
+                  <mat-select name="samplesolDownloadable" [(ngModel)]="addtaskShowratingafterdeadline">
+                    <mat-option *ngFor="let r of ratingShowvalues" [value]="r.value">
+                      {{r.showtxt}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input matInput name="addtaskDeadline" type="datetime-local" placeholder="Abgabefrist" [(ngModel)]="addtaskDeadline">
+                </mat-form-field>
+              </form>
+              <button mat-raised-button (click)="createTask()" class="taskcreatebtn">Aufgabe erstellen</button>
+
+            </mat-card-content>
+          </mat-card>
+
+        </mat-grid-tile>
+        <mat-grid-tile>
+
+          <mat-card class="card2">
+            <mat-card-header>
+              <mat-card-title>Dateien hochladen</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="cardcontentscrollable">
+
+              <button mat-raised-button (click)="addFileToTaskString('statement')" class="uploadbtn">Angabe hochladen</button>
+              <button mat-raised-button (click)="addFileToTaskString('samplesol')" class="uploadbtn">Musterlösung hochladen</button>
+              <button mat-raised-button (click)="addFileToTaskArray(this.addtaskAttachmentaddlist)" class="uploadbtn">Anhang hochladen</button>
+
+            </mat-card-content>
+          </mat-card>
+
+        </mat-grid-tile>
+        <mat-grid-tile>
+
+          <mat-card class="card2">
+            <mat-card-header>
+              <mat-card-title>Bewertung</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="description">
+
+              <mat-form-field class="taskfields">
+                <input matInput class="taskfields" name="setmaxpoints" placeholder="Maximale Punkte" [(ngModel)]="addtaskMaxpoints" type="number" min="0">
+              </mat-form-field>
+
+              <mat-form-field class="taskfields">
+                <mat-label>Prüfungsmodus</mat-label>
+                <mat-select name="samplesolDownloadable" [(ngModel)]="addtaskCheckmode" #checkm>
+                  <mat-option *ngFor="let cm of checkmodevalues" [value]="cm.value">
+                    {{cm.showtxt}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <div *ngIf="checkm.value == 0">
+                <mat-form-field class="taskfields">
+                  <input matInput class="taskfields" name="evalInput1" placeholder="Input-Parameter" [(ngModel)]="addtaskTempInput" type="text">
+                </mat-form-field>
+                <mat-form-field class="taskfields">
+                  <input matInput class="taskfields" name="evalOutput1" placeholder="Output-Parameter" [(ngModel)]="addtaskTempOutput" type="text">
+                </mat-form-field>
+                <button mat-raised-button (click)="addtaskProgramparamSet()" class="taskcreatebtn">Parameter hinzufügen</button>
+              </div>
+
+              <div *ngIf="checkm.value == 1">
+                <mat-form-field class="taskfields">
+                  <input matInput class="taskfields" name="evalInput2" placeholder="Input-Parameter" [(ngModel)]="addtaskTempInput" type="text">
+                </mat-form-field>
+                <button mat-raised-button (click)="addtaskProgramparamSet()" class="taskcreatebtn">Parameter hinzufügen</button>
+                <mat-form-field class="taskfields">
+                  <mat-label>Konsolenoutput</mat-label>
+                  <mat-select name="samplesolDownloadable" [(ngModel)]="addtaskConsoleoutputcheck">
+                    <mat-option *ngFor="let c of checkconsoleoutvalues" [value]="c.value">
+                      {{c.showtxt}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field class="taskfields">
+                  <input matInput class="taskfields" name="evalInput2" placeholder="Output-Pfad" [(ngModel)]="addtaskOutputpathCheckCurr" type="text">
+                </mat-form-field>
+                <button mat-raised-button (click)="addtaskAddoutputpath()" class="taskcreatebtn">Pfad hinzufügen</button>
+              </div>
+
+              <div *ngIf="checkm.value == 2">
+                <button mat-raised-button (click)="addFileToTaskString('testprogram')" class="taskcreatebtn">Testprogramm hochladen</button>
+              </div>
+
+            </mat-card-content>
+          </mat-card>
+
+        </mat-grid-tile>
+      </mat-grid-list>
+
+    </mat-tab>
+    <mat-tab *ngIf="data.alltabs" label="Aufgabe bearbeiten"> Content 2 </mat-tab>
+  </mat-tab-group>
+
+</div>

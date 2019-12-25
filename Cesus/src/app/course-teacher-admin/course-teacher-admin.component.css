@@ -1,0 +1,64 @@
+.add{
+  margin-right: 20px;
+  color: #67de61;
+  font-size: 150%;
+  transition: 0.5s;
+  position: absolute;
+  right: 0;
+  top: 2%;
+}
+
+.add:hover{
+  color: #3d9c3d;
+  cursor: pointer;
+}
+
+.remove{
+  margin-right: 20px;
+  color: #ff5959;
+  font-size: 150%;
+  transition: 0.5s;
+  position: absolute;
+  right: 0;
+  top: 10%;
+}
+
+.remove:hover{
+  color: #cf001c;
+  cursor: pointer;
+}
+
+.heading-alignedbutton{
+  display:inline-block;
+  margin-left:15px;
+  bottom:5px;
+}
+
+#heading-with-button{
+  display:inline-block;
+}
+
+.buttoninlist{
+  position: absolute;
+  right: 0;
+  top: 10%;
+  height: 70%;
+}
+
+.description{
+  padding-top: 4%;
+  margin: 5%;
+  text-align: left;
+  font-size: 115%;
+  line-height: 150%;
+}
+
+.li-admin{
+  font-weight: bold;
+}
+
+.li-teacher{
+  font-weight: bold;
+}
+
+.li-student{ }

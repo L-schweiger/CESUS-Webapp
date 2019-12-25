@@ -1,0 +1,59 @@
+.usercreatebtn{
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+
+.submitchangesbtn{
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+.userfields{
+  width:90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.description{
+  padding-top: 4%;
+  margin: 10px 5% 5%;
+  text-align: left;
+  font-size: 115%;
+  line-height: 150%;
+  overflow: auto;
+  height: 90%;
+}
+
+.buttononbot{
+  margin-bottom: 20px;
+}
+
+.headerfield {
+  margin-top: 20px;
+}
+
+.noscroll{
+  overflow-y: hidden;
+}
+
+.mat-card{
+  height: 80%;
+}
+
+.remove{
+  margin-right: 20px;
+  color: #ff5959;
+  font-size: 150%;
+  transition: 0.5s;
+  position: absolute;
+  right: 0;
+  top: 10%;
+}
+
+.remove:hover{
+  color: #cf001c;
+  cursor: pointer;
+}

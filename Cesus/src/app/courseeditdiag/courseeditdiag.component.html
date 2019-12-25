@@ -1,0 +1,160 @@
+<div class="divcentered">
+
+  <mat-tab-group mat-stretch-tabs [selectedIndex]="selectedTab">
+    <mat-tab label="Kurs hinzufügen">
+
+      <mat-grid-list cols="3" rowHeight="2:2.63">
+        <mat-grid-tile>
+
+          <mat-card class="card2">
+            <mat-card-header>
+              <mat-card-title>Details</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="description">
+
+              <form class="coursefields" (submit)="createCourse()">
+                <mat-form-field>
+                  <input matInput class="coursefields" name="coursename" placeholder="Kursname" [(ngModel)]="addcourseCoursename" type="text">
+                </mat-form-field>
+
+                <br>
+
+                <mat-form-field type="text">
+                  <textarea matInput class="coursefields" name="courseDescription" [(ngModel)]="addcourseDescription" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3" cdkAutosizeMaxRows="7" placeholder="Beschreibung"></textarea>
+                </mat-form-field>
+
+                <br>
+
+                <button mat-raised-button type="submit" class="coursecreatebtn">Kurs erstellen</button>
+              </form>
+
+            </mat-card-content>
+          </mat-card>
+
+        </mat-grid-tile>
+        <mat-grid-tile>
+
+          <mat-card class="card2">
+            <mat-card-header>
+              <mat-card-title>Gruppen hinzufügen</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="cardcontentscrollable">
+
+              <mat-selection-list [(ngModel)]="addcourseGroupaddlist" color="primary">
+                <mat-list-option *ngFor="let g of allgroupslist" [value]="g.array[0]">{{g.array[1]}}</mat-list-option>
+              </mat-selection-list>
+
+            </mat-card-content>
+          </mat-card>
+
+        </mat-grid-tile>
+        <mat-grid-tile>
+
+          <mat-card class="card2">
+            <mat-card-header>
+              <mat-card-title>Benutzer hinzufügen</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="cardcontentscrollable">
+
+              <mat-selection-list [(ngModel)]="addcourseUseraddlist" color="primary">
+                <mat-list-option *ngFor="let u of alluserslist" [value]="u.array[0]">{{u.array[2]}} {{u.array[1]}}</mat-list-option>
+              </mat-selection-list>
+            </mat-card-content>
+          </mat-card>
+
+        </mat-grid-tile>
+      </mat-grid-list>
+
+    </mat-tab>
+    <mat-tab *ngIf="data.alltabs" label="Kurs bearbeiten">
+      <mat-grid-list cols="3" rowHeight="2:2.63">
+        <mat-grid-tile></mat-grid-tile>
+        <mat-grid-tile>
+
+          <mat-card class="card2">
+            <mat-card-header>
+              <mat-card-title>Details verwalten</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="description">
+
+              <form class="coursefields" (submit)="editCourse(data.id)">
+                <mat-form-field>
+                  <input matInput class="coursefields" name="coursename" placeholder="Kursname ändern" [(ngModel)]="editcourseCoursename" type="text">
+                </mat-form-field>
+
+                <br>
+
+                <mat-form-field type="text">
+                  <textarea matInput class="coursefields" name="courseDescription" [(ngModel)]="editcourseDescription" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3" cdkAutosizeMaxRows="7" placeholder="Beschreibung ändern"></textarea>
+                </mat-form-field>
+
+                <br>
+
+                <button mat-raised-button type="submit" class="coursecreatebtn">Änderungen speichern</button>
+              </form>
+
+            </mat-card-content>
+          </mat-card>
+
+        </mat-grid-tile>
+        <mat-grid-tile></mat-grid-tile>
+      </mat-grid-list>
+
+    </mat-tab>
+    <mat-tab *ngIf="data.alltabs" label="Benutzer verwalten">
+
+      <mat-grid-list cols="3" rowHeight="2:2.63">
+        <mat-grid-tile>
+
+          <mat-card class="card2">
+            <mat-card-header>
+              <mat-card-title>Gruppen hinzufügen</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="cardcontentscrollable">
+
+              <mat-selection-list [(ngModel)]="editcourseGroupaddlist" color="primary">
+                <mat-list-option *ngFor="let g of allgroupslist" [value]="g.array[0]">{{g.array[1]}}</mat-list-option>
+              </mat-selection-list>
+
+            </mat-card-content>
+          </mat-card>
+
+        </mat-grid-tile>
+        <mat-grid-tile>
+
+          <mat-card class="card2">
+            <mat-card-header>
+              <mat-card-title>Benutzer hinzufügen</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="cardcontentscrollable">
+
+              <mat-selection-list [(ngModel)]="editcourseUseraddlist" color="primary">
+                <mat-list-option *ngFor="let u of alluserslist" [value]="u.array[0]">{{u.array[2]}} {{u.array[1]}}</mat-list-option>
+              </mat-selection-list>
+            </mat-card-content>
+          </mat-card>
+
+        </mat-grid-tile>
+        <mat-grid-tile>
+
+          <mat-card class="card2">
+            <mat-card-header>
+              <mat-card-title>Benutzer entfernen</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="cardcontentscrollable">
+
+              <mat-selection-list [(ngModel)]="editcourseUserremovelist" color="warn">
+                <mat-list-option *ngFor="let u of currentuserlistincourse" [value]="u.array[0]">{{u.array[2]}} {{u.array[1]}}</mat-list-option>
+              </mat-selection-list>
+            </mat-card-content>
+          </mat-card>
+
+        </mat-grid-tile>
+      </mat-grid-list>
+
+      <button mat-raised-button (click)="editCourseusers(data.id)" class="submitchangesbtn">Änderungen speichern</button>
+
+    </mat-tab>
+  </mat-tab-group>
+
+</div>

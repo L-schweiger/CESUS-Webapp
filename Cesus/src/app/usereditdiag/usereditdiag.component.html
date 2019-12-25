@@ -1,0 +1,139 @@
+<div class="divcentered">
+
+  <mat-tab-group mat-stretch-tabs>
+    <mat-tab label="Benutzer anlegen/löschen">
+
+      <mat-grid-list cols="2" rowHeight="2:2.2">
+        <mat-grid-tile>
+
+          <mat-card class="card2">
+            <mat-card-header>
+              <mat-card-title>Benutzer anlegen</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="description noscroll">
+
+              <form class="userfields" (submit)="createUser()">
+                <mat-form-field>
+                  <input matInput class="userfields" name="username" placeholder="Benutzername" [(ngModel)]="adduserUsername" type="text">
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>Rolle</mat-label>
+                  <mat-select name="role" [(ngModel)]="adduserRole">
+                    <mat-option *ngFor="let r of roles" [value]="r.value">
+                      {{r.showtxt}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input matInput class="userfields" name="firstname" placeholder="Vorname" [(ngModel)]="adduserFirstname" type="text">
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input matInput class="userfields" name="lastname" placeholder="Nachname" [(ngModel)]="adduserLastname" type="text">
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input matInput class="userfields" name="password1" placeholder="Passwort" [(ngModel)]="adduserPassword" type="password">
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input matInput class="userfields" name="password2" placeholder="Passwort bestätigen" [(ngModel)]="adduserPasswordConfirmed" type="password">
+                </mat-form-field>
+
+                <button mat-raised-button type="submit" class="usercreatebtn">Benutzer anlegen</button>
+              </form>
+
+            </mat-card-content>
+          </mat-card>
+
+        </mat-grid-tile>
+        <mat-grid-tile>
+
+          <mat-card class="card2">
+            <mat-card-header>
+              <mat-card-title>Benutzer löschen</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="cardcontentscrollable">
+
+              <mat-list role="list">
+                <mat-list-item *ngFor="let u of alluserslist" role="listitem">{{u.array[2]}} {{u.array[1]}}<fa-icon class="remove" [icon]="iconRemove" matTooltip="Entfernen" [matTooltipShowDelay]="1000" (click)="deleteUser(u.array[0])"></fa-icon></mat-list-item>
+              </mat-list>
+            </mat-card-content>
+          </mat-card>
+
+        </mat-grid-tile>
+      </mat-grid-list>
+
+    </mat-tab>
+    <mat-tab label="Benutzer verwalten">
+
+      <mat-grid-list cols="2" rowHeight="2:2.2">
+        <mat-grid-tile>
+
+          <mat-card class="card2">
+            <mat-card-header>
+              <mat-card-title>Benutzer auswählen</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="cardcontentscrollable">
+
+              <mat-selection-list color="primary" (selectionChange)="changeUsr(userselection, $event)" #userselection>
+                <mat-list-option *ngFor="let u of alluserslist" [value]="u.array[0]">{{u.array[2]}} {{u.array[1]}}</mat-list-option>
+              </mat-selection-list>
+            </mat-card-content>
+          </mat-card>
+
+        </mat-grid-tile>
+        <mat-grid-tile>
+
+          <mat-card class="card2">
+            <mat-card-header>
+              <mat-card-title>Benutzer bearbeiten</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="description noscroll">
+
+              <form class="userfields" (submit)="editUser(this.idofusertoedit)">
+                <mat-form-field>
+                  <input matInput class="userfields" name="username" placeholder="Benutzername" [(ngModel)]="edituserUsername" type="text">
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>Rolle</mat-label>
+                  <mat-select name="role" [(ngModel)]="edituserRole">
+                    <mat-option *ngFor="let r of roles" [value]="r.value">
+                      {{r.showtxt}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input matInput class="userfields" name="firstname" placeholder="Vorname" [(ngModel)]="edituserFirstname" type="text">
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input matInput class="userfields" name="lastname" placeholder="Nachname" [(ngModel)]="edituserLastname" type="text">
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input matInput class="userfields" name="password1" placeholder="Passwort" [(ngModel)]="edituserPassword" type="password">
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input matInput class="userfields" name="password2" placeholder="Passwort bestätigen" [(ngModel)]="edituserPasswordConfirmed" type="password">
+                </mat-form-field>
+
+                <button mat-raised-button type="submit" class="usercreatebtn">Änderungen speichern</button>
+              </form>
+
+            </mat-card-content>
+          </mat-card>
+
+        </mat-grid-tile>
+
+      </mat-grid-list>
+
+    </mat-tab>
+  </mat-tab-group>
+
+</div>

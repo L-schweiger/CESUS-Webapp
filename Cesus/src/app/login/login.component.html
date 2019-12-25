@@ -1,0 +1,19 @@
+<div class="divcenteredlogin">
+  <img src="/assets/CesusLogo.png" height="25%" width="auto" alt="Logo">
+  <form name="loginform" class="loginform" (submit)="login()">
+    <mat-form-field>
+      <input matInput [formControl]="usernameFormControl" name="usernameinput" placeholder="Benutzername" [(ngModel)]="username" type="username">
+      <mat-error *ngIf="usernameFormControl.hasError('nullValidator') && !usernameFormControl.hasError('required')">Benutzername benötigt!</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <input matInput [formControl]="passwordFormControl" name="passwordinput" placeholder="Passwort" [(ngModel)]="password" type="password">
+      <mat-error *ngIf="passwordFormControl.hasError('nullValidator') && !passwordFormControl.hasError('required')">Passwort benötigt!</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-checkbox name="remember" color="primary" [(ngModel)]="rememberme">Eingeloggt bleiben</mat-checkbox>
+    <br><br>
+    <button type="submit" style="visibility: hidden"></button>
+    <span><fa-icon class="loginicon" [icon]="iconLogin" (click)="login()"></fa-icon></span>
+  </form>
+</div>
