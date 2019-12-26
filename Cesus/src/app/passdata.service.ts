@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {Role} from '../grpc/Communication_pb';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ShowErrorComponent} from './show-error/show-error.component';
+import {state} from "@angular/animations";
 
 @Injectable({
   providedIn: 'root'
@@ -23,11 +24,11 @@ export class PassdataService {
   }
 
   navBw() {
-    this.router.navigate([this.navigationStackPath.pop(), { navid: this.navigationStackParam.pop()}], {skipLocationChange: true});
-  }
+    const path = this.navigationStackPath.pop();
+    const param = this.navigationStackParam.pop();
 
-  navRl() {
-    this.router.navigate([this.navigationStackPath.pop(), { navid: this.navigationStackParam.pop()}], {skipLocationChange: true});
+    this.router.navigate([path, { navid: param}], {skipLocationChange: true});
+    console.log('zu: ' + path + ' mit param: ' + param);
   }
 
   navBack(currComponentRoute: string, param: string) {
@@ -44,16 +45,16 @@ export class PassdataService {
         }
         break;
       case '/taskpreviewteacheradmin':
-        this.router.navigate(['courseteacheradmin', { courseid: param}], {skipLocationChange: true});
+        this.router.navigate(['courseteacheradmin', { navid: param}], {skipLocationChange: true});
         break;
       case '/taskopenstudent':
-        this.router.navigate(['coursestudent', { courseid: param}], {skipLocationChange: true});
+        this.router.navigate(['coursestudent', { navid: param}], {skipLocationChange: true});
         break;
       case '/taskdoneteacheradmin':
-        this.router.navigate(['taskpreviewteacheradmin', { taskid: param}], {skipLocationChange: true});
+        this.router.navigate(['taskpreviewteacheradmin', { navid: param}], {skipLocationChange: true});
         break;
       case '/taskdonestudent':
-        this.router.navigate(['coursestudent', { courseid: param}], {skipLocationChange: true});
+        this.router.navigate(['coursestudent', { navid: param}], {skipLocationChange: true});
         break;
       default:
         console.log('routing error from: ' + currComponentRoute);

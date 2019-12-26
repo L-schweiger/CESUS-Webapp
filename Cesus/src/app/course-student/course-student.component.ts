@@ -35,9 +35,11 @@ export class CourseStudentComponent implements OnInit {
       const allsubmissions = resTask.getSubmissionsList();
       console.log(resTask.getSubmissionsList());
       if (allsubmissions[0] !== null && allsubmissions[0] !== undefined) {
-        this.router.navigate(['taskdonestudent', {submissionid: allsubmissions[0].getId()}], {skipLocationChange: true});
+        this.passdataservice.navFw('coursestudent', this.courseid);
+        this.router.navigate(['taskdonestudent', { navid: allsubmissions[0].getId()}], {skipLocationChange: true});
       } else {
-        this.router.navigate(['taskopenstudent', {taskid: navtaskid}], {skipLocationChange: true});
+        this.passdataservice.navFw('coursestudent', this.courseid);
+        this.router.navigate(['taskopenstudent', { navid: navtaskid}], {skipLocationChange: true});
       }
     });
 
@@ -48,7 +50,7 @@ export class CourseStudentComponent implements OnInit {
 
     if (document.cookie.split(';').filter((item) => item.trim().startsWith('auth=')).length) {
       this.route.paramMap.subscribe((params: ParamMap) => { // get my courseid
-        this.courseid = params.get('courseid');
+        this.courseid = params.get('navid');
       });
 
       const courseclient = new CourseServiceClient('/api/grpc');

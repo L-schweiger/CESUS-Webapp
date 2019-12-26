@@ -48,8 +48,8 @@ export class TaskPreviewTeacherAdminComponent implements OnInit {
   }
 
   navigateToSubmission(navsubmissionid: string) {
-    this.passdataservice.navFw('taskdoneteacheradmin', navsubmissionid);
-    this.router.navigate(['taskdoneteacheradmin', { submissionid: navsubmissionid}], {skipLocationChange: true});
+    this.passdataservice.navFw('taskpreviewteacheradmin', this.taskid);
+    this.router.navigate(['taskdoneteacheradmin', { navid: navsubmissionid}], {skipLocationChange: true});
   }
 
   ngOnInit() {
@@ -57,7 +57,7 @@ export class TaskPreviewTeacherAdminComponent implements OnInit {
 
     if (document.cookie.split(';').filter((item) => item.trim().startsWith('auth=')).length) {
       this.route.paramMap.subscribe((params: ParamMap) => { // get my taskid
-        this.taskid = params.get('taskid');
+        this.taskid = params.get('navid');
       });
 
       const taskclient = new TaskServiceClient('/api/grpc');

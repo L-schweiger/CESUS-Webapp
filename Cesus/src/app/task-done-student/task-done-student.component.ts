@@ -63,7 +63,7 @@ export class TaskDoneStudentComponent implements OnInit {
 
     if (document.cookie.split(';').filter((item) => item.trim().startsWith('auth=')).length) {
       this.route.paramMap.subscribe((params: ParamMap) => { // get my submissionid
-        this.submissionid = params.get('submissionid');
+        this.submissionid = params.get('navid');
       });
 
       const submissionclient = new SubmissionServiceClient('/api/grpc');

@@ -61,13 +61,13 @@ export class DashboardTeacherComponent implements OnInit {
   }
 
   navigateToCourse(navcourseid: string) {
-    this.passdataservice.navFw('courseteacheradmin', navcourseid);
-    this.router.navigate(['courseteacheradmin', { courseid: navcourseid}], {skipLocationChange: true});
+    this.passdataservice.navFw('dashboardteacher', '');
+    this.router.navigate(['courseteacheradmin', { navid: navcourseid}], {skipLocationChange: true});
   }
 
   navigateToTask(navtaskid: string) {
-    this.passdataservice.navFw('courseteacheradmin', navtaskid);
-    this.router.navigate(['taskpreviewteacheradmin', { taskid: navtaskid}], {skipLocationChange: true});
+    this.passdataservice.navFw('dashboardteacher', '');
+    this.router.navigate(['taskpreviewteacheradmin', { navid: navtaskid}], {skipLocationChange: true});
   }
 
   ngOnInit() {
@@ -84,10 +84,6 @@ export class DashboardTeacherComponent implements OnInit {
       taskclient.getOpenTasksSorted(emptyreq, {}, (errTask, resTask: TasksMessage) => {
         this.opentasklist = resTask.getTasksList();
       });
-
-      if (this.passdataservice.navigationStackPath[0] == null) {
-        this.passdataservice.navFw('dashboardteacher', '');
-      }
 
     } else {
       this.router.navigate([''], { skipLocationChange: true});

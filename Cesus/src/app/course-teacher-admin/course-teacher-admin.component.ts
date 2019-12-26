@@ -68,14 +68,14 @@ export class CourseTeacherAdminComponent implements OnInit {
     stringmsg.setStr(taskid);
     taskclient.deleteTask(stringmsg, {}, (err, res) => {
       this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
-        this.router.navigate(['courseteacheradmin', { courseid: this.courseid}], {skipLocationChange: true});
+        this.router.navigate(['courseteacheradmin', { navid: this.courseid}], {skipLocationChange: true});
       });
     });
   }
 
   navigateToTask(navtaskid: string) {
-    this.passdataservice.navFw('taskpreviewteacheradmin', navtaskid);
-    this.router.navigate(['taskpreviewteacheradmin', { taskid: navtaskid}], {skipLocationChange: true});
+    this.passdataservice.navFw('courseteacheradmin', this.courseid);
+    this.router.navigate(['taskpreviewteacheradmin', { navid: navtaskid}], {skipLocationChange: true});
   }
 
   ngOnInit() {
@@ -83,7 +83,7 @@ export class CourseTeacherAdminComponent implements OnInit {
 
     if (document.cookie.split(';').filter((item) => item.trim().startsWith('auth=')).length) {
       this.route.paramMap.subscribe((params: ParamMap) => { // get my courseid
-        this.courseid = params.get('courseid');
+        this.courseid = params.get('navid');
       });
 
       const courseclient = new CourseServiceClient('/api/grpc');

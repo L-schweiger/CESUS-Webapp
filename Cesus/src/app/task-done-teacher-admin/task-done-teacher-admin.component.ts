@@ -102,7 +102,7 @@ export class TaskDoneTeacherAdminComponent implements OnInit {
     if (this.ratingid === null || this.ratingid === '') { // falls noch kein rating vorhanden -> create
       ratingclient.createRating(edit, {}, (err, res) => {
         this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
-          this.router.navigate(['taskdoneteacheradmin', { submissionid: this.submissionid}], {skipLocationChange: true});
+          this.router.navigate(['taskdoneteacheradmin', { navid: this.submissionid}], {skipLocationChange: true});
         });
       });
     } else { // falls rating vorhanden -> edit
@@ -112,7 +112,7 @@ export class TaskDoneTeacherAdminComponent implements OnInit {
       req.setId(this.ratingid);
       ratingclient.editRating(req, {}, (err, res) => {
         this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
-          this.router.navigate(['taskdoneteacheradmin', { submissionid: this.submissionid}], {skipLocationChange: true});
+          this.router.navigate(['taskdoneteacheradmin', { navid: this.submissionid}], {skipLocationChange: true});
         });
       });
     }
@@ -124,7 +124,7 @@ export class TaskDoneTeacherAdminComponent implements OnInit {
 
     if (document.cookie.split(';').filter((item) => item.trim().startsWith('auth=')).length) {
       this.route.paramMap.subscribe((params: ParamMap) => { // get my submissionid
-        this.submissionid = params.get('submissionid');
+        this.submissionid = params.get('navid');
       });
 
       const submissionclient = new SubmissionServiceClient('/api/grpc');

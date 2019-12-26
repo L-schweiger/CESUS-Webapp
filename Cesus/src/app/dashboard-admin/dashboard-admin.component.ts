@@ -95,8 +95,8 @@ export class DashboardAdminComponent implements OnInit {
   }
 
   navigateToCourse(navcourseid: string) {
-    this.passdataservice.navFw('courseteacheradmin', navcourseid);
-    this.router.navigate(['courseteacheradmin', { courseid: navcourseid}], {skipLocationChange: true});
+    this.passdataservice.navFw('dashboardadmin', '');
+    this.router.navigate(['courseteacheradmin', { navid: navcourseid}], {skipLocationChange: true});
   }
 
   ngOnInit() {
@@ -116,9 +116,6 @@ export class DashboardAdminComponent implements OnInit {
         this.grouplist = res2.getGroupsList();
       });
 
-      if (this.passdataservice.navigationStackPath[0] == null) {
-        this.passdataservice.navFw('dashboardadmin', '');
-      }
     } else {
       this.router.navigate([''], { skipLocationChange: true});
     }

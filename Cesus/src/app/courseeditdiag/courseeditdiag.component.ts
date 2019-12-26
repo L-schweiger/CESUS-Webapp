@@ -96,7 +96,7 @@ export class CourseeditdiagComponent implements OnInit {
 
       courseclient.editCourse(editmsg, {}, (err2, res2) => {
         this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
-          this.router.navigate(['courseteacheradmin', { courseid: courseidtoedit}], {skipLocationChange: true});
+          this.router.navigate(['courseteacheradmin', { navid: courseidtoedit}], {skipLocationChange: true});
           this.dialogRef.close();
         });
       });
@@ -132,7 +132,7 @@ export class CourseeditdiagComponent implements OnInit {
 
       courseclient.editCourse(editmsg, {}, (err2, res2) => {
         this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
-          this.router.navigate(['courseteacheradmin', { courseid: courseidtoedit}], {skipLocationChange: true});
+          this.router.navigate(['courseteacheradmin', { navid: courseidtoedit}], {skipLocationChange: true});
           this.dialogRef.close();
         });
       });

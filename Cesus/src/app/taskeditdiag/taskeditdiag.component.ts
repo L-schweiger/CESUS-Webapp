@@ -229,7 +229,7 @@ export class TaskeditdiagComponent implements OnInit {
       console.log('error:');
       console.log(err);
       /*this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
-        this.router.navigate(['courseteacheradmin', { courseid: this.addtaskCourseid}], {skipLocationChange: true});
+        this.router.navigate(['courseteacheradmin', { navid: this.addtaskCourseid}], {skipLocationChange: true});
         this.dialogRef.close();
         });*/
     });
