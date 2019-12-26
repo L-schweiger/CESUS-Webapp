@@ -29,7 +29,7 @@
 
           <div *ngIf="!deadlinePassed" class="taskstate">
             <p *ngIf="deadline !== null">
-              Offen bis {{deadline.getDate()}}.{{deadline.getMonth() + 1}}.{{deadline.getFullYear()}}
+              Offen bis {{deadline.getDate()}}.{{deadline.getMonth() + 1}}.{{deadline.getFullYear()}} {{deadline.getHours() | number : '2.0-0'}}:{{deadline.getMinutes() | number : '2.0-0'}}
             </p>
 
             <mat-form-field class="changecomment" type="text">
@@ -42,7 +42,7 @@
 
           <div *ngIf="deadlinePassed" class="taskstate">
             <p>
-              Deadline wurde nicht eingehalten!
+              Die Deadline wurde nicht eingehalten!
             </p>
           </div>
         </mat-card-content>
