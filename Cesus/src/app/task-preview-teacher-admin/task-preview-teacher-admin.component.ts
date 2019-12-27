@@ -3,7 +3,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 import {faCheckCircle, faChevronCircleLeft, faClock, faTimesCircle} from '@fortawesome/free-solid-svg-icons';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {CourseServiceClient, MiscServiceClient, TaskServiceClient} from '../../grpc/CommunicationServiceClientPb';
-import {Course, StringMessage, Task, UserPreview} from '../../grpc/Communication_pb';
+import {Course, Role, StringMessage, Task, UserPreview} from '../../grpc/Communication_pb';
 import {PassdataService} from '../passdata.service';
 import {TaskeditdiagComponent} from '../taskeditdiag/taskeditdiag.component';
 declare var $: any;
@@ -109,6 +109,13 @@ export class TaskPreviewTeacherAdminComponent implements OnInit {
           for (const u of this.taskusersSubmitted) {
             const index = this.taskusersNotsubmitted.map(x => x.getId()).indexOf(u.getId());
             this.taskusersNotsubmitted.splice(index, 1);
+          }
+
+          for (const u of this.taskusersNotsubmitted) {
+            if (u.getRole() === Role.TEACHER || u.getRole() === Role.ADMIN) {
+              const index = this.taskusersNotsubmitted.indexOf(u);
+              this.taskusersNotsubmitted.splice(index, 1);
+            }
           }
           console.log(this.taskusers[0]);
         });
