@@ -47,13 +47,11 @@ export class TaskOpenStudentComponent implements OnInit {
       this.currDate = new Date(res.getInt() * 1000);
 
       if (this.deadline >= this.currDate || this.deadline === null) { // if deadline is in future or now
-        document.getElementById('fileupload').click();
-        document.getElementById('fileupload').onchange = async e => {
+        const file = (document.getElementById('fileupload') as HTMLInputElement).files[0];
+        const formData = new FormData();
 
-          const file = (document.getElementById('fileupload') as HTMLInputElement).files[0];
-          const formData = new FormData();
-
-          formData.append('file', file);
+        formData.append('file', file);
+        const request = async () => {
           const resFetch = await fetch('/api/files/upload', {method: 'POST', body: formData, headers: { Auth: document.cookie.replace(/(?:(?:^|.*;\s*)auth\s*\=\s*([^;]*).*$)|^.*$/, '$1')}});
           const id = await resFetch.text();
 
@@ -67,8 +65,9 @@ export class TaskOpenStudentComponent implements OnInit {
               this.router.navigate(['coursestudent', { navid: this.courseidoftask}], {skipLocationChange: true});
             });
           });
-
         };
+
+        request();
 
       } else {
         this.passdataservice.throwError('Die Deadline wurde überschritten');

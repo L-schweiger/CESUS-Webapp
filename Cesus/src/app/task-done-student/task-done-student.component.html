@@ -53,8 +53,8 @@
           </mat-card>
 
           <div *ngIf="!deadlinePassed">
-            <input type="file" style="display:none;" id="fileupload" #fileupload />
-            <button class="submitTaskBtn" mat-raised-button (click)="submit()">Erneut Abgeben</button>
+            <input name="inpt" (change)="submit()" type="file" style="display:none;" id="fileupload" #fileupload />
+            <button class="submitTaskBtn" mat-raised-button (click)="fileupload.click()">Erneut Abgeben</button>
           </div>
 
         </mat-card-content>

@@ -76,35 +76,34 @@ export class TaskDoneStudentComponent implements OnInit {
       this.currDate = new Date(res.getInt() * 1000);
 
       if (this.deadline >= this.currDate || this.deadline === null) { // if deadline is in future or now
-        document.getElementById('fileupload').click();
-        document.getElementById('fileupload').onchange = async e => {
-
           const file = (document.getElementById('fileupload') as HTMLInputElement).files[0];
           const formData = new FormData();
 
           formData.append('file', file);
-          const resFetch = await fetch('/api/files/upload', {method: 'POST', body: formData, headers: { Auth: document.cookie.replace(/(?:(?:^|.*;\s*)auth\s*\=\s*([^;]*).*$)|^.*$/, '$1')}});
-          const id = await resFetch.text();
+          const request = async () => {
+            const resFetch = await fetch('/api/files/upload', {method: 'POST', body: formData, headers: { Auth: document.cookie.replace(/(?:(?:^|.*;\s*)auth\s*\=\s*([^;]*).*$)|^.*$/, '$1')}});
+            const id = await resFetch.text();
 
-          const stringmsg = new StringMessage();
-          stringmsg.setStr(this.submissionid);
-          submissionclient.getSubmission(stringmsg, {}, (errOldSub, resOldSub) => {
-            const editmsg = new SubmissionEditMessage();
-            const req = new SubmissionEdit();
-            req.setFile(resOldSub.getFile());
-            req.setTaskid(resOldSub.getTask().getId());
-            req.setComment(resOldSub.getComment());
-            editmsg.setEdit(req);
-            editmsg.setHash(resOldSub.getHash());
-            editmsg.setId(resOldSub.getId());
-            submissionclient.editSubmission(editmsg, {}, (errSubmission, resSubmission: Submission) => {
-              this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
-                this.router.navigate(['coursestudent', { navid: this.courseidoftask}], {skipLocationChange: true});
+            const stringmsg = new StringMessage();
+            stringmsg.setStr(this.submissionid);
+            submissionclient.getSubmission(stringmsg, {}, (errOldSub, resOldSub) => {
+              const editmsg = new SubmissionEditMessage();
+              const req = new SubmissionEdit();
+              req.setFile(id);
+              req.setTaskid(resOldSub.getTask().getId());
+              req.setComment(resOldSub.getComment());
+              editmsg.setEdit(req);
+              editmsg.setHash(resOldSub.getHash());
+              editmsg.setId(resOldSub.getId());
+              submissionclient.editSubmission(editmsg, {}, (errSubmission, resSubmission: Submission) => {
+                this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
+                  this.router.navigate(['coursestudent', { navid: this.courseidoftask}], {skipLocationChange: true});
+                });
               });
             });
-          });
+          };
 
-        };
+          request();
 
       } else {
         this.passdataservice.throwError('Die Deadline wurde überschritten');
