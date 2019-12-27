@@ -130,14 +130,19 @@ export class TaskDoneStudentComponent implements OnInit {
       const stringmsg = new StringMessage();
       const emptyreq = new Empty();
 
-      miscclient.getServerTime(emptyreq, {}, (err, res) => {
-        this.currDate = new Date(res.getInt() * 1000);
+      miscclient.getServerTime(emptyreq, {}, (errTime, resTime) => {
+        this.currDate = new Date(resTime.getInt() * 1000);
 
         submissionclient.getSubmission(stringmsg, {}, (err, res: Submission) => {
           this.taskname = res.getTask().getName();
           this.points = res.getRating().getPoints();
           this.grade = res.getRating().getGrade();
-          this.comment = res.getRating().getComment();
+          if (res.getRating().getComment() === 'Error during Compilation or Execution') {
+            this.comment = 'Fehler beim Kompilieren oder Ausführen des Programms';
+          } else {
+            this.comment = res.getRating().getComment();
+          }
+
           this.submissionfile[0] = res.getFile();
 
           stringmsg.setStr(this.submissionfile[0]);
