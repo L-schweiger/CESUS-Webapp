@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {CourseEdit, CourseEditMessage, Empty, Role, StringMessage} from '../../grpc/Communication_pb';
+import {CourseEdit, CourseEditMessage, Empty, Role, StringMessage, UserPreview} from '../../grpc/Communication_pb';
 import {CourseServiceClient, GroupServiceClient, UserServiceClient} from '../../grpc/CommunicationServiceClientPb';
 import {Router} from '@angular/router';
 import {PassdataService} from '../passdata.service';
@@ -18,7 +18,7 @@ export class CourseeditdiagComponent implements OnInit {
   currentuserlistincourse = [];
   currentcoursehash: string;
 
-  alluserslist = [];
+  alluserslist: UserPreview[] = [];
   allgroupslist = [];
 
   addcourseCoursename: string;
@@ -178,6 +178,13 @@ export class CourseeditdiagComponent implements OnInit {
         for (const usr of res.getUsersList()) {
           if (usr.getRole() === Role.STUDENT) {
             this.alluserslist.push(usr);
+          }
+        }
+
+        for (const u of this.alluserslist) { // remove own user from the list
+          if (u.getId() === document.cookie.replace(/(?:(?:^|.*;\s*)userid\s*\=\s*([^;]*).*$)|^.*$/, '$1')) {
+            const index = this.alluserslist.indexOf(u);
+            this.alluserslist.slice(index, 1);
           }
         }
       });
