@@ -214,6 +214,7 @@ export class UsereditdiagComponent implements OnInit {
             this.alluserslist.push(usr);
           }
         }
+        this.alluserslist.sort((a,b) => (a.getLastname() > b.getLastname()) ? 1 : ((b.getLastname() > a.getLastname()) ? -1 : 0));
       });
     } else {
       this.router.navigate([''], { skipLocationChange: true});

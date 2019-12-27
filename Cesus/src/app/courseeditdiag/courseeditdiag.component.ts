@@ -156,6 +156,7 @@ export class CourseeditdiagComponent implements OnInit {
         stringmsg.setStr(this.data.id);
         courseclient.getCourse(stringmsg, {}, (err, res) => {
           this.currentuserlistincourse = res.getUsersList();
+          this.currentuserlistincourse.sort((a, b) => (a.getLastname() > b.getLastname()) ? 1 : ((b.getLastname() > a.getLastname()) ? -1 : 0));
           this.editcourseCoursename = res.getName();
           this.editcourseDescription = res.getDescription();
           this.currentcoursehash = res.getHash();
@@ -187,6 +188,7 @@ export class CourseeditdiagComponent implements OnInit {
             this.alluserslist.slice(index, 1);
           }
         }
+        this.alluserslist.sort((a,b) => (a.getLastname() > b.getLastname()) ? 1 : ((b.getLastname() > a.getLastname()) ? -1 : 0));
       });
 
       groupclient.getGroups(emptymsg, {}, (err, res) => {

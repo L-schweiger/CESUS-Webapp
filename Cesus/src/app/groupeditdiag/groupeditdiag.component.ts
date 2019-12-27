@@ -51,6 +51,7 @@ export class GroupeditdiagComponent implements OnInit {
     stringmsg.setStr(event.option.value);
     groupclient.getGroup(stringmsg, {}, (err, res) => {
       this.currentuserlistingroup = res.getUsersList();
+      this.currentuserlistingroup.sort((a, b) => (a.getLastname() > b.getLastname()) ? 1 : ((b.getLastname() > a.getLastname()) ? -1 : 0));
       this.editgroupGroupname = res.getName();
     });
   }
@@ -133,6 +134,7 @@ export class GroupeditdiagComponent implements OnInit {
             this.alluserslist.push(usr);
           }
         }
+        this.alluserslist.sort((a,b) => (a.getLastname() > b.getLastname()) ? 1 : ((b.getLastname() > a.getLastname()) ? -1 : 0));
       });
 
       groupclient.getGroups(emptymsg, {}, (err, res) => {
