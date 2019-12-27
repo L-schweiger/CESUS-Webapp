@@ -47,13 +47,8 @@ export class TaskOpenStudentComponent implements OnInit {
       this.currDate = new Date(res.getInt() * 1000);
 
       if (this.deadline >= this.currDate || this.deadline === null) { // if deadline is in future or now
-        const uploadclick = document.createElement('input');
-        uploadclick.setAttribute('type', 'file');
-        document.body.appendChild(uploadclick);
-        uploadclick.click();
-        uploadclick.onchange = async e => { // TODO: fix firefox
-        /*document.getElementById('fileupload').click();
-        document.getElementById('fileupload').onchange = async e => {*/
+        document.getElementById('fileupload').click();
+        document.getElementById('fileupload').onchange = async e => {
 
           const file = (document.getElementById('fileupload') as HTMLInputElement).files[0];
           const formData = new FormData();

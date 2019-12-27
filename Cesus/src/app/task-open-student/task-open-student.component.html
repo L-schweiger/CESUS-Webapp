@@ -33,11 +33,11 @@
             </p>
 
             <mat-form-field class="changecomment" type="text">
-              <textarea matInput name="changecomment" [(ngModel)]="usercomment" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5" cdkAutosizeMaxRows="8" placeholder="Optionaler Kommentar"></textarea>
+              <textarea matInput name="changecomment" [(ngModel)]="usercomment" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="8" placeholder="Optionaler Kommentar"></textarea>
             </mat-form-field>
             <br>
             <input type="file" style="display:none;" id="fileupload" #fileupload />
-            <button class="submitTaskBtn" mat-raised-button (click)="submit()">Abgeben</button>
+            <button class="submitTaskBtn" mat-raised-button (click)="submit()">Hochladen & Abgeben</button>
           </div>
 
           <div *ngIf="deadlinePassed" class="taskstate">
