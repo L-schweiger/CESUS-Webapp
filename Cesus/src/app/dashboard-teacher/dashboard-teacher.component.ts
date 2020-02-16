@@ -6,6 +6,7 @@ import {CoursesMessage, Empty, GroupsMessage, StringMessage, TasksMessage} from 
 import {MatDialog} from '@angular/material/dialog';
 import {CourseeditdiagComponent} from '../courseeditdiag/courseeditdiag.component';
 import {PassdataService} from '../passdata.service';
+import {ConfirmdiagComponent} from '../confirmdiag/confirmdiag.component';
 declare var $: any;
 
 @Component({
@@ -37,26 +38,42 @@ export class DashboardTeacherComponent implements OnInit {
   }
 
   deleteCourse(courseid: string) {
-    const courseclient = new CourseServiceClient('/api/grpc');
-    const stringmsg = new StringMessage();
+    const dialogRef = this.dialog.open(ConfirmdiagComponent, {
+      width: '350px',
+      data: ''
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const courseclient = new CourseServiceClient('/api/grpc');
+        const stringmsg = new StringMessage();
 
-    stringmsg.setStr(courseid);
-    courseclient.deleteCourse(stringmsg, {}, (err, res) => {
-      this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
-        this.router.navigate(['dashboardteacher'], {skipLocationChange: true});
-      });
+        stringmsg.setStr(courseid);
+        courseclient.deleteCourse(stringmsg, {}, (err, res) => {
+          this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
+            this.router.navigate(['dashboardteacher'], {skipLocationChange: true});
+          });
+        });
+      }
     });
   }
 
   deleteTask(taskid: string) {
-    const taskclient = new TaskServiceClient('/api/grpc');
-    const stringmsg = new StringMessage();
+    const dialogRef = this.dialog.open(ConfirmdiagComponent, {
+      width: '350px',
+      data: ''
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const taskclient = new TaskServiceClient('/api/grpc');
+        const stringmsg = new StringMessage();
 
-    stringmsg.setStr(taskid);
-    taskclient.deleteTask(stringmsg, {}, (err, res) => {
-      this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
-        this.router.navigate(['dashboardteacher'], {skipLocationChange: true});
-      });
+        stringmsg.setStr(taskid);
+        taskclient.deleteTask(stringmsg, {}, (err, res) => {
+          this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
+            this.router.navigate(['dashboardteacher'], {skipLocationChange: true});
+          });
+        });
+      }
     });
   }
 

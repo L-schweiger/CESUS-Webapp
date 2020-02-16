@@ -34,6 +34,7 @@ import { CourseeditdiagComponent } from './courseeditdiag/courseeditdiag.compone
 import { GroupeditdiagComponent } from './groupeditdiag/groupeditdiag.component';
 import { UsereditdiagComponent } from './usereditdiag/usereditdiag.component';
 import { SettingsdiagComponent } from './settingsdiag/settingsdiag.component';
+import { ConfirmdiagComponent } from './confirmdiag/confirmdiag.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { SettingsdiagComponent } from './settingsdiag/settingsdiag.component';
     CourseeditdiagComponent,
     GroupeditdiagComponent,
     UsereditdiagComponent,
-    SettingsdiagComponent
+    SettingsdiagComponent,
+    ConfirmdiagComponent
   ],
   entryComponents: [
     ShowErrorComponent,
@@ -61,7 +63,8 @@ import { SettingsdiagComponent } from './settingsdiag/settingsdiag.component';
     CourseeditdiagComponent,
     GroupeditdiagComponent,
     UsereditdiagComponent,
-    SettingsdiagComponent
+    SettingsdiagComponent,
+    ConfirmdiagComponent
   ],
   imports: [
     BrowserModule,

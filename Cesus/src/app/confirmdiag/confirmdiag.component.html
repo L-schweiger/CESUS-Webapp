@@ -1,0 +1,7 @@
+<div mat-dialog-content class="divcentered">
+  Bestätigen Sie den Vorgang!
+</div>
+<div mat-dialog-actions align="center">
+  <button mat-raised-button (click)="onNoClick()">Abbrechen</button>
+  <button mat-raised-button color="submit" [mat-dialog-close]="true" cdkFocusInitial>Löschen</button>
+</div>

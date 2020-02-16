@@ -8,6 +8,7 @@ import {GroupeditdiagComponent} from '../groupeditdiag/groupeditdiag.component';
 import {UsereditdiagComponent} from '../usereditdiag/usereditdiag.component';
 import {CourseeditdiagComponent} from '../courseeditdiag/courseeditdiag.component';
 import {PassdataService} from '../passdata.service';
+import {ConfirmdiagComponent} from '../confirmdiag/confirmdiag.component';
 declare var $: any;
 
 export interface DialogData {
@@ -70,27 +71,43 @@ export class DashboardAdminComponent implements OnInit {
     });
   }
 
-  deleteCourse(courseid: string) {
-    const courseclient = new CourseServiceClient('/api/grpc');
-    const stringmsg = new StringMessage();
+  deleteCourse(courseid: string): void {
+    const dialogRef = this.dialog.open(ConfirmdiagComponent, {
+      width: '350px',
+      data: ''
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const courseclient = new CourseServiceClient('/api/grpc');
+        const stringmsg = new StringMessage();
 
-    stringmsg.setStr(courseid);
-    courseclient.deleteCourse(stringmsg, {}, (err, res) => {
-      this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
-        this.router.navigate(['dashboardadmin'], {skipLocationChange: true});
-      });
+        stringmsg.setStr(courseid);
+        courseclient.deleteCourse(stringmsg, {}, (err, res) => {
+          this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
+            this.router.navigate(['dashboardadmin'], {skipLocationChange: true});
+          });
+        });
+      }
     });
   }
 
   deleteGroup(groupid: string) {
-    const groupclient = new GroupServiceClient('/api/grpc');
-    const stringmsg = new StringMessage();
+    const dialogRef = this.dialog.open(ConfirmdiagComponent, {
+      width: '350px',
+      data: ''
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const groupclient = new GroupServiceClient('/api/grpc');
+        const stringmsg = new StringMessage();
 
-    stringmsg.setStr(groupid);
-    groupclient.deleteGroup(stringmsg, {}, (err, res) => {
-      this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
-        this.router.navigate(['dashboardadmin'], {skipLocationChange: true});
-      });
+        stringmsg.setStr(groupid);
+        groupclient.deleteGroup(stringmsg, {}, (err, res) => {
+          this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
+            this.router.navigate(['dashboardadmin'], {skipLocationChange: true});
+          });
+        });
+      }
     });
   }
 

@@ -1,11 +1,12 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {GroupServiceClient, UserServiceClient} from '../../grpc/CommunicationServiceClientPb';
 import {Empty, Role, StringMessage, UserEdit, UserEditMessage} from '../../grpc/Communication_pb';
 import {faMinusCircle} from '@fortawesome/free-solid-svg-icons';
 import {MatSelectionList, MatSelectionListChange} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PassdataService} from '../passdata.service';
+import {ConfirmdiagComponent} from '../confirmdiag/confirmdiag.component';
 
 export interface MyRole {
   value: Role;
@@ -46,6 +47,7 @@ export class UsereditdiagComponent implements OnInit {
 
   constructor(
     public router: Router,
+    public dialog: MatDialog,
     public dialogRef: MatDialogRef<UsereditdiagComponent>,
     private passdataservice: PassdataService,
     @Inject(MAT_DIALOG_DATA) public data: any) {}
@@ -127,15 +129,23 @@ export class UsereditdiagComponent implements OnInit {
   }
 
   deleteUser(useridtodelete: string) {
-    const userclient = new UserServiceClient('/api/grpc');
-    const stringmsg = new StringMessage();
-    stringmsg.setStr(useridtodelete);
+    const dialogRef = this.dialog.open(ConfirmdiagComponent, {
+      width: '350px',
+      data: ''
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const userclient = new UserServiceClient('/api/grpc');
+        const stringmsg = new StringMessage();
+        stringmsg.setStr(useridtodelete);
 
-    userclient.deleteUser(stringmsg, {}, (err, res) => {
-      this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
-        this.router.navigate(['dashboardadmin'], {skipLocationChange: true});
-        this.dialogRef.close();
-      });
+        userclient.deleteUser(stringmsg, {}, (err, res) => {
+          this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
+            this.router.navigate(['dashboardadmin'], {skipLocationChange: true});
+            this.dialogRef.close();
+          });
+        });
+      }
     });
   }
 

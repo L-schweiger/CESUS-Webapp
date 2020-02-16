@@ -7,6 +7,7 @@ import {faChevronCircleLeft, faMinusCircle, faPlusCircle} from '@fortawesome/fre
 import {PassdataService} from '../passdata.service';
 import {CourseeditdiagComponent} from '../courseeditdiag/courseeditdiag.component';
 import {TaskeditdiagComponent} from '../taskeditdiag/taskeditdiag.component';
+import {ConfirmdiagComponent} from '../confirmdiag/confirmdiag.component';
 declare var $: any;
 
 export interface DialogData {
@@ -62,14 +63,22 @@ export class CourseTeacherAdminComponent implements OnInit {
   }
 
   deleteTask(taskid: string) {
-    const taskclient = new TaskServiceClient('/api/grpc');
-    const stringmsg = new StringMessage();
+    const dialogRef = this.dialog.open(ConfirmdiagComponent, {
+      width: '350px',
+      data: ''
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const taskclient = new TaskServiceClient('/api/grpc');
+        const stringmsg = new StringMessage();
 
-    stringmsg.setStr(taskid);
-    taskclient.deleteTask(stringmsg, {}, (err, res) => {
-      this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
-        this.router.navigate(['courseteacheradmin', { navid: this.courseid}], {skipLocationChange: true});
-      });
+        stringmsg.setStr(taskid);
+        taskclient.deleteTask(stringmsg, {}, (err, res) => {
+          this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
+            this.router.navigate(['courseteacheradmin', { navid: this.courseid}], {skipLocationChange: true});
+          });
+        });
+      }
     });
   }
 
