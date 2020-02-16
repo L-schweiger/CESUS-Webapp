@@ -41,6 +41,7 @@ export class TaskDoneStudentComponent implements OnInit {
   deadline: Date = null;
   currDate: Date = new Date();
   deadlinePassed: boolean;
+  bonuspercent = 0;
 
   @ViewChild('pieChart', {static: false}) pieChart: ElementRef
 
@@ -49,6 +50,12 @@ export class TaskDoneStudentComponent implements OnInit {
       ['status', 'points'],
       ['left', 100 - this.percent],
       ['achieved', this.percent]
+    ]);
+
+    const databonus = google.visualization.arrayToDataTable([
+      ['status', 'points'],
+      ['left', this.bonuspercent],
+      ['achieved', 100 - this.bonuspercent]
     ]);
 
     const options = {
@@ -62,9 +69,25 @@ export class TaskDoneStudentComponent implements OnInit {
       tooltip: { trigger: 'none' }
     };
 
+    const optionsbonus = {
+      pieStartAngle: 0,
+      slices: {
+        0: { color: '#dec63b'},
+        1: { color: '#67de61'}
+      },
+      pieSliceText: 'none',
+      legend: 'none',
+      tooltip: { trigger: 'none' }
+    };
+
     const chart = new google.visualization.PieChart(this.pieChart.nativeElement);
 
-    chart.draw(data, options);
+    if (this.bonuspercent === 0) {
+      chart.draw(data, options);
+    } else {
+      chart.draw(databonus, optionsbonus);
+    }
+
   }
 
   submit() {
@@ -171,6 +194,11 @@ export class TaskDoneStudentComponent implements OnInit {
             this.description = res2.getDescription();
             this.maxpoints = res2.getMaxpoints();
             this.percent = (this.points / this.maxpoints) * 100;
+
+            if (this.points > this.maxpoints) {
+              this.bonuspercent = this.percent - 100;
+            }
+
             this.courseidoftask = res2.getCourse().getId();
             if (this.samplesolutiondownloadable) {
               this.samplesolutionfile[0] = res2.getSamplesolutionfile();

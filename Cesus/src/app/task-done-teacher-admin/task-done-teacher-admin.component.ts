@@ -52,6 +52,7 @@ export class TaskDoneTeacherAdminComponent implements OnInit {
   editedPoints: number;
   editedComment: string;
   taskid: string;
+  bonuspercent = 0;
 
 
   @ViewChild('pieChart', {static: false}) pieChart: ElementRef;
@@ -65,6 +66,12 @@ export class TaskDoneTeacherAdminComponent implements OnInit {
       ['achieved', this.percent]
     ]);
 
+    const databonus = google.visualization.arrayToDataTable([
+      ['status', 'points'],
+      ['left', this.bonuspercent],
+      ['achieved', 100 - this.bonuspercent]
+    ]);
+
     const options = {
       pieStartAngle: 0,
       slices: {
@@ -76,9 +83,25 @@ export class TaskDoneTeacherAdminComponent implements OnInit {
       tooltip: { trigger: 'none' }
     };
 
+    const optionsbonus = {
+      pieStartAngle: 0,
+      slices: {
+        0: { color: '#dec63b'},
+        1: { color: '#67de61'}
+      },
+      pieSliceText: 'none',
+      legend: 'none',
+      tooltip: { trigger: 'none' }
+    };
+
     const chart = new google.visualization.PieChart(this.pieChart.nativeElement);
 
-    chart.draw(data, options);
+    if (this.bonuspercent === 0) {
+      chart.draw(data, options);
+    } else {
+      chart.draw(databonus, optionsbonus);
+    }
+
   }
 
   triggerResize() {
@@ -93,7 +116,7 @@ export class TaskDoneTeacherAdminComponent implements OnInit {
     edit.setSubmissionid(this.submissionid);
     edit.setGrade(this.editedGrade);
     edit.setComment(this.editedComment);
-    if (this.editedPoints > -1 && this.editedPoints <= this.maxpoints) {
+    if (this.editedPoints > -1) {
       edit.setPoints(this.editedPoints);
     } else {
       edit.setPoints(this.points);
@@ -157,9 +180,13 @@ export class TaskDoneTeacherAdminComponent implements OnInit {
         taskclient.getTask(stringmsg, {}, (err2, res2: Task) => {
           this.taskid = res2.getId();
           this.maxpoints = res2.getMaxpoints();
-          this.percent = (this.points / this.maxpoints) * 100;
           this.samplesolutionfile[0] = res2.getSamplesolutionfile();
           this.statementfile[0] = res2.getStatementfile();
+          this.percent = (this.points / this.maxpoints) * 100;
+          if (this.points > this.maxpoints) {
+            this.bonuspercent = this.percent - 100;
+          }
+
 
           if (this.statementfile[0] !== null && this.statementfile[0] !== '') {
             stringmsg.setStr(this.statementfile[0]);
