@@ -16,9 +16,6 @@ export class User extends jspb.Message {
   getRole(): Role;
   setRole(value: Role): void;
 
-  getImgfile(): string;
-  setImgfile(value: string): void;
-
   getIsad(): boolean;
   setIsad(value: boolean): void;
 
@@ -55,7 +52,6 @@ export namespace User {
     firstname: string,
     lastname: string,
     role: Role,
-    imgfile: string,
     isad: boolean,
     groupsList: Array<GroupPreview.AsObject>,
     coursesList: Array<CoursePreview.AsObject>,
@@ -77,9 +73,6 @@ export class UserPreview extends jspb.Message {
   getRole(): Role;
   setRole(value: Role): void;
 
-  getImgfile(): string;
-  setImgfile(value: string): void;
-
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UserPreview.AsObject;
   static toObject(includeInstance: boolean, msg: UserPreview): UserPreview.AsObject;
@@ -94,7 +87,6 @@ export namespace UserPreview {
     firstname: string,
     lastname: string,
     role: Role,
-    imgfile: string,
   }
 }
 
@@ -117,29 +109,6 @@ export class UserEdit extends jspb.Message {
   getRole(): Role;
   setRole(value: Role): void;
 
-  getImgfile(): string;
-  setImgfile(value: string): void;
-
-  getGroupsaddList(): Array<string>;
-  setGroupsaddList(value: Array<string>): void;
-  clearGroupsaddList(): void;
-  addGroupsadd(value: string, index?: number): void;
-
-  getGroupsremoveList(): Array<string>;
-  setGroupsremoveList(value: Array<string>): void;
-  clearGroupsremoveList(): void;
-  addGroupsremove(value: string, index?: number): void;
-
-  getCoursesaddList(): Array<string>;
-  setCoursesaddList(value: Array<string>): void;
-  clearCoursesaddList(): void;
-  addCoursesadd(value: string, index?: number): void;
-
-  getCoursesremoveList(): Array<string>;
-  setCoursesremoveList(value: Array<string>): void;
-  clearCoursesremoveList(): void;
-  addCoursesremove(value: string, index?: number): void;
-
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UserEdit.AsObject;
   static toObject(includeInstance: boolean, msg: UserEdit): UserEdit.AsObject;
@@ -156,11 +125,6 @@ export namespace UserEdit {
     passwordset: boolean,
     password: string,
     role: Role,
-    imgfile: string,
-    groupsaddList: Array<string>,
-    groupsremoveList: Array<string>,
-    coursesaddList: Array<string>,
-    coursesremoveList: Array<string>,
   }
 }
 
@@ -193,6 +157,9 @@ export class Group extends jspb.Message {
   getName(): string;
   setName(value: string): void;
 
+  getIsad(): boolean;
+  setIsad(value: boolean): void;
+
   getUsersList(): Array<UserPreview>;
   setUsersList(value: Array<UserPreview>): void;
   clearUsersList(): void;
@@ -213,6 +180,7 @@ export namespace Group {
   export type AsObject = {
     id: string,
     name: string,
+    isad: boolean,
     usersList: Array<UserPreview.AsObject>,
     hash: string,
   }
@@ -378,6 +346,28 @@ export namespace CourseEdit {
   }
 }
 
+export class Attachment extends jspb.Message {
+  getFile(): string;
+  setFile(value: string): void;
+
+  getHidden(): boolean;
+  setHidden(value: boolean): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): Attachment.AsObject;
+  static toObject(includeInstance: boolean, msg: Attachment): Attachment.AsObject;
+  static serializeBinaryToWriter(message: Attachment, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): Attachment;
+  static deserializeBinaryFromReader(message: Attachment, reader: jspb.BinaryReader): Attachment;
+}
+
+export namespace Attachment {
+  export type AsObject = {
+    file: string,
+    hidden: boolean,
+  }
+}
+
 export class Task extends jspb.Message {
   getId(): string;
   setId(value: string): void;
@@ -416,10 +406,10 @@ export class Task extends jspb.Message {
   hasCourse(): boolean;
   clearCourse(): void;
 
-  getAttatchmentsList(): Array<string>;
-  setAttatchmentsList(value: Array<string>): void;
+  getAttatchmentsList(): Array<Attachment>;
+  setAttatchmentsList(value: Array<Attachment>): void;
   clearAttatchmentsList(): void;
-  addAttatchments(value: string, index?: number): void;
+  addAttatchments(value?: Attachment, index?: number): Attachment;
 
   getSubmissionsList(): Array<SubmissionPreview>;
   setSubmissionsList(value: Array<SubmissionPreview>): void;
@@ -450,7 +440,7 @@ export namespace Task {
     evalinfo?: EvalInfo.AsObject,
     showratingafterdeadline: boolean,
     course?: CoursePreview.AsObject,
-    attatchmentsList: Array<string>,
+    attatchmentsList: Array<Attachment.AsObject>,
     submissionsList: Array<SubmissionPreview.AsObject>,
     hash: string,
   }
@@ -511,10 +501,10 @@ export class TaskEdit extends jspb.Message {
   getCourseid(): string;
   setCourseid(value: string): void;
 
-  getAttachmentsaddList(): Array<string>;
-  setAttachmentsaddList(value: Array<string>): void;
+  getAttachmentsaddList(): Array<Attachment>;
+  setAttachmentsaddList(value: Array<Attachment>): void;
   clearAttachmentsaddList(): void;
-  addAttachmentsadd(value: string, index?: number): void;
+  addAttachmentsadd(value?: Attachment, index?: number): Attachment;
 
   getAttachmentsremoveList(): Array<string>;
   setAttachmentsremoveList(value: Array<string>): void;
@@ -541,7 +531,7 @@ export namespace TaskEdit {
     maxpoints: number,
     evalinfo?: EvalInfo.AsObject,
     courseid: string,
-    attachmentsaddList: Array<string>,
+    attachmentsaddList: Array<Attachment.AsObject>,
     attachmentsremoveList: Array<string>,
   }
 }
@@ -1128,6 +1118,24 @@ export namespace ADImportSettings {
   }
 }
 
+export class BoolMessage extends jspb.Message {
+  getBool(): boolean;
+  setBool(value: boolean): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): BoolMessage.AsObject;
+  static toObject(includeInstance: boolean, msg: BoolMessage): BoolMessage.AsObject;
+  static serializeBinaryToWriter(message: BoolMessage, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): BoolMessage;
+  static deserializeBinaryFromReader(message: BoolMessage, reader: jspb.BinaryReader): BoolMessage;
+}
+
+export namespace BoolMessage {
+  export type AsObject = {
+    bool: boolean,
+  }
+}
+
 export class CourseExPreview extends jspb.Message {
   getId(): string;
   setId(value: string): void;
@@ -1182,7 +1190,7 @@ export namespace CoursesExMessage {
   }
 }
 
-export class LdapInfo extends jspb.Message {
+export class LdapSettings extends jspb.Message {
   getServer(): string;
   setServer(value: string): void;
 
@@ -1192,19 +1200,25 @@ export class LdapInfo extends jspb.Message {
   getPassword(): string;
   setPassword(value: string): void;
 
+  getAdimportsettings(): ADImportSettings | undefined;
+  setAdimportsettings(value?: ADImportSettings): void;
+  hasAdimportsettings(): boolean;
+  clearAdimportsettings(): void;
+
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): LdapInfo.AsObject;
-  static toObject(includeInstance: boolean, msg: LdapInfo): LdapInfo.AsObject;
-  static serializeBinaryToWriter(message: LdapInfo, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): LdapInfo;
-  static deserializeBinaryFromReader(message: LdapInfo, reader: jspb.BinaryReader): LdapInfo;
+  toObject(includeInstance?: boolean): LdapSettings.AsObject;
+  static toObject(includeInstance: boolean, msg: LdapSettings): LdapSettings.AsObject;
+  static serializeBinaryToWriter(message: LdapSettings, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): LdapSettings;
+  static deserializeBinaryFromReader(message: LdapSettings, reader: jspb.BinaryReader): LdapSettings;
 }
 
-export namespace LdapInfo {
+export namespace LdapSettings {
   export type AsObject = {
     server: string,
     username: string,
     password: string,
+    adimportsettings?: ADImportSettings.AsObject,
   }
 }
 
@@ -1281,15 +1295,10 @@ export class SetupSummary extends jspb.Message {
   hasSslinfo(): boolean;
   clearSslinfo(): void;
 
-  getLdapinfo(): LdapInfo | undefined;
-  setLdapinfo(value?: LdapInfo): void;
-  hasLdapinfo(): boolean;
-  clearLdapinfo(): void;
-
-  getAdimportsettings(): ADImportSettings | undefined;
-  setAdimportsettings(value?: ADImportSettings): void;
-  hasAdimportsettings(): boolean;
-  clearAdimportsettings(): void;
+  getLdapsettings(): LdapSettings | undefined;
+  setLdapsettings(value?: LdapSettings): void;
+  hasLdapsettings(): boolean;
+  clearLdapsettings(): void;
 
   getGeneralsettings(): GeneralSettingsMessage | undefined;
   setGeneralsettings(value?: GeneralSettingsMessage): void;
@@ -1308,8 +1317,7 @@ export namespace SetupSummary {
   export type AsObject = {
     databasesettings?: DatabaseConnectionSettings.AsObject,
     sslinfo?: SslCredentialsInfo.AsObject,
-    ldapinfo?: LdapInfo.AsObject,
-    adimportsettings?: ADImportSettings.AsObject,
+    ldapsettings?: LdapSettings.AsObject,
     generalsettings?: GeneralSettingsMessage.AsObject,
   }
 }
@@ -1386,33 +1394,9 @@ export namespace CheckerInfo {
   }
 }
 
-export class Checker extends jspb.Message {
+export class EvalInfo extends jspb.Message {
   getProgramminglanguage(): string;
   setProgramminglanguage(value: string): void;
-
-  getCheckmode(): CheckMode;
-  setCheckmode(value: CheckMode): void;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): Checker.AsObject;
-  static toObject(includeInstance: boolean, msg: Checker): Checker.AsObject;
-  static serializeBinaryToWriter(message: Checker, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): Checker;
-  static deserializeBinaryFromReader(message: Checker, reader: jspb.BinaryReader): Checker;
-}
-
-export namespace Checker {
-  export type AsObject = {
-    programminglanguage: string,
-    checkmode: CheckMode,
-  }
-}
-
-export class EvalInfo extends jspb.Message {
-  getChecker(): Checker | undefined;
-  setChecker(value?: Checker): void;
-  hasChecker(): boolean;
-  clearChecker(): void;
 
   getOutput(): EvalInfo.Output | undefined;
   setOutput(value?: EvalInfo.Output): void;
@@ -1439,7 +1423,7 @@ export class EvalInfo extends jspb.Message {
 
 export namespace EvalInfo {
   export type AsObject = {
-    checker?: Checker.AsObject,
+    programminglanguage: string,
     output?: EvalInfo.Output.AsObject,
     samplesolution?: EvalInfo.SampleSolution.AsObject,
     testprogramfile: string,
@@ -1552,7 +1536,6 @@ export enum SetupState {
   ADMIN_CONFIGURED = 2,
   SSL_CONFIGURED = 3,
   LDAP_CONFIGURED = 4,
-  ADSYNC_CONFIGURED = 5,
-  GENERAL_CONFIGURED = 6,
-  COMPLETE = 7,
+  GENERAL_CONFIGURED = 5,
+  COMPLETE = 6,
 }

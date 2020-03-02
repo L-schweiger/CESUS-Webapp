@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {MiscServiceClient, TaskServiceClient} from '../../grpc/CommunicationServiceClientPb';
-import {Checker, CheckMode, EvalInfo, SampleSolutionDownloadable, TaskEdit, TaskEditMessage} from '../../grpc/Communication_pb';
+import {CheckMode, Empty, EvalInfo, SampleSolutionDownloadable, TaskEdit, TaskEditMessage} from '../../grpc/Communication_pb';
 import {Router} from '@angular/router';
 import {PassdataService} from '../passdata.service';
 
@@ -167,18 +167,19 @@ export class TaskeditdiagComponent implements OnInit {
 
   createTask() {
     const taskclient = new TaskServiceClient('/api/grpc');
+    const miscclient = new MiscServiceClient('/api/grpc');
     const req = new TaskEdit();
 
     const Eval = new EvalInfo();
-    const check = new Checker();
 
     if (this.addtaskCheckmode !== undefined) { // PROGRAMMING LANGUAGE SETZEN
-      check.setProgramminglanguage(this.addtaskProgrammingLang); // TODO: selecten in der ui
-      check.setProgramminglanguage('C#'); // HARDCODED FÜR TAMPIER!!!!!
+      //check.setProgramminglanguage(this.addtaskProgrammingLang); // TODO: selecten in der ui
+      //check.setProgramminglanguage('C#'); // HARDCODED FÜR TAMPIER!!!!!
     }
-    check.setCheckmode(this.addtaskCheckmode);
-    Eval.setChecker(check);
-    switch (check.getCheckmode()) {
+
+    // TODO: hier checker fixen nach neuer doku
+    //Eval.setChecker(check);
+    switch (this.addtaskCheckmode) {
       case CheckMode.OUTPUT:
         const output = new EvalInfo.Output();
         for (const param of this.addtaskPrograminputs) {
@@ -210,20 +211,19 @@ export class TaskeditdiagComponent implements OnInit {
 
     req.setName(this.addtaskName);
     req.setDescription(this.addtaskDescription);
-    req.setCourseid(this.addtaskCourseid);
+    req.setStatementfile(this.addtaskStatementfile);
+    req.setSamplesolutionfile(this.addtaskSamplesolutionfile);
+    req.setSamplesolutiondownloadable(this.addtaskSamplesolutiondownloadable);
     if (this.addtaskDeadline !== undefined) {
       req.setDeadline(new Date(this.addtaskDeadline).getTime() / 1000);
     } else {
       req.setDeadline(-1);
     }
-
-    req.setMaxpoints(this.addtaskMaxpoints);
-    req.setAttachmentsaddList(this.addtaskAttachmentaddlist);
-    req.setSamplesolutiondownloadable(this.addtaskSamplesolutiondownloadable);
-    req.setSamplesolutionfile(this.addtaskSamplesolutionfile);
-    req.setStatementfile(this.addtaskStatementfile);
     req.setShowratingafterdeadline(this.addtaskShowratingafterdeadline);
+    req.setMaxpoints(this.addtaskMaxpoints);
     req.setEvalinfo(Eval);
+    req.setCourseid(this.addtaskCourseid);
+    req.setAttachmentsaddList(this.addtaskAttachmentaddlist);
 
     taskclient.createTask(req, {}, (err, res) => {
       console.log('error:');
@@ -263,9 +263,9 @@ export class TaskeditdiagComponent implements OnInit {
     if (document.cookie.split(';').filter((item) => item.trim().startsWith('auth=')).length) {
       const miscclient = new MiscServiceClient('/api/grpc');
       this.addtaskCourseid = this.data.id;
-
-      /*miscclient.getAvailableCheckers(new Empty(), {}, (err, res) => {
-        for (const check of res.getCheckersList()) {
+      miscclient.getAvailableCheckers(new Empty(), {}, (err, res) => {
+        
+        /*for (const check of res.getCheckersList()) {
           console.log(check.getProgramminglanguage());
           if (check.getSupportedcheckmodesList().includes(CheckMode.OUTPUT)) {
 
@@ -275,8 +275,9 @@ export class TaskeditdiagComponent implements OnInit {
 
           }
 
-        }
-      });*/
+        }*/
+      });
+
     } else {
       this.router.navigate([''], { skipLocationChange: true});
     }

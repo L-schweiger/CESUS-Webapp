@@ -1,4 +1,4 @@
-﻿syntax = "proto3";
+syntax = "proto3";
 
 package API;
 
@@ -14,12 +14,11 @@ message User {
 	string firstName = 3;
 	string lastName = 4;
 	Role role = 5;
-	string imgFile = 6;
-	bool isAD = 7;
-	repeated GroupPreview groups = 8;
-	repeated CoursePreview courses = 9;
-	repeated SubmissionPreview submissions = 10;
-	string hash = 11;
+	bool isAD = 6;
+	repeated GroupPreview groups = 7;
+	repeated CoursePreview courses = 8;
+	repeated SubmissionPreview submissions = 9;
+	string hash = 10;
 }
 
 message UserPreview {
@@ -27,7 +26,6 @@ message UserPreview {
 	string firstName = 2;
 	string lastName = 3;
 	Role role = 4;
-	string imgFile = 5;
 }
 
 message UserEdit {
@@ -37,11 +35,6 @@ message UserEdit {
 	bool passwordSet = 4;
 	string password = 5;
 	Role role = 6;
-	string imgFile = 7;
-	repeated string groupsAdd = 8;
-	repeated string groupsRemove = 9;
-	repeated string coursesAdd = 10;
-	repeated string coursesRemove = 11;
 }
 
 message PasswordChange {
@@ -52,8 +45,9 @@ message PasswordChange {
 message Group {
 	string id = 1;
 	string name = 2;
-	repeated UserPreview users = 3;
-	string hash = 4;
+	bool isAD = 3;
+	repeated UserPreview users = 4;
+	string hash = 5;
 }
 
 message GroupPreview {
@@ -102,6 +96,11 @@ enum SampleSolutionDownloadable {
 	AFTERDEADLINE = 2;
 }
 
+message Attachment {
+	string file = 1;
+	bool hidden = 2;
+}
+
 message Task {
 	string id = 1;
 	string name = 2;
@@ -114,7 +113,7 @@ message Task {
 	EvalInfo evalInfo = 9;
 	bool showRatingAfterDeadline = 10;
 	CoursePreview course = 11;
-	repeated string attatchments = 12;
+	repeated Attachment attatchments = 12;
 	repeated SubmissionPreview submissions = 13;
 	string hash = 14;
 }
@@ -135,7 +134,7 @@ message TaskEdit {
 	int32 maxPoints = 8;
 	EvalInfo evalInfo = 9;
 	string courseId = 10;
-	repeated string attachmentsAdd = 11;
+	repeated Attachment attachmentsAdd = 11;
 	repeated string attachmentsRemove = 12;
 }
 
@@ -174,7 +173,7 @@ message Rating {
 }
 
 message RatingEdit {
-	float points = 1;
+	float points = 1; 
 	int32 grade = 2;
 	string comment = 3;
 	string submissionId = 4;
@@ -265,6 +264,10 @@ message ADImportSettings {
 	string groupPrefix = 4;
 }
 
+message BoolMessage {
+	bool bool = 1;
+}
+
 service UserService {
 	rpc GetUsers (Empty) returns (UsersMessage);
 	rpc GetUser (StringMessage) returns (User);
@@ -273,7 +276,7 @@ service UserService {
 	rpc DeleteUser (StringMessage) returns (Empty);
 	rpc ChangePassword (PasswordChange) returns (Empty);
 
-	rpc GetUserByUsername (StringMessage) returns (User);
+	rpc GetUsernameExists (StringMessage) returns (BoolMessage);
 }
 
 service GroupService {
@@ -331,25 +334,26 @@ service RatingService {
 
 service AuthService {
 	rpc Auth (AuthRequest) returns (SessionToken);
+	rpc CheckTokenValid (StringMessage) returns (BoolMessage);
 }
 
 service SettingsService {
 	rpc GetDatabaseConnectionSettings (Empty) returns (DatabaseConnectionSettings);
-	rpc GetADImportSettings (Empty) returns (ADImportSettings);
-	rpc SetADImportSettings (ADImportSettings) returns (Empty);
 	rpc SyncADNow (Empty) returns (Empty);
 	rpc GetSslInfo (Empty) returns (SslCredentialsInfo);
 	rpc SetSslCredentials (SslCredentialsMessage) returns (Empty);
-	rpc SetLdapInfo (LdapInfo) returns (Empty);
-	rpc GetLdapInfo (Empty) returns (LdapInfo);
+	rpc SetLdapSettings (LdapSettings) returns (Empty);
+	rpc GetLdapSettings (Empty) returns (LdapSettings);
 	rpc SetGeneralSettings (GeneralSettingsMessage) returns (Empty);
 	rpc GetGeneralSettings (Empty) returns (GeneralSettingsMessage);
+	rpc UnsetLdapSettings (Empty) returns (Empty);
 }
 
-message LdapInfo {
+message LdapSettings {
 	string server = 1;
 	string username = 2;
 	string password = 3;
+	ADImportSettings adImportSettings = 4;
 }
 
 message SslCredentialsInfo{
@@ -368,9 +372,8 @@ enum SetupState {
 	ADMIN_CONFIGURED = 2;
 	SSL_CONFIGURED = 3;
 	LDAP_CONFIGURED = 4;
-	ADSYNC_CONFIGURED = 5;
-	GENERAL_CONFIGURED = 6;
-	COMPLETE = 7;
+	GENERAL_CONFIGURED = 5;
+	COMPLETE = 6;
 }
 
 message SetupStateMessage {
@@ -381,25 +384,24 @@ service SetupService {
 	rpc GetState (Empty) returns (SetupStateMessage);
 	rpc ConfigureDatabase (DatabaseConnectionSettings) returns (Empty);
 	rpc ConfigureAdminAccount (StringMessage) returns (Empty);
-	rpc ImportFromAD (ADImportSettings) returns (Empty);
-	rpc CompleteSetup (Empty) returns (Empty);
 	rpc SetSslCredentials (SslCredentialsMessage) returns (Empty);
-	rpc SetLdapInfo (LdapInfo) returns (Empty);
+	rpc SetLdapSettings (LdapSettings) returns (Empty);
 	rpc SetGeneralSettings (GeneralSettingsMessage) returns (Empty);
+	rpc CompleteSetup (Empty) returns (Empty);
 	rpc GetSetupSummary (Empty) returns (SetupSummary);
+	rpc CheckSetupPW (StringMessage) returns (BoolMessage);
 }
 
 message SetupSummary {
 	DatabaseConnectionSettings databaseSettings = 1;
 	SslCredentialsInfo sslInfo = 2;
-	LdapInfo ldapInfo = 3;
-	ADImportSettings adImportSettings = 4;
-	GeneralSettingsMessage generalSettings = 5;
+	LdapSettings ldapSettings = 3;
+	GeneralSettingsMessage generalSettings = 4;
 }
 
 message GeneralSettingsMessage{
 	bool useHsts = 1;
-	int32 concurrentExecutionCount = 2; // greater than 0
+	uint32 concurrentExecutionCount = 2;
 	int32 jobExecutionTime = 3; // in seconds after midnight
 	bool executeEvalAsJob = 4;
 }
@@ -413,11 +415,6 @@ message CheckerInfo {
 	repeated CheckMode supportedCheckModes = 2;
 }
 
-message Checker {
-	string programmingLanguage = 1;
-	CheckMode checkMode = 2;
-}
-
 message EvalInfo {
 	message SampleSolution {
 		bool checkConsoleOutput = 1;
@@ -429,7 +426,7 @@ message EvalInfo {
 		repeated string outputs = 2;
 	}
 
-	Checker checker = 1;
+	string programmingLanguage = 1;
 	oneof mode {
 		Output output = 2;
 		SampleSolution sampleSolution = 3;

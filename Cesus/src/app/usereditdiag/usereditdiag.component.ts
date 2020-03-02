@@ -29,7 +29,6 @@ export class UsereditdiagComponent implements OnInit {
   ];
 
   alluserslist = [];
-
   adduserFirstname: string;
   adduserLastname: string;
   adduserPassword: string;

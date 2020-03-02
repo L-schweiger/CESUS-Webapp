@@ -10,8 +10,8 @@
 import * as grpcWeb from 'grpc-web';
 
 import {
-  ADImportSettings,
   AuthRequest,
+  BoolMessage,
   CheckersMessage,
   Course,
   CourseEdit,
@@ -26,7 +26,7 @@ import {
   GroupEditMessage,
   GroupsMessage,
   Int64Message,
-  LdapInfo,
+  LdapSettings,
   PasswordChange,
   Rating,
   RatingEdit,
@@ -200,25 +200,25 @@ export class UserServiceClient {
       callback);
   }
 
-  methodInfoGetUserByUsername = new grpcWeb.AbstractClientBase.MethodInfo(
-    User,
+  methodInfoGetUsernameExists = new grpcWeb.AbstractClientBase.MethodInfo(
+    BoolMessage,
     (request: StringMessage) => {
       return request.serializeBinary();
     },
-    User.deserializeBinary
+    BoolMessage.deserializeBinary
   );
 
-  getUserByUsername(
+  getUsernameExists(
     request: StringMessage,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
-               response: User) => void) {
+               response: BoolMessage) => void) {
     return this.client_.rpcCall(
       this.hostname_ +
-        '/API.UserService/GetUserByUsername',
+        '/API.UserService/GetUsernameExists',
       request,
       metadata || {},
-      this.methodInfoGetUserByUsername,
+      this.methodInfoGetUsernameExists,
       callback);
   }
 
@@ -898,6 +898,28 @@ export class AuthServiceClient {
       callback);
   }
 
+  methodInfoCheckTokenValid = new grpcWeb.AbstractClientBase.MethodInfo(
+    BoolMessage,
+    (request: StringMessage) => {
+      return request.serializeBinary();
+    },
+    BoolMessage.deserializeBinary
+  );
+
+  checkTokenValid(
+    request: StringMessage,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: BoolMessage) => void) {
+    return this.client_.rpcCall(
+      this.hostname_ +
+        '/API.AuthService/CheckTokenValid',
+      request,
+      metadata || {},
+      this.methodInfoCheckTokenValid,
+      callback);
+  }
+
 }
 
 export class SettingsServiceClient {
@@ -938,50 +960,6 @@ export class SettingsServiceClient {
       request,
       metadata || {},
       this.methodInfoGetDatabaseConnectionSettings,
-      callback);
-  }
-
-  methodInfoGetADImportSettings = new grpcWeb.AbstractClientBase.MethodInfo(
-    ADImportSettings,
-    (request: Empty) => {
-      return request.serializeBinary();
-    },
-    ADImportSettings.deserializeBinary
-  );
-
-  getADImportSettings(
-    request: Empty,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
-               response: ADImportSettings) => void) {
-    return this.client_.rpcCall(
-      this.hostname_ +
-        '/API.SettingsService/GetADImportSettings',
-      request,
-      metadata || {},
-      this.methodInfoGetADImportSettings,
-      callback);
-  }
-
-  methodInfoSetADImportSettings = new grpcWeb.AbstractClientBase.MethodInfo(
-    Empty,
-    (request: ADImportSettings) => {
-      return request.serializeBinary();
-    },
-    Empty.deserializeBinary
-  );
-
-  setADImportSettings(
-    request: ADImportSettings,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
-               response: Empty) => void) {
-    return this.client_.rpcCall(
-      this.hostname_ +
-        '/API.SettingsService/SetADImportSettings',
-      request,
-      metadata || {},
-      this.methodInfoSetADImportSettings,
       callback);
   }
 
@@ -1051,47 +1029,47 @@ export class SettingsServiceClient {
       callback);
   }
 
-  methodInfoSetLdapInfo = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoSetLdapSettings = new grpcWeb.AbstractClientBase.MethodInfo(
     Empty,
-    (request: LdapInfo) => {
+    (request: LdapSettings) => {
       return request.serializeBinary();
     },
     Empty.deserializeBinary
   );
 
-  setLdapInfo(
-    request: LdapInfo,
+  setLdapSettings(
+    request: LdapSettings,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
                response: Empty) => void) {
     return this.client_.rpcCall(
       this.hostname_ +
-        '/API.SettingsService/SetLdapInfo',
+        '/API.SettingsService/SetLdapSettings',
       request,
       metadata || {},
-      this.methodInfoSetLdapInfo,
+      this.methodInfoSetLdapSettings,
       callback);
   }
 
-  methodInfoGetLdapInfo = new grpcWeb.AbstractClientBase.MethodInfo(
-    LdapInfo,
+  methodInfoGetLdapSettings = new grpcWeb.AbstractClientBase.MethodInfo(
+    LdapSettings,
     (request: Empty) => {
       return request.serializeBinary();
     },
-    LdapInfo.deserializeBinary
+    LdapSettings.deserializeBinary
   );
 
-  getLdapInfo(
+  getLdapSettings(
     request: Empty,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
-               response: LdapInfo) => void) {
+               response: LdapSettings) => void) {
     return this.client_.rpcCall(
       this.hostname_ +
-        '/API.SettingsService/GetLdapInfo',
+        '/API.SettingsService/GetLdapSettings',
       request,
       metadata || {},
-      this.methodInfoGetLdapInfo,
+      this.methodInfoGetLdapSettings,
       callback);
   }
 
@@ -1136,6 +1114,28 @@ export class SettingsServiceClient {
       request,
       metadata || {},
       this.methodInfoGetGeneralSettings,
+      callback);
+  }
+
+  methodInfoUnsetLdapSettings = new grpcWeb.AbstractClientBase.MethodInfo(
+    Empty,
+    (request: Empty) => {
+      return request.serializeBinary();
+    },
+    Empty.deserializeBinary
+  );
+
+  unsetLdapSettings(
+    request: Empty,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: Empty) => void) {
+    return this.client_.rpcCall(
+      this.hostname_ +
+        '/API.SettingsService/UnsetLdapSettings',
+      request,
+      metadata || {},
+      this.methodInfoUnsetLdapSettings,
       callback);
   }
 
@@ -1226,50 +1226,6 @@ export class SetupServiceClient {
       callback);
   }
 
-  methodInfoImportFromAD = new grpcWeb.AbstractClientBase.MethodInfo(
-    Empty,
-    (request: ADImportSettings) => {
-      return request.serializeBinary();
-    },
-    Empty.deserializeBinary
-  );
-
-  importFromAD(
-    request: ADImportSettings,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
-               response: Empty) => void) {
-    return this.client_.rpcCall(
-      this.hostname_ +
-        '/API.SetupService/ImportFromAD',
-      request,
-      metadata || {},
-      this.methodInfoImportFromAD,
-      callback);
-  }
-
-  methodInfoCompleteSetup = new grpcWeb.AbstractClientBase.MethodInfo(
-    Empty,
-    (request: Empty) => {
-      return request.serializeBinary();
-    },
-    Empty.deserializeBinary
-  );
-
-  completeSetup(
-    request: Empty,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
-               response: Empty) => void) {
-    return this.client_.rpcCall(
-      this.hostname_ +
-        '/API.SetupService/CompleteSetup',
-      request,
-      metadata || {},
-      this.methodInfoCompleteSetup,
-      callback);
-  }
-
   methodInfoSetSslCredentials = new grpcWeb.AbstractClientBase.MethodInfo(
     Empty,
     (request: SslCredentialsMessage) => {
@@ -1292,25 +1248,25 @@ export class SetupServiceClient {
       callback);
   }
 
-  methodInfoSetLdapInfo = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoSetLdapSettings = new grpcWeb.AbstractClientBase.MethodInfo(
     Empty,
-    (request: LdapInfo) => {
+    (request: LdapSettings) => {
       return request.serializeBinary();
     },
     Empty.deserializeBinary
   );
 
-  setLdapInfo(
-    request: LdapInfo,
+  setLdapSettings(
+    request: LdapSettings,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
                response: Empty) => void) {
     return this.client_.rpcCall(
       this.hostname_ +
-        '/API.SetupService/SetLdapInfo',
+        '/API.SetupService/SetLdapSettings',
       request,
       metadata || {},
-      this.methodInfoSetLdapInfo,
+      this.methodInfoSetLdapSettings,
       callback);
   }
 
@@ -1336,6 +1292,28 @@ export class SetupServiceClient {
       callback);
   }
 
+  methodInfoCompleteSetup = new grpcWeb.AbstractClientBase.MethodInfo(
+    Empty,
+    (request: Empty) => {
+      return request.serializeBinary();
+    },
+    Empty.deserializeBinary
+  );
+
+  completeSetup(
+    request: Empty,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: Empty) => void) {
+    return this.client_.rpcCall(
+      this.hostname_ +
+        '/API.SetupService/CompleteSetup',
+      request,
+      metadata || {},
+      this.methodInfoCompleteSetup,
+      callback);
+  }
+
   methodInfoGetSetupSummary = new grpcWeb.AbstractClientBase.MethodInfo(
     SetupSummary,
     (request: Empty) => {
@@ -1355,6 +1333,28 @@ export class SetupServiceClient {
       request,
       metadata || {},
       this.methodInfoGetSetupSummary,
+      callback);
+  }
+
+  methodInfoCheckSetupPW = new grpcWeb.AbstractClientBase.MethodInfo(
+    BoolMessage,
+    (request: StringMessage) => {
+      return request.serializeBinary();
+    },
+    BoolMessage.deserializeBinary
+  );
+
+  checkSetupPW(
+    request: StringMessage,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: BoolMessage) => void) {
+    return this.client_.rpcCall(
+      this.hostname_ +
+        '/API.SetupService/CheckSetupPW',
+      request,
+      metadata || {},
+      this.methodInfoCheckSetupPW,
       callback);
   }
 
