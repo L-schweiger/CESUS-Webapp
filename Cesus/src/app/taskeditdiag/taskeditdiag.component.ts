@@ -264,8 +264,7 @@ export class TaskeditdiagComponent implements OnInit {
       const miscclient = new MiscServiceClient('/api/grpc');
       this.addtaskCourseid = this.data.id;
       miscclient.getAvailableCheckers(new Empty(), {}, (err, res) => {
-        
-        /*for (const check of res.getCheckersList()) {
+        for (const check of res.getCheckersList()) {
           console.log(check.getProgramminglanguage());
           if (check.getSupportedcheckmodesList().includes(CheckMode.OUTPUT)) {
 
@@ -275,7 +274,7 @@ export class TaskeditdiagComponent implements OnInit {
 
           }
 
-        }*/
+        }
       });
 
     } else {

@@ -53,11 +53,11 @@
           <div #pieChart></div>
 
           <div class="rating">
-            <p *ngIf="grade !== 0">
+            <p *ngIf="grade !== 0 && ratingid !== null">
               Note: {{grade}}
             </p>
 
-            <p>
+            <p *ngIf="ratingid !== null">
               Punkte: {{points}} / {{maxpoints}}
             </p>
           </div>

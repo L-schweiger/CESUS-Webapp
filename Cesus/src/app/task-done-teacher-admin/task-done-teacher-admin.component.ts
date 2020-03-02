@@ -159,7 +159,11 @@ export class TaskDoneTeacherAdminComponent implements OnInit {
         this.userfullname = res.getUser().getFirstname() + ' ' + res.getUser().getLastname();
         this.taskname = res.getTask().getName();
         this.usercomment = res.getComment();
-        this.ratingid = res.getRating().getId();
+        if (res.getRating() == null) { // if rating doesnt exist
+          this.ratingid = null;
+        } else {
+          this.ratingid = res.getRating().getId();
+        }
         this.ratinghash = res.getRating().getHash();
         this.points = res.getRating().getPoints();
         this.grade = res.getRating().getGrade();
