@@ -1,9 +1,18 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {faMinusCircle, faPlusCircle} from '@fortawesome/free-solid-svg-icons';
-import {MiscServiceClient, TaskServiceClient} from '../../grpc/CommunicationServiceClientPb';
-import {CheckMode, Empty, EvalInfo, SampleSolutionDownloadable, TaskEdit, TaskEditMessage} from '../../grpc/Communication_pb';
+import {CourseServiceClient, MiscServiceClient, TaskServiceClient} from '../../grpc/CommunicationServiceClientPb';
+import {
+  CheckMode,
+  Empty,
+  EvalInfo,
+  SampleSolutionDownloadable,
+  StringMessage,
+  TaskEdit,
+  TaskEditMessage
+} from '../../grpc/Communication_pb';
 import {Router} from '@angular/router';
+import {ConfirmdiagComponent} from '../confirmdiag/confirmdiag.component';
 import {PassdataService} from '../passdata.service';
 
 export interface MySamplesolDownloadable {
@@ -101,6 +110,7 @@ export class TaskeditdiagComponent implements OnInit {
   edittaskConsoleoutputcheck: boolean;
 
   constructor(
+    public dialog: MatDialog,
     public router: Router,
     public dialogRef: MatDialogRef<TaskeditdiagComponent>,
     private passdataservice: PassdataService,
@@ -147,7 +157,9 @@ export class TaskeditdiagComponent implements OnInit {
       if (stringtoset === 'samplesol') {
         this.addtaskSamplesolutionfile = await resFetch.text(); // set file id of samplesolutionfile
       } else if (stringtoset === 'statement') {
+        console.log(this.addtaskStatementfile);
         this.addtaskStatementfile = await resFetch.text(); // set file id of statementfile
+        console.log(this.addtaskStatementfile);
       } else if (stringtoset === 'testprogram') {
         this.addtaskTestprogram = await resFetch.text();
       }
@@ -176,9 +188,39 @@ export class TaskeditdiagComponent implements OnInit {
   }
 
   deleteUploadFromArray(filename: string) {
-    const indextodelete = this.addtaskAttachmentnameaddlist.indexOf(filename);
-    this.addtaskAttachmentaddlist.splice(indextodelete, 1);
-    this.addtaskAttachmentnameaddlist.splice(indextodelete, 1);
+    const dialogRef = this.dialog.open(ConfirmdiagComponent, {
+      width: '350px',
+      data: ''
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const indextodelete = this.addtaskAttachmentnameaddlist.indexOf(filename);
+        this.addtaskAttachmentaddlist.splice(indextodelete, 1);
+        this.addtaskAttachmentnameaddlist.splice(indextodelete, 1);
+      }
+    });
+
+  }
+
+  deleteUploadFromString(stringtodelete: string) {
+    const dialogRef = this.dialog.open(ConfirmdiagComponent, {
+      width: '350px',
+      data: ''
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (stringtodelete === 'samplesol') {
+          this.addtaskSamplesolutionfile = undefined;
+        } else if (stringtodelete === 'statement') {
+          console.log(this.addtaskStatementfile);
+          this.addtaskStatementfile = undefined;
+          console.log(this.addtaskStatementfile);
+        } else if (stringtodelete === 'testprogram') {
+          this.addtaskTestprogram = undefined;
+        }
+      }
+    });
+
   }
 
   createTask() {

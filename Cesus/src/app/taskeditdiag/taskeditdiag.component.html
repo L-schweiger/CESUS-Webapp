@@ -58,8 +58,10 @@
             </mat-card-header>
             <mat-card-content class="cardcontentscrollable">
 
-              <button mat-raised-button (click)="addFileToTaskString('statement')" class="uploadbtn">Angabe hochladen</button>
-              <button mat-raised-button (click)="addFileToTaskString('samplesol')" class="uploadbtn">Musterlösung hochladen</button>
+              <button mat-raised-button *ngIf="addtaskStatementfile == undefined" (click)="addFileToTaskString('statement')" class="uploadbtn">Angabe hochladen</button>
+              <button mat-raised-button *ngIf="addtaskStatementfile != undefined" color="primary" (click)="deleteUploadFromString('statement')" class="uploadbtn">Angabe hochgeladen</button>
+              <button mat-raised-button *ngIf="addtaskSamplesolutionfile == undefined" (click)="addFileToTaskString('samplesol')" class="uploadbtn">Musterlösung hochladen</button>
+              <button mat-raised-button *ngIf="addtaskSamplesolutionfile != undefined" color="primary" (click)="deleteUploadFromString('samplesol')" class="uploadbtn">Musterlösung hochgeladen</button>
               <button mat-raised-button (click)="addFileToTaskArray(this.addtaskAttachmentaddlist)" class="uploadbtn">Anhang hochladen</button>
 
               <mat-card class="uploadlistcontainer">
