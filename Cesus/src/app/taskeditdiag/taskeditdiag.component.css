@@ -43,3 +43,22 @@
 .mat-card{
   height: 80%;
 }
+
+.uploadlistcontainer{
+  max-height: 45%;
+}
+
+.remove{
+  margin-right: 20px;
+  color: #ff5959;
+  font-size: 150%;
+  transition: 0.5s;
+  position: absolute;
+  right: 0;
+  top: 10%;
+}
+
+.remove:hover{
+  color: #cf001c;
+  cursor: pointer;
+}

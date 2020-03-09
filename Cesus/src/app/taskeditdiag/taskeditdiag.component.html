@@ -62,6 +62,18 @@
               <button mat-raised-button (click)="addFileToTaskString('samplesol')" class="uploadbtn">Musterlösung hochladen</button>
               <button mat-raised-button (click)="addFileToTaskArray(this.addtaskAttachmentaddlist)" class="uploadbtn">Anhang hochladen</button>
 
+              <mat-card class="uploadlistcontainer">
+                <mat-card-header>
+                  <mat-card-title>Uploads</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="cardcontentscrollable">
+
+                  <mat-list role="list">
+                    <mat-list-item *ngFor="let a of addtaskAttachmentnameaddlist" role="listitem">{{a}}<fa-icon class="remove" [icon]="iconRemove" matTooltip="Entfernen" [matTooltipShowDelay]="1000" (click)="deleteUploadFromArray(a)"></fa-icon></mat-list-item>
+                  </mat-list>
+
+                </mat-card-content>
+              </mat-card>
             </mat-card-content>
           </mat-card>
 

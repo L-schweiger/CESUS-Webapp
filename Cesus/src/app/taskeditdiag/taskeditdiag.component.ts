@@ -1,5 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {faMinusCircle, faPlusCircle} from '@fortawesome/free-solid-svg-icons';
 import {MiscServiceClient, TaskServiceClient} from '../../grpc/CommunicationServiceClientPb';
 import {CheckMode, Empty, EvalInfo, SampleSolutionDownloadable, TaskEdit, TaskEditMessage} from '../../grpc/Communication_pb';
 import {Router} from '@angular/router';
@@ -32,6 +33,9 @@ export interface MyConsoleCheck {
 })
 export class TaskeditdiagComponent implements OnInit {
 
+  iconRemove = faMinusCircle;
+  iconAdd = faPlusCircle;
+
   samplesolDownloadablevalues: MySamplesolDownloadable[] = [
     {value: SampleSolutionDownloadable.YES, showtxt: 'Ja'},
     {value: SampleSolutionDownloadable.NO, showtxt: 'Nein'},
@@ -61,6 +65,7 @@ export class TaskeditdiagComponent implements OnInit {
   addtaskDeadline: Date; //
   addtaskMaxpoints: number;
   addtaskAttachmentaddlist = []; //
+  addtaskAttachmentnameaddlist = [];
   addtaskSamplesolutionfile: string; //
   addtaskStatementfile: string; //
   addtaskShowratingafterdeadline: boolean;
@@ -121,7 +126,12 @@ export class TaskeditdiagComponent implements OnInit {
 
       formData.append('file', file);
       const resFetch = await fetch('/api/files/upload', {method: 'POST', body: formData, headers: { Auth: document.cookie.replace(/(?:(?:^|.*;\s*)auth\s*\=\s*([^;]*).*$)|^.*$/, '$1')}});
+      if (filelist === this.addtaskAttachmentaddlist) {
+        this.addtaskAttachmentnameaddlist.push(file.name); // filename hinzufügen
+      }
+
       filelist.push(await resFetch.text()); // add file id to the file array passed
+
     };
   }
 
@@ -163,6 +173,12 @@ export class TaskeditdiagComponent implements OnInit {
 
   addtaskAddoutputpath() {
     this.addtaskOutputpathCheck.push(this.addtaskOutputpathCheckCurr);
+  }
+
+  deleteUploadFromArray(filename: string) {
+    const indextodelete = this.addtaskAttachmentnameaddlist.indexOf(filename);
+    this.addtaskAttachmentaddlist.splice(indextodelete, 1);
+    this.addtaskAttachmentnameaddlist.splice(indextodelete, 1);
   }
 
   createTask() {
