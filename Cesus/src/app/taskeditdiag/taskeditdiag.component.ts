@@ -79,6 +79,7 @@ export class TaskeditdiagComponent implements OnInit {
   addtaskStatementfile: string; //
   addtaskShowratingafterdeadline: boolean;
   addtaskSamplesolutiondownloadable: SampleSolutionDownloadable;
+  addtaskProgrammingLang: string;
   addtaskCheckmode: CheckMode;
   addtaskTestprogram: string;
   addtaskPrograminputs = [];
@@ -88,7 +89,9 @@ export class TaskeditdiagComponent implements OnInit {
   addtaskOutputpathCheckCurr: string;
   addtaskOutputpathCheck = [];
   addtaskConsoleoutputcheck: boolean;
-  addtaskProgrammingLang: string;
+  addtaskAvailableProgrammingLang: string[] = [];
+  addtaskAvailableCheckmode: CheckMode[][] = [];
+  addtaskAvailableCheckmodesForProgl: CheckMode[] = []; // wird beim auswählen dynamisch gesetzt
 
   edittaskName: string;
   edittaskDescription: string;
@@ -121,10 +124,25 @@ export class TaskeditdiagComponent implements OnInit {
   }
 
   test() {
-    console.log('inputs:');
     console.log(this.addtaskPrograminputs);
-    console.log('outputs:');
-    console.log();
+    console.log(this.addtaskProgramoutputs);
+  }
+
+  changeProgLang(progl: string) {
+    this.addtaskAvailableCheckmodesForProgl = []; // reset
+
+    const index = this.addtaskAvailableProgrammingLang.indexOf(progl);
+
+    if (this.addtaskAvailableCheckmode[index].includes(CheckMode.OUTPUT)) {
+      this.addtaskAvailableCheckmodesForProgl.push(CheckMode.OUTPUT);
+    }
+    if (this.addtaskAvailableCheckmode[index].includes(CheckMode.SAMPLE_SOLUTION)) {
+      this.addtaskAvailableCheckmodesForProgl.push(CheckMode.SAMPLE_SOLUTION);
+    }
+    if (this.addtaskAvailableCheckmode[index].includes(CheckMode.TEST_PROGRAM)) {
+      this.addtaskAvailableCheckmodesForProgl.push(CheckMode.TEST_PROGRAM);
+    }
+
   }
 
   addFileToTaskArray(filelist: string[]) {
@@ -183,8 +201,40 @@ export class TaskeditdiagComponent implements OnInit {
 
   }
 
+  deleteTaskPrograminput(input: string) {
+    const dialogRef = this.dialog.open(ConfirmdiagComponent, {
+      width: '350px',
+      data: ''
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const indextodelete = this.addtaskPrograminputs.indexOf(input);
+        this.addtaskPrograminputs.splice(indextodelete, 1);
+        if (this.addtaskProgramoutputs[indextodelete] !== undefined) { // wenn vorhanden, auch programoutput vom pair löschen
+          this.addtaskProgramoutputs.splice(indextodelete, 1);
+        }
+      }
+    });
+
+  }
+
   addtaskAddoutputpath() {
     this.addtaskOutputpathCheck.push(this.addtaskOutputpathCheckCurr);
+    this.addtaskOutputpathCheckCurr = undefined;
+  }
+
+  deleteTaskOutputpath(input: string) {
+    const dialogRef = this.dialog.open(ConfirmdiagComponent, {
+      width: '350px',
+      data: ''
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const indextodelete = this.addtaskOutputpathCheck.indexOf(input);
+        this.addtaskOutputpathCheck.splice(indextodelete, 1);
+      }
+    });
+
   }
 
   deleteUploadFromArray(filename: string) {
@@ -231,12 +281,12 @@ export class TaskeditdiagComponent implements OnInit {
     const Eval = new EvalInfo();
 
     if (this.addtaskCheckmode !== undefined) { // PROGRAMMING LANGUAGE SETZEN
-      //check.setProgramminglanguage(this.addtaskProgrammingLang); // TODO: selecten in der ui
-      //check.setProgramminglanguage('C#'); // HARDCODED FÜR TAMPIER!!!!!
+      // check.setProgramminglanguage(this.addtaskProgrammingLang); // TODO: selecten in der ui
+      // check.setProgramminglanguage('C#'); // HARDCODED FÜR TAMPIER!!!!!
     }
 
     // TODO: hier checker fixen nach neuer doku
-    //Eval.setChecker(check);
+    // Eval.setChecker(check);
     switch (this.addtaskCheckmode) {
       case CheckMode.OUTPUT:
         const output = new EvalInfo.Output();
@@ -300,7 +350,7 @@ export class TaskeditdiagComponent implements OnInit {
     req.setName(this.edittaskName);
     req.setDescription(this.edittaskDescription);
     req.setCourseid(this.edittaskCourseid);
-    //req.setDeadline(this.edittaskDeadline / 1000);
+    // req.setDeadline(this.edittaskDeadline / 1000);
     req.setMaxpoints(this.edittaskMaxpoints);
     req.setAttachmentsaddList(this.edittaskAttachmentaddlist);
     req.setAttachmentsremoveList(this.edittaskAttachmentremovelist);
@@ -323,15 +373,8 @@ export class TaskeditdiagComponent implements OnInit {
       this.addtaskCourseid = this.data.id;
       miscclient.getAvailableCheckers(new Empty(), {}, (err, res) => {
         for (const check of res.getCheckersList()) {
-          console.log(check.getProgramminglanguage());
-          if (check.getSupportedcheckmodesList().includes(CheckMode.OUTPUT)) {
-
-          } else if (check.getSupportedcheckmodesList().includes(CheckMode.SAMPLE_SOLUTION)) {
-
-          } else if (check.getSupportedcheckmodesList().includes(CheckMode.TEST_PROGRAM)) {
-
-          }
-
+          this.addtaskAvailableProgrammingLang.push(check.getProgramminglanguage());
+          this.addtaskAvailableCheckmode.push(check.getSupportedcheckmodesList());
         }
       });
 

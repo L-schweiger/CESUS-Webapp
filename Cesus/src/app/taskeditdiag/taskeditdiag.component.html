@@ -64,7 +64,7 @@
               <button mat-raised-button *ngIf="addtaskSamplesolutionfile != undefined" color="primary" (click)="deleteUploadFromString('samplesol')" class="uploadbtn">Musterlösung hochgeladen</button>
               <button mat-raised-button (click)="addFileToTaskArray(this.addtaskAttachmentaddlist)" class="uploadbtn">Anhang hochladen</button>
 
-              <mat-card class="uploadlistcontainer">
+              <mat-card class="uploadlistcontainer" *ngIf="addtaskAttachmentnameaddlist.length > 0">
                 <mat-card-header>
                   <mat-card-title>Uploads</mat-card-title>
                 </mat-card-header>
@@ -93,15 +93,29 @@
               </mat-form-field>
 
               <mat-form-field class="taskfields">
-                <mat-label>Prüfungsmodus</mat-label>
-                <mat-select name="samplesolDownloadable" [(ngModel)]="addtaskCheckmode" #checkm>
-                  <mat-option *ngFor="let cm of checkmodevalues" [value]="cm.value">
-                    {{cm.showtxt}}
+                <mat-label>Plugin</mat-label>
+                <mat-select name="samplesolDownloadable" [(ngModel)]="addtaskProgrammingLang" #progl>
+                  <mat-option [value]="undefined">
+                    Keines
+                  </mat-option>
+                  <mat-option *ngFor="let pl of addtaskAvailableProgrammingLang" [value]="pl" (click)="changeProgLang(pl)">
+                    {{pl}}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
 
-              <div *ngIf="checkm.value == 0">
+              <mat-form-field class="taskfields" *ngIf="progl.value !== undefined">
+                <mat-label>Prüfungsmodus</mat-label>
+                <mat-select name="samplesolDownloadable" [(ngModel)]="addtaskCheckmode" #checkm>
+                  <mat-option *ngFor="let cm of addtaskAvailableCheckmodesForProgl" [value]="cm">
+                    <span *ngIf="cm == 0">Output</span>
+                    <span *ngIf="cm == 1">Musterlösung</span>
+                    <span *ngIf="cm == 2">Testprogramm</span>
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <div *ngIf="addtaskCheckmode == 0">
                 <mat-form-field class="taskfields">
                   <input matInput class="taskfields" name="evalInput1" placeholder="Input-Parameter" [(ngModel)]="addtaskTempInput" type="text">
                 </mat-form-field>
@@ -109,13 +123,40 @@
                   <input matInput class="taskfields" name="evalOutput1" placeholder="Output-Parameter" [(ngModel)]="addtaskTempOutput" type="text">
                 </mat-form-field>
                 <button mat-raised-button (click)="addtaskProgramparamSet()" class="taskcreatebtn">Parameter hinzufügen</button>
+
+                <mat-card class="uploadlistcontainer" *ngIf="addtaskPrograminputs.length > 0 && addtaskProgramoutputs.length > 0">
+                  <mat-card-header>
+                    <mat-card-title>Input-Parameter</mat-card-title>
+                  </mat-card-header>
+                  <mat-card-content class="cardcontentscrollable">
+
+                    <mat-list role="list">
+                      <mat-list-item *ngFor="let input of addtaskPrograminputs; let i = index" role="listitem">{{addtaskPrograminputs[i]}} - {{addtaskProgramoutputs[i]}}<fa-icon class="remove" [icon]="iconRemove" matTooltip="Entfernen" [matTooltipShowDelay]="1000" (click)="deleteTaskPrograminput(input)"></fa-icon></mat-list-item>
+                    </mat-list>
+
+                  </mat-card-content>
+                </mat-card>
               </div>
 
-              <div *ngIf="checkm.value == 1">
+              <div *ngIf="addtaskCheckmode == 1">
                 <mat-form-field class="taskfields">
                   <input matInput class="taskfields" name="evalInput2" placeholder="Input-Parameter" [(ngModel)]="addtaskTempInput" type="text">
                 </mat-form-field>
                 <button mat-raised-button (click)="addtaskProgramparamSet()" class="taskcreatebtn">Parameter hinzufügen</button>
+
+                <mat-card class="uploadlistcontainer" *ngIf="addtaskPrograminputs.length > 0">
+                  <mat-card-header>
+                    <mat-card-title>Input-Parameter</mat-card-title>
+                  </mat-card-header>
+                  <mat-card-content class="cardcontentscrollable">
+
+                    <mat-list role="list">
+                      <mat-list-item *ngFor="let i of addtaskPrograminputs" role="listitem">{{i}}<fa-icon class="remove" [icon]="iconRemove" matTooltip="Entfernen" [matTooltipShowDelay]="1000" (click)="deleteTaskPrograminput(i)"></fa-icon></mat-list-item>
+                    </mat-list>
+
+                  </mat-card-content>
+                </mat-card>
+
                 <mat-form-field class="taskfields">
                   <mat-label>Konsolenoutput</mat-label>
                   <mat-select name="samplesolDownloadable" [(ngModel)]="addtaskConsoleoutputcheck">
@@ -128,10 +169,24 @@
                   <input matInput class="taskfields" name="evalInput2" placeholder="Output-Pfad" [(ngModel)]="addtaskOutputpathCheckCurr" type="text">
                 </mat-form-field>
                 <button mat-raised-button (click)="addtaskAddoutputpath()" class="taskcreatebtn">Pfad hinzufügen</button>
+
+                <mat-card class="uploadlistcontainer" *ngIf="addtaskOutputpathCheck.length > 0">
+                  <mat-card-header>
+                    <mat-card-title>Output-Pfade</mat-card-title>
+                  </mat-card-header>
+                  <mat-card-content class="cardcontentscrollable">
+
+                    <mat-list role="list">
+                      <mat-list-item *ngFor="let o of addtaskOutputpathCheck" role="listitem">{{o}}<fa-icon class="remove" [icon]="iconRemove" matTooltip="Entfernen" [matTooltipShowDelay]="1000" (click)="deleteTaskOutputpath(o)"></fa-icon></mat-list-item>
+                    </mat-list>
+
+                  </mat-card-content>
+                </mat-card>
               </div>
 
-              <div *ngIf="checkm.value == 2">
-                <button mat-raised-button (click)="addFileToTaskString('testprogram')" class="taskcreatebtn">Testprogramm hochladen</button>
+              <div *ngIf="addtaskCheckmode == 2">
+                <button mat-raised-button *ngIf="addtaskTestprogram == undefined" (click)="addFileToTaskString('testprogram')" class="taskcreatebtn">Testprogramm hochladen</button>
+                <button mat-raised-button *ngIf="addtaskTestprogram != undefined" (click)="deleteUploadFromString('testprogram')" color="primary" class="taskcreatebtn">Testprogramm hochladen</button>
               </div>
 
             </mat-card-content>
