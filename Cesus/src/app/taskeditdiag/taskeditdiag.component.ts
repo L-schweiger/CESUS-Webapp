@@ -3,6 +3,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog
 import {faMinusCircle, faPlusCircle} from '@fortawesome/free-solid-svg-icons';
 import {CourseServiceClient, MiscServiceClient, TaskServiceClient} from '../../grpc/CommunicationServiceClientPb';
 import {
+  Attachment,
   CheckMode,
   Empty,
   EvalInfo,
@@ -74,6 +75,7 @@ export class TaskeditdiagComponent implements OnInit {
   addtaskDeadline: Date; //
   addtaskMaxpoints: number;
   addtaskAttachmentaddlist = []; //
+  addtaskAttachmentaddlistFinal = [];
   addtaskAttachmentnameaddlist = [];
   addtaskSamplesolutionfile: string; //
   addtaskStatementfile: string; //
@@ -92,6 +94,7 @@ export class TaskeditdiagComponent implements OnInit {
   addtaskAvailableProgrammingLang: string[] = [];
   addtaskAvailableCheckmode: CheckMode[][] = [];
   addtaskAvailableCheckmodesForProgl: CheckMode[] = []; // wird beim auswählen dynamisch gesetzt
+  addtaskChosenProgLang: string;
 
   edittaskName: string;
   edittaskDescription: string;
@@ -124,12 +127,13 @@ export class TaskeditdiagComponent implements OnInit {
   }
 
   test() {
-    console.log(this.addtaskPrograminputs);
-    console.log(this.addtaskProgramoutputs);
+    console.log(this.addtaskCheckmode);
   }
 
   changeProgLang(progl: string) {
     this.addtaskAvailableCheckmodesForProgl = []; // reset
+
+    this.addtaskChosenProgLang = progl;
 
     const index = this.addtaskAvailableProgrammingLang.indexOf(progl);
 
@@ -278,43 +282,45 @@ export class TaskeditdiagComponent implements OnInit {
     const miscclient = new MiscServiceClient('/api/grpc');
     const req = new TaskEdit();
 
-    const Eval = new EvalInfo();
+    let Eval = new EvalInfo();
 
-    if (this.addtaskCheckmode !== undefined) { // PROGRAMMING LANGUAGE SETZEN
-      // check.setProgramminglanguage(this.addtaskProgrammingLang); // TODO: selecten in der ui
-      // check.setProgramminglanguage('C#'); // HARDCODED FÜR TAMPIER!!!!!
-    }
+    if (this.addtaskChosenProgLang !== undefined) {
+      Eval.setProgramminglanguage(this.addtaskChosenProgLang); // set programming language
 
-    // TODO: hier checker fixen nach neuer doku
-    // Eval.setChecker(check);
-    switch (this.addtaskCheckmode) {
-      case CheckMode.OUTPUT:
-        const output = new EvalInfo.Output();
-        for (const param of this.addtaskPrograminputs) {
-          output.addInputs(param);
-        }
-        for (const param of this.addtaskProgramoutputs) {
-          output.addOutputs(param);
-        }
-        Eval.setOutput(output);
-        break;
-      case CheckMode.SAMPLE_SOLUTION:
-        const samplesol = new EvalInfo.SampleSolution();
-        for (const param of this.addtaskPrograminputs) {
-          samplesol.addInputs(param);
-        }
-        for (const file of this.addtaskOutputpathCheck) {
-          samplesol.addOutputfilestocheck(file);
-        }
-        samplesol.setCheckconsoleoutput(this.addtaskConsoleoutputcheck);
+      switch (this.addtaskCheckmode) {
+        case CheckMode.OUTPUT:
+          const output = new EvalInfo.Output();
+          output.setInputsList(this.addtaskPrograminputs);
+          output.setOutputsList(this.addtaskProgramoutputs);
+          /*for (const param of this.addtaskPrograminputs) {
+            output.addInputs(param);
+          }
+          for (const param of this.addtaskProgramoutputs) {
+            output.addOutputs(param);
+          }*/
+          Eval.setOutput(output);
+          break;
+        case CheckMode.SAMPLE_SOLUTION:
+          const samplesol = new EvalInfo.SampleSolution();
+          for (const param of this.addtaskPrograminputs) {
+            samplesol.addInputs(param);
+          }
+          for (const file of this.addtaskOutputpathCheck) {
+            samplesol.addOutputfilestocheck(file);
+          }
+          samplesol.setCheckconsoleoutput(this.addtaskConsoleoutputcheck);
 
-        Eval.setSamplesolution(samplesol);
-        break;
-      case CheckMode.TEST_PROGRAM:
-        Eval.setTestprogramfile(this.addtaskTestprogram);
-        break;
+          Eval.setSamplesolution(samplesol);
+          break;
+        case CheckMode.TEST_PROGRAM:
+          Eval.setTestprogramfile(this.addtaskTestprogram);
+          break;
         default:
           break;
+      }
+
+    } else {
+      Eval = null; // auf null gesetzt, da keine automatische prüfung durchgeführt werden soll
     }
 
     req.setName(this.addtaskName);
@@ -331,15 +337,19 @@ export class TaskeditdiagComponent implements OnInit {
     req.setMaxpoints(this.addtaskMaxpoints);
     req.setEvalinfo(Eval);
     req.setCourseid(this.addtaskCourseid);
-    req.setAttachmentsaddList(this.addtaskAttachmentaddlist);
+    for (const att of this.addtaskAttachmentaddlist) { // attachmentlist umwandeln zum senden
+      const a = new Attachment();
+      a.setFile(att);
+      a.setHidden(false);
+      this.addtaskAttachmentaddlistFinal.push(a);
+    }
+    req.setAttachmentsaddList(this.addtaskAttachmentaddlistFinal); // attachmentlist senden
 
     taskclient.createTask(req, {}, (err, res) => {
-      console.log('error:');
-      console.log(err);
-      /*this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
+      this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
         this.router.navigate(['courseteacheradmin', { navid: this.addtaskCourseid}], {skipLocationChange: true});
         this.dialogRef.close();
-        });*/
+        });
     });
   }
 
