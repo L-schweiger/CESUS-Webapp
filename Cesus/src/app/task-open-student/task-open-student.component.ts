@@ -1,7 +1,15 @@
 import {Component, OnInit, NgZone, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {MiscServiceClient, SubmissionServiceClient, TaskServiceClient} from '../../grpc/CommunicationServiceClientPb';
-import {Empty, SampleSolutionDownloadable, StringMessage, Submission, SubmissionEdit, Task} from '../../grpc/Communication_pb';
+import {
+  Attachment,
+  Empty,
+  SampleSolutionDownloadable,
+  StringMessage,
+  Submission,
+  SubmissionEdit,
+  Task
+} from '../../grpc/Communication_pb';
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import {take} from 'rxjs/operators';
 import {PassdataService} from '../passdata.service';
@@ -20,7 +28,7 @@ export class TaskOpenStudentComponent implements OnInit {
   taskname: string;
   taskdescription: string;
   courseidoftask: string;
-  attachmentids = [];
+  attachmentids: Attachment[] = [];
   attachments = [];
   samplesolutionfile = [];
   statementfile = [];
@@ -132,7 +140,7 @@ export class TaskOpenStudentComponent implements OnInit {
         });
 
         for (const id of this.attachmentids) {
-          stringmsg.setStr(id);
+          stringmsg.setStr(id.getFile());
           miscclient.getFilename(stringmsg, {}, (errMisc, resMisc: StringMessage) => {
             this.attachments.push({
               attachmentid: id,

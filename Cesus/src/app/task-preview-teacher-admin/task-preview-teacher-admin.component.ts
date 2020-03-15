@@ -3,7 +3,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 import {faCheckCircle, faChevronCircleLeft, faClock, faTimesCircle} from '@fortawesome/free-solid-svg-icons';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {CourseServiceClient, MiscServiceClient, TaskServiceClient} from '../../grpc/CommunicationServiceClientPb';
-import {Course, Role, StringMessage, Task, UserPreview} from '../../grpc/Communication_pb';
+import {Attachment, Course, Role, StringMessage, Task, UserPreview} from '../../grpc/Communication_pb';
 import {PassdataService} from '../passdata.service';
 import {TaskeditdiagComponent} from '../taskeditdiag/taskeditdiag.component';
 declare var $: any;
@@ -26,7 +26,7 @@ export class TaskPreviewTeacherAdminComponent implements OnInit {
   taskusers = []; // users with submissions
   taskusersNotsubmitted: UserPreview[] = []; // users without submissions
   taskusersSubmitted: UserPreview[] = []; // temp
-  attachmentids = [];
+  attachmentids: Attachment[] = [];
   attachments = [];
   samplesolutionfile = [];
   statementfile = [];
@@ -93,7 +93,7 @@ export class TaskPreviewTeacherAdminComponent implements OnInit {
         });
 
         for (const id of this.attachmentids) {
-          stringmsg.setStr(id);
+          stringmsg.setStr(id.getFile());
           miscclient.getFilename(stringmsg, {}, (errMisc, resMisc: StringMessage) => {
             this.attachments.push({
               attachmentid: id,
