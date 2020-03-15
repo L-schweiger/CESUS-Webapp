@@ -37,7 +37,7 @@ export class TaskPreviewTeacherAdminComponent implements OnInit {
     const edittaskRef = this.dialog.open(TaskeditdiagComponent, {
       width: '80%',
       panelClass: 'dialogstyle',
-      data: {alltabs: true, id: this.courseidoftask},
+      data: {alltabs: true, id: this.courseidoftask, id2: this.taskid},
       restoreFocus: false
     });
 

@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {faMinusCircle, faPlusCircle} from '@fortawesome/free-solid-svg-icons';
-import {CourseServiceClient, MiscServiceClient, TaskServiceClient} from '../../grpc/CommunicationServiceClientPb';
+import {MiscServiceClient, TaskServiceClient} from '../../grpc/CommunicationServiceClientPb';
 import {
   Attachment,
   CheckMode,
@@ -96,24 +96,35 @@ export class TaskeditdiagComponent implements OnInit {
   addtaskAvailableCheckmodesForProgl: CheckMode[] = []; // wird beim auswählen dynamisch gesetzt
   addtaskChosenProgLang: string;
 
-  edittaskName: string;
-  edittaskDescription: string;
-  edittaskCourseid: string;
-  edittaskDeadline = new Date();
+  edittaskName: string; //
+  edittaskDescription: string; //
+  edittaskCourseid: string; //
+  edittaskDeadline: Date; //
   edittaskMaxpoints: number;
-  edittaskAttachmentaddlist = [];
+  edittaskAttachmentaddlist = []; //
+  edittaskAttachmentaddlistFinal = [];
+  edittaskAttachmentnameaddlist = [];
   edittaskAttachmentremovelist = [];
-  edittaskSamplesolutionfile: string;
-  edittaskStatementfile: string;
+  edittaskAttachmentremovelistFinal = []; // not used yet
+  edittaskSamplesolutionfile: string; //
+  edittaskStatementfile: string; //
   edittaskShowratingafterdeadline: boolean;
   edittaskSamplesolutiondownloadable: SampleSolutionDownloadable;
+  edittaskProgrammingLang: string;
   edittaskCheckmode: CheckMode;
-  edittaskTestprogram: [];
+  edittaskTestprogram: string;
   edittaskPrograminputs = [];
   edittaskProgramoutputs = [];
+  edittaskTempInput: string;
+  edittaskTempOutput: string;
   edittaskOutputpathCheckCurr: string;
   edittaskOutputpathCheck = [];
   edittaskConsoleoutputcheck: boolean;
+  edittaskAvailableProgrammingLang: string[] = [];
+  edittaskAvailableCheckmode: CheckMode[][] = [];
+  edittaskAvailableCheckmodesForProgl: CheckMode[] = []; // wird beim auswählen dynamisch gesetzt
+  edittaskChosenProgLang: string;
+  taskid: string;
 
   constructor(
     public dialog: MatDialog,
@@ -279,7 +290,6 @@ export class TaskeditdiagComponent implements OnInit {
 
   createTask() {
     const taskclient = new TaskServiceClient('/api/grpc');
-    const miscclient = new MiscServiceClient('/api/grpc');
     const req = new TaskEdit();
 
     let Eval = new EvalInfo();
@@ -385,8 +395,62 @@ export class TaskeditdiagComponent implements OnInit {
         for (const check of res.getCheckersList()) {
           this.addtaskAvailableProgrammingLang.push(check.getProgramminglanguage());
           this.addtaskAvailableCheckmode.push(check.getSupportedcheckmodesList());
+
+          this.edittaskAvailableProgrammingLang.push(check.getProgramminglanguage());
+          this.edittaskAvailableCheckmode.push(check.getSupportedcheckmodesList());
         }
       });
+
+      if (this.data.alltabs) { // wenn edit gewählt wird
+        this.taskid = this.data.id2;
+        const taskclient = new TaskServiceClient('/api/grpc');
+        const strmsg = new StringMessage();
+        strmsg.setStr(this.taskid);
+        taskclient.getTask(strmsg,{}, (err, res) => {
+          this.edittaskName = res.getName();
+          this.edittaskDescription = res.getDescription();
+          this.edittaskCourseid = res.getCourse().getId();
+          this.edittaskDeadline = new Date(res.getDeadline() * 1000);
+          this.edittaskMaxpoints = res.getMaxpoints();
+          this.edittaskAttachmentaddlist = res.getAttatchmentsList();
+          this.edittaskSamplesolutionfile = res.getSamplesolutionfile();
+          this.edittaskStatementfile = res.getStatementfile();
+          this.edittaskShowratingafterdeadline = res.getShowratingafterdeadline();
+          this.edittaskSamplesolutiondownloadable = res.getSamplesolutiondownloadable();
+          if (res.getEvalinfo() == null) {
+            this.edittaskProgrammingLang = undefined;
+          } else {
+            this.edittaskProgrammingLang = res.getEvalinfo().getProgramminglanguage();
+
+            if (res.getEvalinfo().getOutput() !== undefined) {
+              this.edittaskCheckmode = CheckMode.OUTPUT;
+              this.edittaskPrograminputs = res.getEvalinfo().getOutput().getInputsList();
+              this.edittaskProgramoutputs = res.getEvalinfo().getOutput().getOutputsList();
+            } else if (res.getEvalinfo().getSamplesolution() !== undefined) {
+              this.edittaskCheckmode = CheckMode.SAMPLE_SOLUTION;
+              this.edittaskConsoleoutputcheck = res.getEvalinfo().getSamplesolution().getCheckconsoleoutput();
+              this.edittaskPrograminputs = res.getEvalinfo().getSamplesolution().getInputsList();
+              this.edittaskOutputpathCheck = res.getEvalinfo().getSamplesolution().getOutputfilestocheckList();
+            } else if (res.getEvalinfo().getTestprogramfile() !== undefined) {
+              this.edittaskCheckmode = CheckMode.TEST_PROGRAM;
+              this.edittaskTestprogram = res.getEvalinfo().getTestprogramfile();
+            } else {
+              alert('error; you shouldnt get there');
+            }
+          }
+
+        });
+
+        // TODO: hier attachmentnamen nachladen in edittaskAttachmentnameaddlist und evtl weitere uploads
+        // TODO: methoden die bei add sind für edit nochmal machen
+        // unused:
+        // edittaskAttachmentaddlistFinal
+        // edittaskAttachmentnameaddlist
+        // edittaskAttachmentremovelist
+        // edittaskOutputpathCheckCurr
+        // edittaskAvailableCheckmodesForProgl
+        // edittaskChosenProgLang
+      }
 
     } else {
       this.router.navigate([''], { skipLocationChange: true});
