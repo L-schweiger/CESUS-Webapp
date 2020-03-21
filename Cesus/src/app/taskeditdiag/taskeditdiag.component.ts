@@ -138,7 +138,7 @@ export class TaskeditdiagComponent implements OnInit {
   }
 
   test() {
-    console.log(this.addtaskCheckmode);
+    console.log(this.edittaskSamplesolutiondownloadable);
   }
 
   changeProgLang(progl: string) {
@@ -160,6 +160,25 @@ export class TaskeditdiagComponent implements OnInit {
 
   }
 
+  changeProgLangEdit(progl: string) {
+    this.edittaskAvailableCheckmodesForProgl = []; // reset
+
+    this.edittaskChosenProgLang = progl;
+
+    const index = this.edittaskAvailableProgrammingLang.indexOf(progl);
+
+    if (this.edittaskAvailableCheckmode[index].includes(CheckMode.OUTPUT)) {
+      this.edittaskAvailableCheckmodesForProgl.push(CheckMode.OUTPUT);
+    }
+    if (this.edittaskAvailableCheckmode[index].includes(CheckMode.SAMPLE_SOLUTION)) {
+      this.edittaskAvailableCheckmodesForProgl.push(CheckMode.SAMPLE_SOLUTION);
+    }
+    if (this.edittaskAvailableCheckmode[index].includes(CheckMode.TEST_PROGRAM)) {
+      this.edittaskAvailableCheckmodesForProgl.push(CheckMode.TEST_PROGRAM);
+    }
+
+  }
+
   addFileToTaskArray(filelist: string[]) {
     document.getElementById('fileupload').click();
     document.getElementById('fileupload').onchange = async e => {
@@ -171,6 +190,24 @@ export class TaskeditdiagComponent implements OnInit {
       const resFetch = await fetch('/api/files/upload', {method: 'POST', body: formData, headers: { Auth: document.cookie.replace(/(?:(?:^|.*;\s*)auth\s*\=\s*([^;]*).*$)|^.*$/, '$1')}});
       if (filelist === this.addtaskAttachmentaddlist) {
         this.addtaskAttachmentnameaddlist.push(file.name); // filename hinzufügen
+      }
+
+      filelist.push(await resFetch.text()); // add file id to the file array passed
+
+    };
+  }
+
+  addFileToTaskArrayEdit(filelist: string[]) {
+    document.getElementById('fileupload').click();
+    document.getElementById('fileupload').onchange = async e => {
+
+      const file = (document.getElementById('fileupload') as HTMLInputElement).files[0];
+      const formData = new FormData();
+
+      formData.append('file', file);
+      const resFetch = await fetch('/api/files/upload', {method: 'POST', body: formData, headers: { Auth: document.cookie.replace(/(?:(?:^|.*;\s*)auth\s*\=\s*([^;]*).*$)|^.*$/, '$1')}});
+      if (filelist === this.edittaskAttachmentaddlist) {
+        this.edittaskAttachmentnameaddlist.push(file.name); // filename hinzufügen
       }
 
       filelist.push(await resFetch.text()); // add file id to the file array passed
@@ -199,6 +236,27 @@ export class TaskeditdiagComponent implements OnInit {
     };
   }
 
+  addFileToTaskStringEdit(stringtoset: string) {
+    document.getElementById('fileupload').click();
+    document.getElementById('fileupload').onchange = async e => {
+
+      const file = (document.getElementById('fileupload') as HTMLInputElement).files[0];
+      const formData = new FormData();
+
+      formData.append('file', file);
+      const resFetch = await fetch('/api/files/upload', {method: 'POST', body: formData, headers: { Auth: document.cookie.replace(/(?:(?:^|.*;\s*)auth\s*\=\s*([^;]*).*$)|^.*$/, '$1')}});
+      if (stringtoset === 'samplesol') {
+        this.edittaskSamplesolutionfile = await resFetch.text(); // set file id of samplesolutionfile
+      } else if (stringtoset === 'statement') {
+        console.log(this.edittaskStatementfile);
+        this.edittaskStatementfile = await resFetch.text(); // set file id of statementfile
+        console.log(this.edittaskStatementfile);
+      } else if (stringtoset === 'testprogram') {
+        this.edittaskTestprogram = await resFetch.text();
+      }
+    };
+  }
+
   addtaskProgramparamSet() {
     if (this.addtaskTempInput === undefined) {
       this.addtaskPrograminputs.push('');
@@ -212,6 +270,23 @@ export class TaskeditdiagComponent implements OnInit {
     } else {
       this.addtaskProgramoutputs.push(this.addtaskTempOutput);
       this.addtaskTempOutput = undefined;
+    }
+
+  }
+
+  addtaskProgramparamSetEdit() {
+    if (this.edittaskTempInput === undefined) {
+      this.edittaskPrograminputs.push('');
+    } else {
+      this.edittaskPrograminputs.push(this.addtaskTempInput);
+      this.edittaskTempInput = undefined;
+    }
+
+    if (this.edittaskTempOutput === undefined) {
+      this.edittaskProgramoutputs.push('');
+    } else {
+      this.edittaskProgramoutputs.push(this.addtaskTempOutput);
+      this.edittaskTempOutput = undefined;
     }
 
   }
@@ -233,9 +308,31 @@ export class TaskeditdiagComponent implements OnInit {
 
   }
 
+  deleteTaskPrograminputEdit(input: string) {
+    const dialogRef = this.dialog.open(ConfirmdiagComponent, {
+      width: '350px',
+      data: ''
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const indextodelete = this.edittaskPrograminputs.indexOf(input);
+        this.edittaskPrograminputs.splice(indextodelete, 1);
+        if (this.edittaskProgramoutputs[indextodelete] !== undefined) { // wenn vorhanden, auch programoutput vom pair löschen
+          this.edittaskProgramoutputs.splice(indextodelete, 1);
+        }
+      }
+    });
+
+  }
+
   addtaskAddoutputpath() {
     this.addtaskOutputpathCheck.push(this.addtaskOutputpathCheckCurr);
     this.addtaskOutputpathCheckCurr = undefined;
+  }
+
+  addtaskAddoutputpathEdit() {
+    this.edittaskOutputpathCheck.push(this.edittaskOutputpathCheckCurr);
+    this.edittaskOutputpathCheckCurr = undefined;
   }
 
   deleteTaskOutputpath(input: string) {
@@ -247,6 +344,20 @@ export class TaskeditdiagComponent implements OnInit {
       if (result) {
         const indextodelete = this.addtaskOutputpathCheck.indexOf(input);
         this.addtaskOutputpathCheck.splice(indextodelete, 1);
+      }
+    });
+
+  }
+
+  deleteTaskOutputpathEdit(input: string) {
+    const dialogRef = this.dialog.open(ConfirmdiagComponent, {
+      width: '350px',
+      data: ''
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const indextodelete = this.edittaskOutputpathCheck.indexOf(input);
+        this.edittaskOutputpathCheck.splice(indextodelete, 1);
       }
     });
 
@@ -267,6 +378,21 @@ export class TaskeditdiagComponent implements OnInit {
 
   }
 
+  deleteUploadFromArrayEdit(filename: string) {
+    const dialogRef = this.dialog.open(ConfirmdiagComponent, {
+      width: '350px',
+      data: ''
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const indextodelete = this.edittaskAttachmentnameaddlist.indexOf(filename);
+        this.edittaskAttachmentremovelist = this.edittaskAttachmentaddlist.splice(indextodelete, 1);
+        this.edittaskAttachmentnameaddlist.splice(indextodelete, 1);
+      }
+    });
+
+  }
+
   deleteUploadFromString(stringtodelete: string) {
     const dialogRef = this.dialog.open(ConfirmdiagComponent, {
       width: '350px',
@@ -282,6 +408,27 @@ export class TaskeditdiagComponent implements OnInit {
           console.log(this.addtaskStatementfile);
         } else if (stringtodelete === 'testprogram') {
           this.addtaskTestprogram = undefined;
+        }
+      }
+    });
+
+  }
+
+  deleteUploadFromStringEdit(stringtodelete: string) {
+    const dialogRef = this.dialog.open(ConfirmdiagComponent, {
+      width: '350px',
+      data: ''
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (stringtodelete === 'samplesol') {
+          this.edittaskSamplesolutionfile = undefined;
+        } else if (stringtodelete === 'statement') {
+          console.log(this.edittaskStatementfile);
+          this.edittaskStatementfile = undefined;
+          console.log(this.edittaskStatementfile);
+        } else if (stringtodelete === 'testprogram') {
+          this.edittaskTestprogram = undefined;
         }
       }
     });
@@ -412,7 +559,9 @@ export class TaskeditdiagComponent implements OnInit {
           this.edittaskCourseid = res.getCourse().getId();
           this.edittaskDeadline = new Date(res.getDeadline() * 1000);
           this.edittaskMaxpoints = res.getMaxpoints();
-          this.edittaskAttachmentaddlist = res.getAttatchmentsList();
+          for (const att of res.getAttatchmentsList()) { // file ids hinzufügen
+            this.edittaskAttachmentaddlist.push(att.getFile());
+          }
           this.edittaskSamplesolutionfile = res.getSamplesolutionfile();
           this.edittaskStatementfile = res.getStatementfile();
           this.edittaskShowratingafterdeadline = res.getShowratingafterdeadline();
@@ -421,6 +570,7 @@ export class TaskeditdiagComponent implements OnInit {
             this.edittaskProgrammingLang = undefined;
           } else {
             this.edittaskProgrammingLang = res.getEvalinfo().getProgramminglanguage();
+            this.changeProgLangEdit(this.edittaskProgrammingLang); // switcht die programmiersprache für auswahl entsprechend verfügbarer checkmodes
 
             if (res.getEvalinfo().getOutput() !== undefined) {
               this.edittaskCheckmode = CheckMode.OUTPUT;
@@ -435,21 +585,23 @@ export class TaskeditdiagComponent implements OnInit {
               this.edittaskCheckmode = CheckMode.TEST_PROGRAM;
               this.edittaskTestprogram = res.getEvalinfo().getTestprogramfile();
             } else {
-              alert('error; you shouldnt get there');
+              console.log('error; you shouldnt get there. please contact nobody because I dont care at all');
             }
+          }
+
+          const stringmsg = new StringMessage();
+          for (const att of this.edittaskAttachmentaddlist) {
+            stringmsg.setStr(att);
+            miscclient.getFilename(stringmsg, {}, (errMisc, resMisc: StringMessage) => {
+              this.edittaskAttachmentnameaddlist.push(resMisc.getStr());
+              console.log(resMisc.getStr());
+            });
           }
 
         });
 
-        // TODO: hier attachmentnamen nachladen in edittaskAttachmentnameaddlist und evtl weitere uploads
-        // TODO: methoden die bei add sind für edit nochmal machen
         // unused:
         // edittaskAttachmentaddlistFinal
-        // edittaskAttachmentnameaddlist
-        // edittaskAttachmentremovelist
-        // edittaskOutputpathCheckCurr
-        // edittaskAvailableCheckmodesForProgl
-        // edittaskChosenProgLang
       }
 
     } else {
