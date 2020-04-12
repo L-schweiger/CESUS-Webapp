@@ -1,7 +1,7 @@
 <div class="divcentered">
   <input type="file" style="display:none;" id="fileupload" />
 
-  <mat-tab-group mat-stretch-tabs>
+  <mat-tab-group mat-stretch-tabs [selectedIndex]="selectedTab">
     <mat-tab label="Aufgabe hinzufügen">
 
       <mat-grid-list cols="3" rowHeight="2:3">
@@ -235,7 +235,7 @@
                 </mat-form-field>
 
                 <mat-form-field>
-                  <input matInput name="addtaskDeadline" type="datetime-local" placeholder="Abgabefrist" [(ngModel)]="edittaskDeadline">
+                  <input matInput name="edittaskDeadline" type="datetime-local" placeholder="Abgabefrist" [(ngModel)]="edittaskDeadline">
                 </mat-form-field>
               </form>
               <button mat-raised-button (click)="editTask(this.taskid)" class="taskcreatebtn">Aufgabe bearbeiten</button>
@@ -252,10 +252,10 @@
             </mat-card-header>
             <mat-card-content class="cardcontentscrollable">
 
-              <button mat-raised-button *ngIf="edittaskStatementfile == undefined" (click)="addFileToTaskStringEdit('statement')" class="uploadbtn">Angabe hochladen</button>
-              <button mat-raised-button *ngIf="edittaskStatementfile != undefined" color="primary" (click)="deleteUploadFromStringEdit('statement')" class="uploadbtn">Angabe hochgeladen</button>
-              <button mat-raised-button *ngIf="edittaskSamplesolutionfile == undefined" (click)="addFileToTaskStringEdit('samplesol')" class="uploadbtn">Musterlösung hochladen</button>
-              <button mat-raised-button *ngIf="edittaskSamplesolutionfile != undefined" color="primary" (click)="deleteUploadFromStringEdit('samplesol')" class="uploadbtn">Musterlösung hochgeladen</button>
+              <button mat-raised-button *ngIf="edittaskStatementfile === ''" (click)="addFileToTaskStringEdit('statement')" class="uploadbtn">Angabe hochladen</button>
+              <button mat-raised-button *ngIf="edittaskStatementfile !== ''" color="primary" (click)="deleteUploadFromStringEdit('statement')" class="uploadbtn">Angabe hochgeladen</button>
+              <button mat-raised-button *ngIf="edittaskSamplesolutionfile === ''" (click)="addFileToTaskStringEdit('samplesol')" class="uploadbtn">Musterlösung hochladen</button>
+              <button mat-raised-button *ngIf="edittaskSamplesolutionfile !== ''" color="primary" (click)="deleteUploadFromStringEdit('samplesol')" class="uploadbtn">Musterlösung hochgeladen</button>
               <button mat-raised-button (click)="addFileToTaskArrayEdit(this.edittaskAttachmentaddlist)" class="uploadbtn">Anhang hochladen</button>
 
               <mat-card class="uploadlistcontainer" *ngIf="edittaskAttachmentnameaddlist.length > 0">
@@ -311,10 +311,10 @@
 
               <div *ngIf="edittaskCheckmode == 0">
                 <mat-form-field class="taskfields">
-                  <input matInput class="taskfields" name="evalInput1" placeholder="Input-Parameter" [(ngModel)]="edittaskTempInput" type="text">
+                  <input matInput class="taskfields" name="evalInput3" placeholder="Input-Parameter" [(ngModel)]="edittaskTempInput" type="text">
                 </mat-form-field>
                 <mat-form-field class="taskfields">
-                  <input matInput class="taskfields" name="evalOutput1" placeholder="Output-Parameter" [(ngModel)]="edittaskTempOutput" type="text">
+                  <input matInput class="taskfields" name="evalOutput2" placeholder="Output-Parameter" [(ngModel)]="edittaskTempOutput" type="text">
                 </mat-form-field>
                 <button mat-raised-button (click)="addtaskProgramparamSetEdit()" class="taskcreatebtn">Parameter hinzufügen</button>
 
@@ -334,7 +334,7 @@
 
               <div *ngIf="edittaskCheckmode == 1">
                 <mat-form-field class="taskfields">
-                  <input matInput class="taskfields" name="evalInput2" placeholder="Input-Parameter" [(ngModel)]="edittaskTempInput" type="text">
+                  <input matInput class="taskfields" name="evalInput4" placeholder="Input-Parameter" [(ngModel)]="edittaskTempInput" type="text">
                 </mat-form-field>
                 <button mat-raised-button (click)="addtaskProgramparamSetEdit()" class="taskcreatebtn">Parameter hinzufügen</button>
 

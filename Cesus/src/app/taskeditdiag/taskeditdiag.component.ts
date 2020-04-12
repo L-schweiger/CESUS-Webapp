@@ -69,6 +69,8 @@ export class TaskeditdiagComponent implements OnInit {
     {value: false, showtxt: 'Ignorieren'}
   ];
 
+  selectedTab: number;
+
   addtaskName: string; //
   addtaskDescription: string; //
   addtaskCourseid: string; //
@@ -104,10 +106,9 @@ export class TaskeditdiagComponent implements OnInit {
   edittaskAttachmentaddlist = []; //
   edittaskAttachmentaddlistFinal = [];
   edittaskAttachmentnameaddlist = [];
-  edittaskAttachmentremovelist = [];
-  edittaskAttachmentremovelistFinal = []; // not used yet
-  edittaskSamplesolutionfile: string; //
-  edittaskStatementfile: string; //
+  edittaskAttachmentremovelist: string[];
+  edittaskSamplesolutionfile = ''; //
+  edittaskStatementfile = ''; //
   edittaskShowratingafterdeadline: boolean;
   edittaskSamplesolutiondownloadable: SampleSolutionDownloadable;
   edittaskProgrammingLang: string;
@@ -138,7 +139,18 @@ export class TaskeditdiagComponent implements OnInit {
   }
 
   test() {
-    console.log(this.edittaskSamplesolutiondownloadable);
+
+    console.log('-----------------------------------------');
+    console.log('input edit');
+    console.log(this.edittaskTempInput);
+    console.log('output edit');
+    console.log(this.edittaskTempOutput);
+    console.log('input add');
+    console.log(this.addtaskTempInput);
+    console.log('output add');
+    console.log(this.addtaskTempOutput);
+    console.log('-----------------------------------------');
+
   }
 
   changeProgLang(progl: string) {
@@ -278,14 +290,14 @@ export class TaskeditdiagComponent implements OnInit {
     if (this.edittaskTempInput === undefined) {
       this.edittaskPrograminputs.push('');
     } else {
-      this.edittaskPrograminputs.push(this.addtaskTempInput);
+      this.edittaskPrograminputs.push(this.edittaskTempInput);
       this.edittaskTempInput = undefined;
     }
 
     if (this.edittaskTempOutput === undefined) {
       this.edittaskProgramoutputs.push('');
     } else {
-      this.edittaskProgramoutputs.push(this.addtaskTempOutput);
+      this.edittaskProgramoutputs.push(this.edittaskTempOutput);
       this.edittaskTempOutput = undefined;
     }
 
@@ -386,7 +398,15 @@ export class TaskeditdiagComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         const indextodelete = this.edittaskAttachmentnameaddlist.indexOf(filename);
-        this.edittaskAttachmentremovelist = this.edittaskAttachmentaddlist.splice(indextodelete, 1);
+        const tmparray = this.edittaskAttachmentaddlist.splice(indextodelete, 1);
+        console.log('filename' + filename);
+        console.log('indextodelete' + indextodelete);
+        console.log(tmparray);
+        if (this.edittaskAttachmentremovelist != null) {
+          this.edittaskAttachmentremovelist.concat(tmparray);
+        } else {
+          this.edittaskAttachmentremovelist = tmparray;
+        }
         this.edittaskAttachmentnameaddlist.splice(indextodelete, 1);
       }
     });
@@ -422,10 +442,10 @@ export class TaskeditdiagComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         if (stringtodelete === 'samplesol') {
-          this.edittaskSamplesolutionfile = undefined;
+          this.edittaskSamplesolutionfile = '';
         } else if (stringtodelete === 'statement') {
           console.log(this.edittaskStatementfile);
-          this.edittaskStatementfile = undefined;
+          this.edittaskStatementfile = '';
           console.log(this.edittaskStatementfile);
         } else if (stringtodelete === 'testprogram') {
           this.edittaskTestprogram = undefined;
@@ -470,7 +490,11 @@ export class TaskeditdiagComponent implements OnInit {
           Eval.setSamplesolution(samplesol);
           break;
         case CheckMode.TEST_PROGRAM:
-          Eval.setTestprogramfile(this.addtaskTestprogram);
+          if (this.addtaskTestprogram == null) {
+            this.passdataservice.throwError('Es muss ein Testprogramm angegeben werden!');
+          } else {
+            Eval.setTestprogramfile(this.addtaskTestprogram);
+          }
           break;
         default:
           break;
@@ -514,24 +538,126 @@ export class TaskeditdiagComponent implements OnInit {
     const taskclient = new TaskServiceClient('/api/grpc');
     const req = new TaskEdit();
     const edit = new TaskEditMessage();
-    req.setName(this.edittaskName);
-    req.setDescription(this.edittaskDescription);
-    req.setCourseid(this.edittaskCourseid);
-    // req.setDeadline(this.edittaskDeadline / 1000);
-    req.setMaxpoints(this.edittaskMaxpoints);
-    req.setAttachmentsaddList(this.edittaskAttachmentaddlist);
-    req.setAttachmentsremoveList(this.edittaskAttachmentremovelist);
-    req.setSamplesolutiondownloadable(this.edittaskSamplesolutiondownloadable);
-    req.setSamplesolutionfile(this.edittaskSamplesolutionfile);
-    req.setStatementfile(this.edittaskStatementfile);
-    req.setShowratingafterdeadline(this.edittaskShowratingafterdeadline);
-    req.setEvalinfo();
+    let Eval = new EvalInfo();
 
-    edit.setEdit(req);
-    edit.setId(taskidtoedit);
-    taskclient.editTask(edit, {}, (err, res) => {
+    // here begin of checking if something was changed
+    const strmsg = new StringMessage();
+    strmsg.setStr(this.taskid);
+    taskclient.getTask(strmsg, {}, (err, res) => {
+
+      if (this.edittaskName != null && this.edittaskName !== '') {
+        req.setName(this.edittaskName);
+      } else {
+        req.setName(res.getName());
+        this.passdataservice.throwError('Aufgabenname ist leer und wird nicht geändert');
+      }
+
+      if (this.edittaskDescription != null) {
+        req.setDescription(this.edittaskDescription);
+      } else {
+        req.setDescription(res.getDescription());
+      }
+
+      req.setCourseid(this.edittaskCourseid);
+
+      if (this.edittaskDescription != null) {
+        req.setDescription(this.edittaskDescription);
+      } else {
+        req.setDescription(res.getDescription());
+      }
+
+      if (this.edittaskDeadline !== undefined) {
+        req.setDeadline(new Date(this.edittaskDeadline).getTime() / 1000);
+      } else {
+        req.setDeadline(-1);
+      }
+
+      req.setMaxpoints(this.edittaskMaxpoints);
+
+      for (const attOnServer of res.getAttatchmentsList()) { // attachments, die schon vorhanden waren werden wieder von addlist gelöscht
+        const indextodelete = this.edittaskAttachmentaddlist.indexOf(attOnServer.getFile());
+        console.log(indextodelete);
+        if (indextodelete >= 0) {
+          this.edittaskAttachmentaddlist.splice(indextodelete, 1);
+        }
+      }
+
+      for (const att of this.edittaskAttachmentaddlist) { // attachmentlist umwandeln zum senden
+        const a = new Attachment();
+        a.setFile(att);
+        a.setHidden(false);
+        this.edittaskAttachmentaddlistFinal.push(a);
+      }
+
+      req.setAttachmentsaddList(this.edittaskAttachmentaddlistFinal); // attachmentlist senden
+      req.setAttachmentsremoveList(this.edittaskAttachmentremovelist); // attachmentremovelist senden
+
+      if (this.edittaskSamplesolutionfile === undefined) {
+        req.setSamplesolutionfile('');
+      } else {
+        req.setSamplesolutionfile(this.edittaskSamplesolutionfile);
+      }
+
+      if (this.edittaskStatementfile === undefined) {
+        req.setStatementfile('');
+      } else {
+        req.setStatementfile(this.edittaskStatementfile);
+      }
+
+      req.setShowratingafterdeadline(this.edittaskShowratingafterdeadline);
+
+      req.setSamplesolutiondownloadable(this.edittaskSamplesolutiondownloadable);
+
+      if (this.edittaskProgrammingLang == null) {
+        Eval = null; // no auto-correction
+      } else {
+        Eval.setProgramminglanguage(this.edittaskProgrammingLang);
+
+        switch (this.edittaskCheckmode) {
+          case CheckMode.OUTPUT:
+            const output = new EvalInfo.Output();
+            output.setInputsList(this.edittaskPrograminputs);
+            output.setOutputsList(this.edittaskProgramoutputs);
+            Eval.setOutput(output);
+            break;
+          case CheckMode.SAMPLE_SOLUTION:
+            const samplesol = new EvalInfo.SampleSolution();
+            for (const param of this.edittaskPrograminputs) {
+              samplesol.addInputs(param);
+            }
+            for (const file of this.edittaskOutputpathCheck) {
+              samplesol.addOutputfilestocheck(file);
+            }
+            samplesol.setCheckconsoleoutput(this.edittaskConsoleoutputcheck);
+
+            Eval.setSamplesolution(samplesol);
+            break;
+          case CheckMode.TEST_PROGRAM:
+            if (this.edittaskTestprogram != null) {
+              Eval.setTestprogramfile(this.edittaskTestprogram);
+            }
+            break;
+          default:
+            Eval = null;
+            console.log('well you shouldnt get there');
+            break;
+        }
+
+      }
+
+      req.setEvalinfo(Eval);
+      edit.setEdit(req);
+      edit.setId(taskidtoedit);
+      edit.setHash(res.getHash());
+      taskclient.editTask(edit, {}, (err2, res2) => {
+        this.router.navigateByUrl('/', { skipLocationChange: true}).then(() => {
+          this.router.navigate(['courseteacheradmin', { navid: this.addtaskCourseid}], {skipLocationChange: true});
+          this.dialogRef.close();
+        });
+      });
 
     });
+    // here end
   }
 
   ngOnInit() {
@@ -549,6 +675,8 @@ export class TaskeditdiagComponent implements OnInit {
       });
 
       if (this.data.alltabs) { // wenn edit gewählt wird
+        this.selectedTab = 1;
+
         this.taskid = this.data.id2;
         const taskclient = new TaskServiceClient('/api/grpc');
         const strmsg = new StringMessage();
@@ -599,9 +727,8 @@ export class TaskeditdiagComponent implements OnInit {
           }
 
         });
-
-        // unused:
-        // edittaskAttachmentaddlistFinal
+      } else {
+        this.selectedTab = 0;
       }
 
     } else {
