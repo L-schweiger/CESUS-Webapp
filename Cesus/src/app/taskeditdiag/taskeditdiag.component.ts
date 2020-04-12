@@ -141,14 +141,7 @@ export class TaskeditdiagComponent implements OnInit {
   test() {
 
     console.log('-----------------------------------------');
-    console.log('input edit');
-    console.log(this.edittaskTempInput);
-    console.log('output edit');
-    console.log(this.edittaskTempOutput);
-    console.log('input add');
-    console.log(this.addtaskTempInput);
-    console.log('output add');
-    console.log(this.addtaskTempOutput);
+    console.log(this.edittaskDeadline.toISOString());
     console.log('-----------------------------------------');
 
   }
