@@ -1,0 +1,20 @@
+.continueIcon{
+  color: #67de61;
+  font-size: 300%;
+  transition: 0.5s;
+}
+
+.continueIcon:hover{
+  color: #3d9c3d;
+  cursor: pointer;
+}
+
+.divcenteredsetup{
+  margin-top: 10%;
+  height: 90%;
+  text-align: center;
+}
+
+.setupform{
+  margin-top: 3%;
+}

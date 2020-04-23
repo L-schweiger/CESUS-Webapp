@@ -10,6 +10,7 @@ import {TaskPreviewTeacherAdminComponent} from './task-preview-teacher-admin/tas
 import {TaskOpenStudentComponent} from './task-open-student/task-open-student.component';
 import {TaskDoneTeacherAdminComponent} from './task-done-teacher-admin/task-done-teacher-admin.component';
 import {TaskDoneStudentComponent} from './task-done-student/task-done-student.component';
+import {SetupComponent} from './setup/setup.component';
 
 
 const routes: Routes = [
@@ -21,7 +22,8 @@ const routes: Routes = [
   {path: 'taskpreviewteacheradmin', component: TaskPreviewTeacherAdminComponent},
   {path: 'taskopenstudent', component: TaskOpenStudentComponent},
   {path: 'taskdoneteacheradmin', component: TaskDoneTeacherAdminComponent},
-  {path: '', component: LoginComponent},
+  {path: 'login', component: LoginComponent},
+  {path: '', component: SetupComponent},
   {path: 'taskdonestudent', component: TaskDoneStudentComponent},
   {path: '**', component: LoginComponent}
 ];

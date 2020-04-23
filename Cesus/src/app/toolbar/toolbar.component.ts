@@ -27,6 +27,7 @@ export class ToolbarComponent {
   logout() {
     document.cookie = 'auth=; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     document.cookie = 'userid=; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'SetupPW=; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     this.passdataservice.fullname = null;
     this.passdataservice.showtoolbar = false;
     this.router.navigate([''], { skipLocationChange: true});

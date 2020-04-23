@@ -35,6 +35,7 @@ import { GroupeditdiagComponent } from './groupeditdiag/groupeditdiag.component'
 import { UsereditdiagComponent } from './usereditdiag/usereditdiag.component';
 import { SettingsdiagComponent } from './settingsdiag/settingsdiag.component';
 import { ConfirmdiagComponent } from './confirmdiag/confirmdiag.component';
+import { SetupComponent } from './setup/setup.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { ConfirmdiagComponent } from './confirmdiag/confirmdiag.component';
     GroupeditdiagComponent,
     UsereditdiagComponent,
     SettingsdiagComponent,
-    ConfirmdiagComponent
+    ConfirmdiagComponent,
+    SetupComponent
   ],
   entryComponents: [
     ShowErrorComponent,

@@ -1,0 +1,14 @@
+<div class="divcenteredsetup">
+  <img src="/assets/LogoSingleC.png" height="25%" width="auto" alt="Logo">
+  <form name="setupform" class="setupform" (submit)="continueSetup(this.currsetupstate)">
+    <mat-form-field>
+      <input matInput [formControl]="passwordFormControl" name="passwordinput" placeholder="Setup-Passwort" [(ngModel)]="setuppw" type="password">
+      <mat-error *ngIf="passwordFormControl.hasError('nullValidator') && !passwordFormControl.hasError('required')">Passwort benötigt!</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-checkbox name="remember" color="primary">Eingeloggt bleiben</mat-checkbox>
+    <br><br>
+    <button type="submit" style="visibility: hidden"></button>
+    <span><fa-icon class="continueIcon" [icon]="iconContinue" (click)="continueSetup(this.currsetupstate)"></fa-icon></span>
+  </form>
+</div>
