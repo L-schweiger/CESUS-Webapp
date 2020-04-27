@@ -1,12 +1,102 @@
 <div class="divcenteredsetup">
-  <img src="/assets/LogoSingleC.png" height="25%" width="auto" alt="Logo">
-  <form name="setupform" class="setupform" (submit)="continueSetup(this.currsetupstate)">
+  <img src="/assets/LogoSingleC.png" height="25%" width="auto" alt="Logo" *ngIf="currsetupstate !== 6">
+
+  <!--SETUP UNCONFIGURED-->
+  <form name="setupform0" class="setupform" (submit)="continueSetup(this.currsetupstate)" *ngIf="currsetupstate === 0">
     <mat-form-field>
       <input matInput [formControl]="passwordFormControl" name="passwordinput" placeholder="Setup-Passwort" [(ngModel)]="setuppw" type="password">
       <mat-error *ngIf="passwordFormControl.hasError('nullValidator') && !passwordFormControl.hasError('required')">Passwort benötigt!</mat-error>
     </mat-form-field>
     <br>
-    <mat-checkbox name="remember" color="primary">Eingeloggt bleiben</mat-checkbox>
+    <mat-form-field>
+      <input matInput name="dbinput" placeholder="Datenbank" [(ngModel)]="dbDatabase" type="text">
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <input matInput name="dbaddressinput" placeholder="Datenbank-Adresse" [(ngModel)]="dbAddress" type="text">
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <input matInput name="dbuserinput" placeholder="Datenbank-Benutzer" [(ngModel)]="dbUsername" type="text">
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <input matInput name="dbpasswordinput" placeholder="Datenbank-Passwort" [(ngModel)]="dbPassword" type="password">
+    </mat-form-field>
+    <br><br>
+    <button type="submit" style="visibility: hidden"></button>
+    <span><fa-icon class="continueIcon" [icon]="iconContinue" (click)="continueSetup(this.currsetupstate)"></fa-icon></span>
+  </form>
+  <!--SETUP DATABASE_CONFIGURED-->
+  <form name="setupform1" class="setupform" (submit)="continueSetup(this.currsetupstate)" *ngIf="currsetupstate === 1">
+    <mat-form-field>
+      <input matInput [formControl]="passwordFormControl" name="adminpasswordinput" placeholder="Admin-Passwort" [(ngModel)]="adminPassword" type="password">
+      <mat-error *ngIf="passwordFormControl.hasError('nullValidator') && !passwordFormControl.hasError('required')">Passwort benötigt!</mat-error>
+    </mat-form-field>
+    <br><br>
+    <button type="submit" style="visibility: hidden"></button>
+    <span><fa-icon class="continueIcon" [icon]="iconContinue" (click)="continueSetup(this.currsetupstate)"></fa-icon></span>
+  </form>
+  <!--SETUP ADMIN_CONFIGURED-->
+  <form name="setupform2" class="setupform" (submit)="continueSetup(this.currsetupstate)" *ngIf="currsetupstate === 2">
+    <mat-form-field>
+      <input matInput name="sslpasswordinput" placeholder="SSL-Passwort" [(ngModel)]="sslPassword" type="password">
+    </mat-form-field>
+    <br>
+    <input name="inpt" (change)="uploadSslfile()" type="file" style="display:none;" id="fileupload" #fileupload />
+    <mat-form-field>
+      <button class="submitTaskBtn" mat-raised-button (click)="fileupload.click()">SSL-Upload</button>
+    </mat-form-field>
+    <br><br>
+    <button type="submit" style="visibility: hidden"></button>
+    <span *ngIf="sslFile != null"><fa-icon class="continueIcon" [icon]="iconContinue" (click)="continueSetup(this.currsetupstate)"></fa-icon></span>
+  </form>
+  <!--SETUP SSL_CONFIGURED-->
+  <form name="setupform3" class="setupform" (submit)="continueSetup(this.currsetupstate)" *ngIf="currsetupstate === 3">
+    <mat-form-field>
+      <input matInput name="ldapgroupprefixinput" placeholder="Gruppenprefix" [(ngModel)]="ldapGroupprefix" type="text">
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <input matInput name="ldapadmingroupinput" placeholder="Admin-Gruppe" [(ngModel)]="ldapAdminsgroup" type="text">
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <input matInput name="ldapteachergroupinput" placeholder="Lehrer-Gruppe" [(ngModel)]="ldapTeachersgroup" type="text">
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <input matInput name="ldapstudentgroupinput" placeholder="Schüler-Gruppe" [(ngModel)]="ldapStudentsgroup" type="text">
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <input matInput name="ldapserverinput" placeholder="LDAP-Server" [(ngModel)]="ldapServer" type="text">
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <input matInput name="ldapuserinput" placeholder="LDAP-Benutzer" [(ngModel)]="ldapUsername" type="text">
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <input matInput name="ldappasswordinput" placeholder="LDAP-Passwort" [(ngModel)]="ldapPassword" type="password">
+    </mat-form-field>
+    <br><br>
+    <button type="submit" style="visibility: hidden"></button>
+    <span><fa-icon class="continueIcon" [icon]="iconContinue" (click)="continueSetup(this.currsetupstate)"></fa-icon></span>
+  </form>
+  <!--SETUP LDAP_CONFIGURED-->
+  <form name="setupform4" class="setupform" (submit)="continueSetup(this.currsetupstate)" *ngIf="currsetupstate === 4">
+    <mat-form-field>
+      <input matInput name="concurrexecinput" placeholder="Gleichzeitige Ausführungen" [(ngModel)]="generalConcurrentexecutioncount" type="number" min="0">
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <input matInput name="jobexectimeinput" placeholder="Job-Ausführungszeit" [(ngModel)]="generalJobexecutiontime" type="number" min="0">
+    </mat-form-field>
+    <br><br>
+    <mat-checkbox name="hstsinput" color="primary" [(ngModel)]="generalUsehsts">Use Hosts</mat-checkbox>
+    <br><br>
+    <mat-checkbox name="evalasjobinput" color="primary" [(ngModel)]="generalExecuteevalasjob">Auswertung als Job</mat-checkbox>
     <br><br>
     <button type="submit" style="visibility: hidden"></button>
     <span><fa-icon class="continueIcon" [icon]="iconContinue" (click)="continueSetup(this.currsetupstate)"></fa-icon></span>

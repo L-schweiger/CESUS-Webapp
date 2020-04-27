@@ -22,8 +22,8 @@ const routes: Routes = [
   {path: 'taskpreviewteacheradmin', component: TaskPreviewTeacherAdminComponent},
   {path: 'taskopenstudent', component: TaskOpenStudentComponent},
   {path: 'taskdoneteacheradmin', component: TaskDoneTeacherAdminComponent},
-  {path: 'login', component: LoginComponent},
-  {path: '', component: SetupComponent},
+  {path: '', component: LoginComponent},
+  {path: 'setup', component: SetupComponent},
   {path: 'taskdonestudent', component: TaskDoneStudentComponent},
   {path: '**', component: LoginComponent}
 ];

@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {faChevronCircleRight} from '@fortawesome/free-solid-svg-icons';
 import {FormControl, Validators} from '@angular/forms';
-import {ActivatedRoute, ParamMap, Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {PassdataService} from '../passdata.service';
-import {MiscServiceClient, SetupServiceClient, SubmissionServiceClient} from '../../grpc/CommunicationServiceClientPb';
+import {SetupServiceClient} from '../../grpc/CommunicationServiceClientPb';
 import {
   ADImportSettings,
   DatabaseConnectionSettings,
-  Empty, GeneralSettingsMessage, LdapSettings,
+  Empty,
+  GeneralSettingsMessage,
+  LdapSettings,
   SetupState,
   SslCredentialsMessage,
-  StringMessage, Submission, SubmissionEdit
+  StringMessage
 } from '../../grpc/Communication_pb';
 
 @Component({
@@ -19,6 +21,7 @@ import {
   styleUrls: ['./setup.component.css']
 })
 export class SetupComponent implements OnInit {
+
   iconContinue = faChevronCircleRight;
   setuppw: string;
   currsetupstate: SetupState;
@@ -162,6 +165,7 @@ export class SetupComponent implements OnInit {
             setupclient.setGeneralSettings(generalsets, {}, (err2, res2) => {
               if (err2 == null) {
                 this.currsetupstate = SetupState.GENERAL_CONFIGURED;
+                this.continueSetup(this.currsetupstate);
               } else {
                 this.passdataservice.throwError('Ein Fehler ist aufgetreten!');
               }
@@ -223,12 +227,12 @@ export class SetupComponent implements OnInit {
     setupclient.getState(empty, {}, (err, res) => {
 
       if (res.getState() === SetupState.COMPLETE) {
-          //this.redirectToLogin();
+        this.currsetupstate = res.getState();
+        this.redirectToLogin();
       } else {
         this.currsetupstate = res.getState();
       }
     });
-
   }
 
 }
