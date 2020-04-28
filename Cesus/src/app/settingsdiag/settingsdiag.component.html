@@ -27,8 +27,10 @@
             </mat-form-field>
 
             <br>
+            <div>
+              <button mat-raised-button type="submit" class="applysettingsbtn">Übernehmen</button>
+            </div>
 
-            <button mat-raised-button type="submit" class="applysettingsbtn">Übernehmen</button>
           </form>
 
         </mat-card-content>
@@ -39,29 +41,101 @@
 
       <mat-card class="card2">
         <mat-card-header>
-          <mat-card-title>Gruppen hinzufügen</mat-card-title>
+          <mat-card-title>Allgemein & Datenbank</mat-card-title>
         </mat-card-header>
-        <mat-card-content class="cardcontentscrollable">
+        <mat-card-content class="description">
 
-          <mat-selection-list [(ngModel)]="addcourseGroupaddlist" color="primary">
-            <mat-list-option *ngFor="let g of allgroupslist" [value]="g.array[0]">{{g.array[1]}}</mat-list-option>
-          </mat-selection-list>
+          <form name="general" class="settingfields" (submit)="performEdit()">
+            <mat-form-field>
+              <input matInput name="concurrexecinput" class="settingfields" placeholder="Gleichzeitige Ausführungen" [(ngModel)]="generalConcurrentexecutioncount" type="number" min="0">
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+              <input matInput name="jobexectimeinput" class="settingfields" placeholder="Job-Ausführungszeit" [(ngModel)]="generalJobexecutiontime" type="number" min="0">
+            </mat-form-field>
+            <br>
+            <mat-checkbox name="hstsinput" class="settingfields" color="primary" [(ngModel)]="generalUsehsts">Use Hosts</mat-checkbox>
+            <br>
+            <mat-checkbox name="evalasjobinput" class="settingfields" color="primary" [(ngModel)]="generalExecuteevalasjob">Auswertung als Job</mat-checkbox>
+            <br><br>
+            <mat-form-field>
+              <input matInput name="dbinput" [disabled]="true" class="settingfields" placeholder="Datenbank" [(ngModel)]="dbDatabase" type="text">
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+              <input matInput name="dbaddressinput" [disabled]="true" class="settingfields" placeholder="Datenbank-Adresse" [(ngModel)]="dbAddress" type="text">
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+              <input matInput name="dbuserinput" [disabled]="true" class="settingfields" placeholder="Datenbank-Benutzer" [(ngModel)]="dbUsername" type="text">
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+              <input matInput name="dbpasswordinput" [disabled]="true" class="settingfields" placeholder="Datenbank-Passwort" [(ngModel)]="dbPassword" type="password">
+            </mat-form-field>
+
+            <div>
+              <button mat-raised-button type="submit" class="applysettingsbtn" (click)="performEdit()">Übernehmen</button>
+            </div>
+          </form>
+
 
         </mat-card-content>
-      </mat-card>
+      </mat-card><br>
 
     </mat-grid-tile>
     <mat-grid-tile>
 
       <mat-card class="card2">
         <mat-card-header>
-          <mat-card-title>Benutzer hinzufügen</mat-card-title>
+          <mat-card-title>LDAP & SSL</mat-card-title>
         </mat-card-header>
-        <mat-card-content class="cardcontentscrollable">
+        <mat-card-content class="description">
 
-          <mat-selection-list [(ngModel)]="addcourseUseraddlist" color="primary">
-            <mat-list-option *ngFor="let u of alluserslist" [value]="u.array[0]">{{u.array[2]}} {{u.array[1]}}</mat-list-option>
-          </mat-selection-list>
+          <form name="ldap" class="settingfields" (submit)="performEdit()">
+            <mat-form-field>
+              <input matInput name="ldapgroupprefixinput" class="settingfields" placeholder="Gruppenprefix" [(ngModel)]="ldapGroupprefix" type="text">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput name="ldapadmingroupinput" class="settingfields" placeholder="Admin-Gruppe" [(ngModel)]="ldapAdminsgroup" type="text">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput name="ldapteachergroupinput" class="settingfields" placeholder="Lehrer-Gruppe" [(ngModel)]="ldapTeachersgroup" type="text">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput name="ldapstudentgroupinput" class="settingfields" placeholder="Schüler-Gruppe" [(ngModel)]="ldapStudentsgroup" type="text">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput name="ldapserverinput" class="settingfields" placeholder="LDAP-Server" [(ngModel)]="ldapServer" type="text">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput name="ldapuserinput" class="settingfields" placeholder="LDAP-Benutzer" [(ngModel)]="ldapUsername" type="text">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput name="ldappasswordinput" class="settingfields" placeholder="LDAP-Passwort" [(ngModel)]="ldapPassword" type="password">
+            </mat-form-field>
+
+            <mat-form-field>
+              <input matInput name="sslCmn" class="settingfields" [disabled]="true" placeholder="Commonname" [(ngModel)]="sslCommonname" type="text">
+            </mat-form-field>
+
+            <mat-form-field>
+              <input matInput name="sslThmb" class="settingfields" [disabled]="true" placeholder="Thumbprint" [(ngModel)]="sslThumbprint" type="text">
+            </mat-form-field>
+
+            <mat-form-field>
+              <input matInput name="sslpasswordinput" class="settingfields" placeholder="SSL-Passwort" [(ngModel)]="sslPassword" type="password">
+            </mat-form-field>
+
+            <input name="inpt" (change)="uploadSslfile()" type="file" style="display:none;" id="fileupload1" #fileupload />
+            <button class="submitTaskBtn" mat-raised-button (click)="fileupload.click()">SSL-Upload</button>
+            <br>
+
+            <div>
+              <button mat-raised-button type="submit" class="applysettingsbtn" (click)="performEdit()">Übernehmen</button>
+            </div>
+
+          </form>
         </mat-card-content>
       </mat-card>
 
@@ -95,8 +169,9 @@
             </mat-form-field>
 
             <br>
-
-            <button mat-raised-button type="submit" class="applysettingsbtn">Übernehmen</button>
+            <div>
+              <button mat-raised-button type="submit" class="applysettingsbtn">Übernehmen</button>
+            </div>
           </form>
 
         </mat-card-content>
