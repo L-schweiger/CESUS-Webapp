@@ -43,7 +43,6 @@ export class CourseTeacherAdminComponent implements OnInit {
     });
 
     createtaskRef.afterClosed().subscribe(result => {
-      console.log('diag closed');
 
     });
   }
@@ -57,7 +56,6 @@ export class CourseTeacherAdminComponent implements OnInit {
     });
 
     editcourseRef.afterClosed().subscribe(result => {
-      console.log('diag closed');
 
     });
   }

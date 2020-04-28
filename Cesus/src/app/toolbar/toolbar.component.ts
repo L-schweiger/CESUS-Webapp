@@ -38,7 +38,6 @@ export class ToolbarComponent {
     });
 
     settingsRef.afterClosed().subscribe(result => {
-      console.log('diag closed');
     });
   }
 }

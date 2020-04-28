@@ -32,7 +32,6 @@ export class DashboardTeacherComponent implements OnInit {
     });
 
     editcourseRef.afterClosed().subscribe(result => {
-      console.log('diag closed');
 
     });
   }

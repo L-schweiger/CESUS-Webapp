@@ -170,7 +170,6 @@ export class TaskDoneStudentComponent implements OnInit {
           stringmsg.setStr(this.submissionfile[0]);
           miscclient.getFilename(stringmsg, {}, (errMisc, resMisc: StringMessage) => {
             this.submissionfile[1] = resMisc.getStr();
-            console.log('submission: ' + this.submissionfile[1]);
           });
 
           stringmsg.setStr(res.getTask().getId());

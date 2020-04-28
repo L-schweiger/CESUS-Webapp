@@ -138,14 +138,6 @@ export class TaskeditdiagComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  test() {
-
-    console.log('-----------------------------------------');
-    console.log(this.edittaskDeadline.toISOString());
-    console.log('-----------------------------------------');
-
-  }
-
   changeProgLang(progl: string) {
     this.addtaskAvailableCheckmodesForProgl = []; // reset
 
@@ -232,9 +224,7 @@ export class TaskeditdiagComponent implements OnInit {
       if (stringtoset === 'samplesol') {
         this.addtaskSamplesolutionfile = await resFetch.text(); // set file id of samplesolutionfile
       } else if (stringtoset === 'statement') {
-        console.log(this.addtaskStatementfile);
         this.addtaskStatementfile = await resFetch.text(); // set file id of statementfile
-        console.log(this.addtaskStatementfile);
       } else if (stringtoset === 'testprogram') {
         this.addtaskTestprogram = await resFetch.text();
       }
@@ -253,9 +243,7 @@ export class TaskeditdiagComponent implements OnInit {
       if (stringtoset === 'samplesol') {
         this.edittaskSamplesolutionfile = await resFetch.text(); // set file id of samplesolutionfile
       } else if (stringtoset === 'statement') {
-        console.log(this.edittaskStatementfile);
         this.edittaskStatementfile = await resFetch.text(); // set file id of statementfile
-        console.log(this.edittaskStatementfile);
       } else if (stringtoset === 'testprogram') {
         this.edittaskTestprogram = await resFetch.text();
       }
@@ -392,9 +380,6 @@ export class TaskeditdiagComponent implements OnInit {
       if (result) {
         const indextodelete = this.edittaskAttachmentnameaddlist.indexOf(filename);
         const tmparray = this.edittaskAttachmentaddlist.splice(indextodelete, 1);
-        console.log('filename' + filename);
-        console.log('indextodelete' + indextodelete);
-        console.log(tmparray);
         if (this.edittaskAttachmentremovelist != null) {
           this.edittaskAttachmentremovelist.concat(tmparray);
         } else {
@@ -416,9 +401,7 @@ export class TaskeditdiagComponent implements OnInit {
         if (stringtodelete === 'samplesol') {
           this.addtaskSamplesolutionfile = undefined;
         } else if (stringtodelete === 'statement') {
-          console.log(this.addtaskStatementfile);
           this.addtaskStatementfile = undefined;
-          console.log(this.addtaskStatementfile);
         } else if (stringtodelete === 'testprogram') {
           this.addtaskTestprogram = undefined;
         }
@@ -437,9 +420,7 @@ export class TaskeditdiagComponent implements OnInit {
         if (stringtodelete === 'samplesol') {
           this.edittaskSamplesolutionfile = '';
         } else if (stringtodelete === 'statement') {
-          console.log(this.edittaskStatementfile);
           this.edittaskStatementfile = '';
-          console.log(this.edittaskStatementfile);
         } else if (stringtodelete === 'testprogram') {
           this.edittaskTestprogram = undefined;
         }
@@ -569,7 +550,6 @@ export class TaskeditdiagComponent implements OnInit {
 
       for (const attOnServer of res.getAttatchmentsList()) { // attachments, die schon vorhanden waren werden wieder von addlist gelöscht
         const indextodelete = this.edittaskAttachmentaddlist.indexOf(attOnServer.getFile());
-        console.log(indextodelete);
         if (indextodelete >= 0) {
           this.edittaskAttachmentaddlist.splice(indextodelete, 1);
         }
@@ -632,7 +612,6 @@ export class TaskeditdiagComponent implements OnInit {
             break;
           default:
             Eval = null;
-            console.log('well you shouldnt get there');
             break;
         }
 
@@ -715,7 +694,6 @@ export class TaskeditdiagComponent implements OnInit {
             stringmsg.setStr(att);
             miscclient.getFilename(stringmsg, {}, (errMisc, resMisc: StringMessage) => {
               this.edittaskAttachmentnameaddlist.push(resMisc.getStr());
-              console.log(resMisc.getStr());
             });
           }
 

@@ -106,7 +106,6 @@ export class TaskOpenStudentComponent implements OnInit {
         this.taskname = res.getName();
         this.taskdescription = res.getDescription();
         this.courseidoftask = res.getCourse().getId();
-        console.log('courseidoftask beim getten ist:' + this.courseidoftask);
         this.attachmentids = res.getAttatchmentsList();
         this.samplesolutionfile[0] = res.getSamplesolutionfile();
         this.statementfile[0] = res.getStatementfile();
@@ -150,7 +149,6 @@ export class TaskOpenStudentComponent implements OnInit {
         }
 
       });
-      console.log('passed deadline:' + this.deadlinePassed);
     } else {
       this.router.navigate([''], { skipLocationChange: true});
     }

@@ -177,7 +177,6 @@ export class TaskDoneTeacherAdminComponent implements OnInit {
         stringmsg.setStr(this.submissionfile[0]);
         miscclient.getFilename(stringmsg, {}, (errMisc, resMisc: StringMessage) => {
           this.submissionfile[1] = resMisc.getStr();
-          console.log('submission: ' + this.submissionfile[1]);
         });
 
         stringmsg.setStr(res.getTask().getId());
@@ -202,7 +201,6 @@ export class TaskDoneTeacherAdminComponent implements OnInit {
           stringmsg.setStr(this.samplesolutionfile[0]);
           miscclient.getFilename(stringmsg, {}, (errMisc2, resMisc2: StringMessage) => {
             this.samplesolutionfile[1] = resMisc2.getStr();
-            console.log('sample: ' + this.samplesolutionfile[1]);
           });
 
           this.drawChart();

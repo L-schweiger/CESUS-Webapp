@@ -31,9 +31,7 @@ export class CourseStudentComponent implements OnInit {
     stringmsg.setStr(navtaskid);
 
     taskclient.getTask(stringmsg, {}, (errTask, resTask: Task) => {
-      console.log('case 1');
       const allsubmissions = resTask.getSubmissionsList();
-      console.log(resTask.getSubmissionsList());
       if (allsubmissions[0] !== null && allsubmissions[0] !== undefined) {
         this.passdataservice.navFw('coursestudent', this.courseid);
         this.router.navigate(['taskdonestudent', { navid: allsubmissions[0].getId()}], {skipLocationChange: true});

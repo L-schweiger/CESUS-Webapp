@@ -28,7 +28,6 @@ export class PassdataService {
     const param = this.navigationStackParam.pop();
 
     this.router.navigate([path, { navid: param}], {skipLocationChange: true});
-    console.log('zu: ' + path + ' mit param: ' + param);
   }
 
   navBack(currComponentRoute: string, param: string) {
@@ -57,7 +56,6 @@ export class PassdataService {
         this.router.navigate(['coursestudent', { navid: param}], {skipLocationChange: true});
         break;
       default:
-        console.log('routing error from: ' + currComponentRoute);
         break;
     }
   }

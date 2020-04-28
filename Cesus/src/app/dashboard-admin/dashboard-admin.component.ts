@@ -38,7 +38,6 @@ export class DashboardAdminComponent implements OnInit {
     });
 
     editcourseRef.afterClosed().subscribe(result => {
-      console.log('diag closed');
 
     });
   }
@@ -52,7 +51,6 @@ export class DashboardAdminComponent implements OnInit {
     });
 
     edituserRef.afterClosed().subscribe(result => {
-      console.log('diag closed');
 
     });
   }
@@ -66,7 +64,6 @@ export class DashboardAdminComponent implements OnInit {
     });
 
     editgroupRef.afterClosed().subscribe(result => {
-      console.log('diag closed');
 
     });
   }
@@ -126,7 +123,6 @@ export class DashboardAdminComponent implements OnInit {
 
       courseclient.getCoursesForDashboard(emptyreq, {}, (err, res) => {
         this.courselist = res.getCoursesList();
-        console.log(this.courselist);
       });
 
       groupclient.getGroups(emptyreq, {}, (err2, res2: GroupsMessage) => {

@@ -42,7 +42,6 @@ export class TaskPreviewTeacherAdminComponent implements OnInit {
     });
 
     edittaskRef.afterClosed().subscribe(result => {
-      console.log('diag closed');
 
     });
   }
@@ -117,7 +116,6 @@ export class TaskPreviewTeacherAdminComponent implements OnInit {
               this.taskusersNotsubmitted.splice(index, 1);
             }
           }
-          console.log(this.taskusers[0]);
         });
       });
     } else {
