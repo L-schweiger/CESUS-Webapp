@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import {CourseServiceClient, GroupServiceClient, TaskServiceClient, UserServiceClient} from '../../grpc/CommunicationServiceClientPb';
-import {Course, CoursesMessage, Empty, GroupsMessage, StringMessage, TasksMessage, User} from '../../grpc/Communication_pb';
+import {CourseServiceClient, TaskServiceClient, UserServiceClient} from '../../grpc/CommunicationServiceClientPb';
+import {Empty, StringMessage, TasksMessage, User} from '../../grpc/Communication_pb';
 import {PassdataService} from '../passdata.service';
 declare var $: any;
 

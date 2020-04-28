@@ -1,8 +1,7 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {DialogData} from '../course-teacher-admin/course-teacher-admin.component';
-import {CourseServiceClient, GroupServiceClient, UserServiceClient} from '../../grpc/CommunicationServiceClientPb';
-import {CourseEdit, CourseEditMessage, Empty, GroupEdit, GroupEditMessage, Role, StringMessage} from '../../grpc/Communication_pb';
+import {GroupServiceClient, UserServiceClient} from '../../grpc/CommunicationServiceClientPb';
+import {Empty, GroupEdit, GroupEditMessage, Role, StringMessage} from '../../grpc/Communication_pb';
 import {MatSelectionList, MatSelectionListChange} from '@angular/material';
 import {Router} from '@angular/router';
 import {PassdataService} from '../passdata.service';
@@ -34,10 +33,6 @@ export class GroupeditdiagComponent implements OnInit {
     public dialogRef: MatDialogRef<GroupeditdiagComponent>,
     private passdataservice: PassdataService,
     @Inject(MAT_DIALOG_DATA) public data: any) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
 
   changeGrp(lst: MatSelectionList, event: MatSelectionListChange) {
     const groupclient = new GroupServiceClient('/api/grpc');

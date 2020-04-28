@@ -1,5 +1,5 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {Component, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
 import {faCheckCircle, faChevronCircleLeft, faClock, faTimesCircle} from '@fortawesome/free-solid-svg-icons';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {CourseServiceClient, MiscServiceClient, TaskServiceClient} from '../../grpc/CommunicationServiceClientPb';

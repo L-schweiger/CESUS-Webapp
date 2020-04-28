@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {faMinusCircle, faPlusCircle} from '@fortawesome/free-solid-svg-icons';
 import {Router} from '@angular/router';
-import {CourseServiceClient, GroupServiceClient, TaskServiceClient} from '../../grpc/CommunicationServiceClientPb';
-import {CoursesMessage, Empty, GroupsMessage, StringMessage, TasksMessage} from '../../grpc/Communication_pb';
+import {CourseServiceClient, TaskServiceClient} from '../../grpc/CommunicationServiceClientPb';
+import {Empty, StringMessage, TasksMessage} from '../../grpc/Communication_pb';
 import {MatDialog} from '@angular/material/dialog';
 import {CourseeditdiagComponent} from '../courseeditdiag/courseeditdiag.component';
 import {PassdataService} from '../passdata.service';

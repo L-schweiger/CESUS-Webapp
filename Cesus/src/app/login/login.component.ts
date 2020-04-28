@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {faChevronCircleRight} from '@fortawesome/free-solid-svg-icons';
 import {AuthRequest, Empty, Role, SetupState, StringMessage} from '../../grpc/Communication_pb';
 import {AuthServiceClient, SetupServiceClient, UserServiceClient} from '../../grpc/CommunicationServiceClientPb';

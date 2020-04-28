@@ -1,19 +1,15 @@
-import {Component, OnInit, Inject, HostListener} from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {Component, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
 import {faMinusCircle, faPlusCircle} from '@fortawesome/free-solid-svg-icons';
 import {Router} from '@angular/router';
 import {CourseServiceClient, GroupServiceClient} from '../../grpc/CommunicationServiceClientPb';
-import {CoursesMessage, Empty, GroupsMessage, StringMessage} from '../../grpc/Communication_pb';
+import {Empty, GroupsMessage, StringMessage} from '../../grpc/Communication_pb';
 import {GroupeditdiagComponent} from '../groupeditdiag/groupeditdiag.component';
 import {UsereditdiagComponent} from '../usereditdiag/usereditdiag.component';
 import {CourseeditdiagComponent} from '../courseeditdiag/courseeditdiag.component';
 import {PassdataService} from '../passdata.service';
 import {ConfirmdiagComponent} from '../confirmdiag/confirmdiag.component';
 declare var $: any;
-
-export interface DialogData {
-  name: string;
-}
 
 @Component({
   selector: 'app-dashboard-admin',

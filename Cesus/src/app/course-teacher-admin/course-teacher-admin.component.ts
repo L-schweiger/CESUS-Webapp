@@ -1,5 +1,5 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { Component, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {CourseServiceClient, TaskServiceClient} from '../../grpc/CommunicationServiceClientPb';
 import {Course, Role, StringMessage} from '../../grpc/Communication_pb';
@@ -9,10 +9,6 @@ import {CourseeditdiagComponent} from '../courseeditdiag/courseeditdiag.componen
 import {TaskeditdiagComponent} from '../taskeditdiag/taskeditdiag.component';
 import {ConfirmdiagComponent} from '../confirmdiag/confirmdiag.component';
 declare var $: any;
-
-export interface DialogData {
-  name: string;
-}
 
 @Component({
   selector: 'app-course-teacher-admin',
