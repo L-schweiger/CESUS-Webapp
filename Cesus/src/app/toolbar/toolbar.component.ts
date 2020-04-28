@@ -7,10 +7,6 @@ import { faCogs } from '@fortawesome/free-solid-svg-icons';
 import {PassdataService} from '../passdata.service';
 import {SettingsdiagComponent} from '../settingsdiag/settingsdiag.component';
 
-export interface DialogData {
-  name: string;
-}
-
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
@@ -36,8 +32,9 @@ export class ToolbarComponent {
   openSettings(): void {
     const settingsRef = this.dialog.open(SettingsdiagComponent, {
       width: '80%',
+      height: '80%',
       panelClass: 'dialogstyle',
-      data: {name: 'Testname'}
+      data: {}
     });
 
     settingsRef.afterClosed().subscribe(result => {

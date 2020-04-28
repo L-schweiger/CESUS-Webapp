@@ -1,1 +1,109 @@
-<p>settingsdiag works!</p>
+<div class="divcentered">
+
+  <!--ADMIN-->
+  <mat-grid-list cols="3" rowHeight="2:2.63" *ngIf="myrole === 2">
+    <mat-grid-tile>
+
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Passwortänderung</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="description">
+
+          <form class="settingfields" (submit)="changePw()">
+            <mat-form-field>
+              <input matInput class="settingfields" name="adminoldpwinput" placeholder="Altes Passwort" [(ngModel)]="oldpw" type="password">
+            </mat-form-field>
+
+            <br>
+            <mat-form-field>
+              <input matInput class="settingfields" name="adminpw1input" placeholder="Neues Passwort" [(ngModel)]="newpw1" type="password">
+            </mat-form-field>
+
+            <br>
+
+            <mat-form-field>
+              <input matInput class="settingfields" name="adminpw2input" placeholder="Passwort wiederholen" [(ngModel)]="newpw2" type="password">
+            </mat-form-field>
+
+            <br>
+
+            <button mat-raised-button type="submit" class="applysettingsbtn">Übernehmen</button>
+          </form>
+
+        </mat-card-content>
+      </mat-card>
+
+    </mat-grid-tile>
+    <mat-grid-tile>
+
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Gruppen hinzufügen</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="cardcontentscrollable">
+
+          <mat-selection-list [(ngModel)]="addcourseGroupaddlist" color="primary">
+            <mat-list-option *ngFor="let g of allgroupslist" [value]="g.array[0]">{{g.array[1]}}</mat-list-option>
+          </mat-selection-list>
+
+        </mat-card-content>
+      </mat-card>
+
+    </mat-grid-tile>
+    <mat-grid-tile>
+
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Benutzer hinzufügen</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="cardcontentscrollable">
+
+          <mat-selection-list [(ngModel)]="addcourseUseraddlist" color="primary">
+            <mat-list-option *ngFor="let u of alluserslist" [value]="u.array[0]">{{u.array[2]}} {{u.array[1]}}</mat-list-option>
+          </mat-selection-list>
+        </mat-card-content>
+      </mat-card>
+
+    </mat-grid-tile>
+  </mat-grid-list>
+  <!--TEACHER & STUDENT-->
+  <mat-grid-list cols="3" rowHeight="2:2.63" *ngIf="myrole === 0 || myrole === 1">
+    <mat-grid-tile></mat-grid-tile>
+    <mat-grid-tile>
+
+      <mat-card class="card2">
+        <mat-card-header>
+          <mat-card-title>Passwortänderung</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="description">
+
+          <form class="settingfields" (submit)="changePw()">
+            <mat-form-field>
+              <input matInput class="settingfields" name="oldpwinput" placeholder="Altes Passwort" [(ngModel)]="oldpw" type="password">
+            </mat-form-field>
+
+            <br>
+            <mat-form-field>
+              <input matInput class="settingfields" name="pw1input" placeholder="Neues Passwort" [(ngModel)]="newpw1" type="password">
+            </mat-form-field>
+
+            <br>
+
+            <mat-form-field>
+              <input matInput class="settingfields" name="pw2input" placeholder="Passwort wiederholen" [(ngModel)]="newpw2" type="password">
+            </mat-form-field>
+
+            <br>
+
+            <button mat-raised-button type="submit" class="applysettingsbtn">Übernehmen</button>
+          </form>
+
+        </mat-card-content>
+      </mat-card>
+
+    </mat-grid-tile>
+    <mat-grid-tile></mat-grid-tile>
+  </mat-grid-list>
+
+</div>
