@@ -24,6 +24,7 @@ export class SetupComponent implements OnInit {
 
   iconContinue = faChevronCircleRight;
   setuppw: string;
+  setuppwset: boolean;
   currsetupstate: SetupState;
   // DB CONNECTION SETTINGS
   dbAddress: string;
@@ -56,6 +57,19 @@ export class SetupComponent implements OnInit {
 
   constructor(public router: Router, public route: ActivatedRoute, public passdataservice: PassdataService) { }
 
+  checkSetupPWset() {
+    if (document.cookie.replace(/(?:(?:^|.*;\s*)SetupPW\s*\=\s*([^;]*).*$)|^.*$/, '$1') === '') {
+      this.setuppwset = false;
+    } else {
+      this.setuppwset = true;
+    }
+  }
+
+  setSetupPW() {
+    document.cookie = 'SetupPW=' + this.setuppw + ';';
+    this.checkSetupPWset();
+  }
+
   continueSetup(currState: SetupState) {
     const setupclient = new SetupServiceClient('/api/grpc');
     const setuppw = new StringMessage();
@@ -63,7 +77,7 @@ export class SetupComponent implements OnInit {
 
     switch (currState) {
       case SetupState.UNCONFIGURED:
-        document.cookie = 'SetupPW=' + this.setuppw + ';';
+        this.setSetupPW();
         const dbConnectionSettings = new DatabaseConnectionSettings();
         dbConnectionSettings.setAddress(this.dbAddress);
         dbConnectionSettings.setDatabase(this.dbDatabase);
@@ -93,6 +107,8 @@ export class SetupComponent implements OnInit {
             });
           } else {
             this.passdataservice.throwError('Setup-Passwort ist falsch!');
+            document.cookie = 'SetupPW=; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+            this.checkSetupPWset();
           }
         });
         break;
@@ -120,6 +136,8 @@ export class SetupComponent implements OnInit {
               });
             } else {
               this.passdataservice.throwError('Setup-Passwort ist falsch!');
+              document.cookie = 'SetupPW=; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+              this.checkSetupPWset();
             }
           });
         }
@@ -149,6 +167,8 @@ export class SetupComponent implements OnInit {
             });
           } else {
             this.passdataservice.throwError('Setup-Passwort ist falsch!');
+            document.cookie = 'SetupPW=; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+            this.checkSetupPWset();
           }
         });
         break;
@@ -172,6 +192,8 @@ export class SetupComponent implements OnInit {
             });
           } else {
             this.passdataservice.throwError('Setup-Passwort ist falsch!');
+            document.cookie = 'SetupPW=; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+            this.checkSetupPWset();
           }
         });
         break;
@@ -190,6 +212,8 @@ export class SetupComponent implements OnInit {
             });
           } else {
             this.passdataservice.throwError('Setup-Passwort ist falsch!');
+            document.cookie = 'SetupPW=; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+            this.checkSetupPWset();
           }
         });
         break;
@@ -215,12 +239,14 @@ export class SetupComponent implements OnInit {
     document.cookie = 'auth=; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     document.cookie = 'userid=; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     document.cookie = 'SetupPW=; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    this.checkSetupPWset();
     this.passdataservice.fullname = null;
     this.passdataservice.showtoolbar = false;
     this.router.navigate([''], { skipLocationChange: true});
   }
 
   ngOnInit() {
+    this.checkSetupPWset();
 
     const setupclient = new SetupServiceClient('/api/grpc');
     const empty = new Empty();

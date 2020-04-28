@@ -1,5 +1,6 @@
 <div class="divcenteredsetup">
-  <img src="/assets/LogoSingleC.png" height="25%" width="auto" alt="Logo" *ngIf="currsetupstate !== 6">
+  <!--<img src="/assets/LogoSingleC.png" height="25%" width="auto" alt="Logo" *ngIf="currsetupstate !== 6">-->
+  <img src="/assets/LogoSingleC.png" height="25%" width="auto" alt="Logo" *ngIf="currsetupstate !== 10">
 
   <!--SETUP UNCONFIGURED-->
   <form name="setupform0" class="setupform" (submit)="continueSetup(this.currsetupstate)" *ngIf="currsetupstate === 0">
@@ -38,7 +39,7 @@
     <span><fa-icon class="continueIcon" [icon]="iconContinue" (click)="continueSetup(this.currsetupstate)"></fa-icon></span>
   </form>
   <!--SETUP ADMIN_CONFIGURED-->
-  <form name="setupform2" class="setupform" (submit)="continueSetup(this.currsetupstate)" *ngIf="currsetupstate === 2">
+  <form name="setupform2" class="setupform" (submit)="continueSetup(this.currsetupstate)" *ngIf="setuppwset === true && currsetupstate === 2">
     <mat-form-field>
       <input matInput name="sslpasswordinput" placeholder="SSL-Passwort" [(ngModel)]="sslPassword" type="password">
     </mat-form-field>
@@ -52,7 +53,7 @@
     <span *ngIf="sslFile != null"><fa-icon class="continueIcon" [icon]="iconContinue" (click)="continueSetup(this.currsetupstate)"></fa-icon></span>
   </form>
   <!--SETUP SSL_CONFIGURED-->
-  <form name="setupform3" class="setupform" (submit)="continueSetup(this.currsetupstate)" *ngIf="currsetupstate === 3">
+  <form name="setupform3" class="setupform" (submit)="continueSetup(this.currsetupstate)" *ngIf="setuppwset === true && currsetupstate === 3">
     <mat-form-field>
       <input matInput name="ldapgroupprefixinput" placeholder="Gruppenprefix" [(ngModel)]="ldapGroupprefix" type="text">
     </mat-form-field>
@@ -85,7 +86,7 @@
     <span><fa-icon class="continueIcon" [icon]="iconContinue" (click)="continueSetup(this.currsetupstate)"></fa-icon></span>
   </form>
   <!--SETUP LDAP_CONFIGURED-->
-  <form name="setupform4" class="setupform" (submit)="continueSetup(this.currsetupstate)" *ngIf="currsetupstate === 4">
+  <form name="setupform4" class="setupform" (submit)="continueSetup(this.currsetupstate)" *ngIf="setuppwset === true && currsetupstate === 4">
     <mat-form-field>
       <input matInput name="concurrexecinput" placeholder="Gleichzeitige Ausführungen" [(ngModel)]="generalConcurrentexecutioncount" type="number" min="0">
     </mat-form-field>
@@ -100,5 +101,15 @@
     <br><br>
     <button type="submit" style="visibility: hidden"></button>
     <span><fa-icon class="continueIcon" [icon]="iconContinue" (click)="continueSetup(this.currsetupstate)"></fa-icon></span>
+  </form>
+  <!--SETUP PW REQUEST-->
+  <form name="setupformPwrequest" class="setupform" (submit)="setSetupPW()" *ngIf="setuppwset === false">
+    <mat-form-field>
+      <input matInput [formControl]="passwordFormControl" name="setuppasswordinputReq" placeholder="Setup-Passwort" [(ngModel)]="setuppw" type="password">
+      <mat-error *ngIf="passwordFormControl.hasError('nullValidator') && !passwordFormControl.hasError('required')">Passwort benötigt!</mat-error>
+    </mat-form-field>
+    <br><br>
+    <button type="submit" style="visibility: hidden"></button>
+    <span><fa-icon class="continueIcon" [icon]="iconContinue" (click)="setSetupPW()"></fa-icon></span>
   </form>
 </div>
